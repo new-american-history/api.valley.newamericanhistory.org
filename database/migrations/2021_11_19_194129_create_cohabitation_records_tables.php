@@ -15,6 +15,7 @@ class CreateCohabitationRecordsTables extends Migration
     {
         Schema::create('cohabitation_families', function (Blueprint $table) {
             $table->id();
+            $table->string('county');
             $table->date('report_date')->nullable();
             $table->integer('family_id')->unsigned()->unique();
             $table->string('residence')->nullable();
