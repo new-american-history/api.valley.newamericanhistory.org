@@ -19,7 +19,6 @@ class CreateFreeBlackRegistryTable extends Migration
             $table->string('city')->nullable();
             $table->string('name')->nullable();
             $table->string('number')->nullable();
-
             $table->text('description')->nullable();
             $table->timestamps();
         });
