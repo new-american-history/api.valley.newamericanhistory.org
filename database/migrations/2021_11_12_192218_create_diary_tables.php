@@ -22,7 +22,6 @@ class CreateDiaryTables extends Migration
 
             $table->text('keywords')->nullable();
             $table->string('source_file')->nullable();
-
             $table->timestamps();
         });
 
