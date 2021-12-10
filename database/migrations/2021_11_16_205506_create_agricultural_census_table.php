@@ -80,8 +80,6 @@ class CreateAgriculturalCensusTable extends Migration
             $table->integer('woodland_acres')->unsigned()->nullable();
             $table->integer('other_unimproved_land_acres')->unsigned()->nullable();
             $table->integer('total_land_acres')->unsigned()->nullable();
-
-            $table->integer('notes')->unsigned()->nullable();
             $table->timestamps();
         });
     }
