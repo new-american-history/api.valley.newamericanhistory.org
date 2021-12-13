@@ -12,6 +12,7 @@ use App\Api\TaxRecords\Controllers\AugustaTaxRecordController;
 use App\Api\Censuses\Controllers\ManufacturingCensusController;
 use App\Api\MemoryArticles\Controllers\MemoryArticleController;
 use App\Api\TaxRecords\Controllers\FranklinTaxRecordController;
+use App\Api\FreeBlackRegistry\Controllers\FreeBlackRegistryController;
 use App\Api\BattlefieldCorrespondence\Controllers\BattlefieldCorrespondenceController;
 
 Route::get('/agricultural-census', [AgriculturalCensusController::class, 'index']);
@@ -20,6 +21,7 @@ Route::get('/battlefield-correspondence', [BattlefieldCorrespondenceController::
 Route::get('/church-records', [ChurchRecordController::class, 'index']);
 Route::get('/diaries', [DiaryController::class, 'index']);
 Route::get('/franklin-tax-records', [FranklinTaxRecordController::class, 'index']);
+Route::get('/free-black-registry', [FreeBlackRegistryController::class, 'index']);
 Route::get('/letters', [LetterController::class, 'index']);
 Route::get('/manufacturing-census', [ManufacturingCensusController::class, 'index']);
 Route::get('/memory-articles', [MemoryArticleController::class, 'index']);
