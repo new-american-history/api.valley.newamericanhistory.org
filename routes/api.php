@@ -11,6 +11,7 @@ use App\Api\ChurchRecords\Controllers\ChurchRecordController;
 use App\Api\Censuses\Controllers\AgriculturalCensusController;
 use App\Api\TaxRecords\Controllers\AugustaTaxRecordController;
 use App\Api\Censuses\Controllers\ManufacturingCensusController;
+use App\Api\CivilWarImages\Controllers\CivilWarImageController;
 use App\Api\MemoryArticles\Controllers\MemoryArticleController;
 use App\Api\TaxRecords\Controllers\FranklinTaxRecordController;
 use App\Api\SoldierDossiers\Controllers\SoldierDossierController;
@@ -26,6 +27,7 @@ Route::get('/augusta-tax-records', [AugustaTaxRecordController::class, 'index'])
 Route::get('/battlefield-correspondence', [BattlefieldCorrespondenceController::class, 'index']);
 Route::get('/chambersburg-claims', [ChambersburgClaimController::class, 'index']);
 Route::get('/church-records', [ChurchRecordController::class, 'index']);
+Route::get('/civil-war-images', [CivilWarImageController::class, 'index']);
 Route::get('/cohabitation-records', [CohabitationRecordController::class, 'index']);
 Route::get('/diaries', [DiaryController::class, 'index']);
 Route::get('/fire-insurance-policies', [FireInsurancePolicyController::class, 'index']);
