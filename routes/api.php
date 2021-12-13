@@ -13,12 +13,14 @@ use App\Api\Censuses\Controllers\ManufacturingCensusController;
 use App\Api\MemoryArticles\Controllers\MemoryArticleController;
 use App\Api\TaxRecords\Controllers\FranklinTaxRecordController;
 use App\Api\FreeBlackRegistry\Controllers\FreeBlackRegistryController;
+use App\Api\CohabitationRecords\Controllers\CohabitationRecordController;
 use App\Api\BattlefieldCorrespondence\Controllers\BattlefieldCorrespondenceController;
 
 Route::get('/agricultural-census', [AgriculturalCensusController::class, 'index']);
 Route::get('/augusta-tax-records', [AugustaTaxRecordController::class, 'index']);
 Route::get('/battlefield-correspondence', [BattlefieldCorrespondenceController::class, 'index']);
 Route::get('/church-records', [ChurchRecordController::class, 'index']);
+Route::get('/cohabitation-records', [CohabitationRecordController::class, 'index']);
 Route::get('/diaries', [DiaryController::class, 'index']);
 Route::get('/franklin-tax-records', [FranklinTaxRecordController::class, 'index']);
 Route::get('/free-black-registry', [FreeBlackRegistryController::class, 'index']);
