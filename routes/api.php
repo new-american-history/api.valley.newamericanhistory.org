@@ -6,6 +6,7 @@ use App\Api\Newspapers\Controllers\NewspaperController;
 use App\Api\Censuses\Controllers\VeteranCensusController;
 use App\Api\Censuses\Controllers\PopulationCensusController;
 use App\Api\Censuses\Controllers\SlaveOwningCensusController;
+use App\Api\ChurchRecords\Controllers\ChurchRecordController;
 use App\Api\Censuses\Controllers\AgriculturalCensusController;
 use App\Api\TaxRecords\Controllers\AugustaTaxRecordController;
 use App\Api\Censuses\Controllers\ManufacturingCensusController;
@@ -16,6 +17,7 @@ use App\Api\BattlefieldCorrespondence\Controllers\BattlefieldCorrespondenceContr
 Route::get('/agricultural-census', [AgriculturalCensusController::class, 'index']);
 Route::get('/augusta-tax-records', [AugustaTaxRecordController::class, 'index']);
 Route::get('/battlefield-correspondence', [BattlefieldCorrespondenceController::class, 'index']);
+Route::get('/church-records', [ChurchRecordController::class, 'index']);
 Route::get('/diaries', [DiaryController::class, 'index']);
 Route::get('/franklin-tax-records', [FranklinTaxRecordController::class, 'index']);
 Route::get('/letters', [LetterController::class, 'index']);
