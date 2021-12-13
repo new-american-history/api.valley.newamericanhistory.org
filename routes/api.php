@@ -18,6 +18,7 @@ use App\Api\Claims\Controllers\SouthernClaimsCommissionController;
 use App\Api\FreeBlackRegistry\Controllers\FreeBlackRegistryController;
 use App\Api\CohabitationRecords\Controllers\CohabitationRecordController;
 use App\Api\RegimentalMovements\Controllers\RegimentalMovementController;
+use App\Api\FireInsurancePolicies\Controllers\FireInsurancePolicyController;
 use App\Api\BattlefieldCorrespondence\Controllers\BattlefieldCorrespondenceController;
 
 Route::get('/agricultural-census', [AgriculturalCensusController::class, 'index']);
@@ -27,6 +28,7 @@ Route::get('/chambersburg-claims', [ChambersburgClaimController::class, 'index']
 Route::get('/church-records', [ChurchRecordController::class, 'index']);
 Route::get('/cohabitation-records', [CohabitationRecordController::class, 'index']);
 Route::get('/diaries', [DiaryController::class, 'index']);
+Route::get('/fire-insurance-policies', [FireInsurancePolicyController::class, 'index']);
 Route::get('/franklin-tax-records', [FranklinTaxRecordController::class, 'index']);
 Route::get('/free-black-registry', [FreeBlackRegistryController::class, 'index']);
 Route::get('/letters', [LetterController::class, 'index']);
