@@ -15,6 +15,7 @@ use App\Api\TaxRecords\Controllers\FranklinTaxRecordController;
 use App\Api\SoldierDossiers\Controllers\SoldierDossierController;
 use App\Api\FreeBlackRegistry\Controllers\FreeBlackRegistryController;
 use App\Api\CohabitationRecords\Controllers\CohabitationRecordController;
+use App\Api\RegimentalMovements\Controllers\RegimentalMovementController;
 use App\Api\BattlefieldCorrespondence\Controllers\BattlefieldCorrespondenceController;
 
 Route::get('/agricultural-census', [AgriculturalCensusController::class, 'index']);
@@ -30,6 +31,7 @@ Route::get('/manufacturing-census', [ManufacturingCensusController::class, 'inde
 Route::get('/memory-articles', [MemoryArticleController::class, 'index']);
 Route::get('/newspapers', [NewspaperController::class, 'index']);
 Route::get('/population-census', [PopulationCensusController::class, 'index']);
+Route::get('/regimental-movements', [RegimentalMovementController::class, 'index']);
 Route::get('/slaveowning-census', [SlaveOwningCensusController::class, 'index']);
 Route::get('/soldier-dossiers', [SoldierDossierController::class, 'index']);
 Route::get('/veteran-census', [VeteranCensusController::class, 'index']);
