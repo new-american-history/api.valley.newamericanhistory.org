@@ -2,8 +2,9 @@
 
 namespace Domain\CivilWarImages\Models;
 
-use Domain\CivilWarImages\Models\Image;
 use Illuminate\Database\Eloquent\Model;
+use Domain\CivilWarImages\Models\Subject;
+use Domain\Images\Models\Image as SharedImage;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Image extends Model
@@ -13,8 +14,14 @@ class Image extends Model
     protected $guarded = [];
 
     protected $casts = [
+        'image_id' => 'integer',
         'subject_id' => 'integer',
     ];
+
+    public function image(): BelongsTo
+    {
+        return $this->belongsTo(SharedImage::class);
+    }
 
     public function subject(): BelongsTo
     {

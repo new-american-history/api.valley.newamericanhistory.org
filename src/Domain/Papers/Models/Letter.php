@@ -16,7 +16,6 @@ class Letter extends Model
     public function images(): BelongsToMany
     {
         return $this->belongsToMany(Image::class, 'letter_image')
-            ->withPivot('weight')
             ->orderBy('weight');
     }
 
