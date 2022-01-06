@@ -35,31 +35,31 @@ class ImportSlaveowningCensus extends BaseImportCommand
                             $modelData['first_name'] = (!empty($firstName) && $firstName !== '#emp.') ? $firstName : null;
                             break;
                         case 'last':
-                            $modelData['last_name'] = trim($column->nodeValue) ?? null;
+                            $modelData['last_name'] = trim($column->nodeValue) ?: null;
                             break;
                         case 'location':
-                            $modelData['location'] = trim($column->nodeValue) ?? null;
+                            $modelData['location'] = trim($column->nodeValue) ?: null;
                             break;
                         case 'emp_name':
-                            $modelData['employer_name'] = trim($column->nodeValue) ?? null;
+                            $modelData['employer_name'] = trim($column->nodeValue) ?: null;
                             break;
                         case 'emp_location':
-                            $modelData['employer_location'] = trim($column->nodeValue) ?? null;
+                            $modelData['employer_location'] = trim($column->nodeValue) ?: null;
                             break;
                         case 'total_slaves':
-                            $modelData['total_slaves'] = $column->nodeValue ?? null;
+                            $modelData['total_slaves'] = $column->nodeValue ?: null;
                             break;
                         case 'black_slaves':
-                            $modelData['black_slaves'] = $column->nodeValue ?? null;
+                            $modelData['black_slaves'] = $column->nodeValue ?: null;
                             break;
                         case 'mulatto_slaves':
-                            $modelData['mulatto_slaves'] = $column->nodeValue ?? null;
+                            $modelData['mulatto_slaves'] = $column->nodeValue ?: null;
                             break;
                         case 'female_slaves':
-                            $modelData['female_slaves'] = $column->nodeValue ?? null;
+                            $modelData['female_slaves'] = $column->nodeValue ?: null;
                             break;
                         case 'male_slaves':
-                            $modelData['male_slaves'] = $column->nodeValue ?? null;
+                            $modelData['male_slaves'] = $column->nodeValue ?: null;
                             break;
                     }
                 }
