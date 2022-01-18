@@ -14,7 +14,8 @@ class AgriculturalCensus extends Model
 
     protected $casts = [
         'year' => 'integer',
-        'wages_paid' => 'integer',
+        'number_on_page' => 'integer',
+        'page_number' => 'integer',
         'farm_value' => 'integer',
         'farm_implements_value' => 'integer',
         'forest_products_value' => 'integer',
