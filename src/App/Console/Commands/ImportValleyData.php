@@ -13,6 +13,7 @@ class ImportValleyData extends Command
     public function handle()
     {
         $this->call('import:free-black-registry');
+        $this->call('import:population-census');
         $this->call('import:slaveowning-census');
         $this->call('import:veteran-census');
     }
