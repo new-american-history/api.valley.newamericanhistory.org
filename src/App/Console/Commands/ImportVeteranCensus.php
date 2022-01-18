@@ -17,6 +17,29 @@ class ImportVeteranCensus extends BaseImportCommand
         'data/vet_census_aug_90.xml',
     ];
 
+    protected $defaultColumnMap = [
+        'company' => 'company',
+        'disability' => 'disability',
+        'enum_dist_num' => 'enumerator_district',
+        'enumerator' => 'enumerator',
+        'family_num' => 'family_number',
+        'first' => 'first_name',
+        'house_num' => 'house_number',
+        'last' => 'last_name',
+        'length_of_service' => 'length_of_service',
+        'location' => 'location',
+        'num_on_page' => 'number_on_page',
+        'other_info' => 'other_info',
+        'post_office' => 'post_office',
+        'rank' => 'rank',
+        'regiment' => 'regiment',
+        'remarks' => 'remarks',
+        'service_length' => 'length_of_service',
+        'sup_dist_num' => 'superior_district_number',
+        'vos_page' => 'page_number',
+        'widow_name' => 'widow_name',
+    ];
+
     public function handle()
     {
         foreach ($this->files as $file) {
@@ -33,72 +56,19 @@ class ImportVeteranCensus extends BaseImportCommand
                     $columns = $item->getElementsByTagName('column');
 
                     foreach ($columns as $column) {
-                        switch ($column->getAttribute('name')) {
-                            case 'first':
-                                $modelData['first_name'] = trim($column->nodeValue) ?: null;
-                                break;
-                            case 'last':
-                                $modelData['last_name'] = trim($column->nodeValue) ?: null;
-                                break;
-                            case 'location':
-                                $modelData['location'] = trim($column->nodeValue) ?: null;
-                                break;
-                            case 'post_office':
-                                $modelData['post_office'] = trim($column->nodeValue) ?: null;
-                                break;
-                            case 'family_num':
-                                $modelData['family_number'] = trim($column->nodeValue) ?: null;
-                                break;
-                            case 'house_num':
-                                $modelData['house_number'] = $column->nodeValue ?: null;
-                                break;
-                            case 'widow_name':
-                                $modelData['widow_name'] = trim($column->nodeValue) ?: null;
-                                break;
+                        $columnName = $column->getAttribute('name');
+                        switch ($columnName) {
                             case 'enl_date':
                                 $modelData['enlistment_date'] = static::getFormattedDate($column->nodeValue);
                                 break;
                             case 'discharge_date':
                                 $modelData['discharge_date'] = static::getFormattedDate($column->nodeValue);
                                 break;
-                            case 'length_of_service':
-                                $modelData['length_of_service'] = trim($column->nodeValue) ?: null;
-                                break;
-                            case 'service_length':
-                                $modelData['length_of_service'] = trim($column->nodeValue) ?: null;
-                                break;
-                            case 'company':
-                                $modelData['company'] = trim($column->nodeValue) ?: null;
-                                break;
-                            case 'disability':
-                                $modelData['disability'] = trim($column->nodeValue) ?: null;
-                                break;
-                            case 'rank':
-                                $modelData['rank'] = trim($column->nodeValue) ?: null;
-                                break;
-                            case 'regiment':
-                                $modelData['regiment'] = trim($column->nodeValue) ?: null;
-                                break;
-                            case 'sup_dist_num':
-                                $modelData['superior_district_number'] = $column->nodeValue ?: null;
-                                break;
-                            case 'remarks':
-                                $modelData['remarks'] = trim($column->nodeValue) ?: null;
-                                break;
-                            case 'other_info':
-                                $modelData['other_info'] = trim($column->nodeValue) ?: null;
-                                break;
-                            case 'enumerator':
-                                $modelData['enumerator'] = trim($column->nodeValue) ?: null;
-                                break;
-                            case 'enum_dist_num':
-                                $modelData['enumerator_district'] = trim($column->nodeValue) ?: null;
-                                break;
-                            case 'vos_page':
-                                $modelData['page_number'] = $column->nodeValue ?: null;
-                                break;
-                            case 'num_on_page':
-                                $modelData['number_on_page'] = $column->nodeValue ?: null;
+                            default:
+                                $modelAttribute = $this->defaultColumnMap[$columnName] ?? null;
+                                if (!empty($modelAttribute)) {
+                                    $modelData[$modelAttribute] = trim($column->nodeValue) ?: null;
+                                }
                                 break;
                         }
                     }

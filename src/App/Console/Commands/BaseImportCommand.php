@@ -11,10 +11,12 @@ class BaseImportCommand extends Command
 
     protected $description = 'Base class for data import commands';
 
-    public function getFileData($file)
-    {
-        $path = storage_path() . '/import-data/' . $file;
-        return file_get_contents($path);
+    public function getBoolean($value) {
+        $value = trim($value);
+        if ($value === 'yes' || $value === '1') {
+            return true;
+        }
+        return false;
     }
 
     public function getDomDocumentWithHtml($html)
@@ -43,5 +45,17 @@ class BaseImportCommand extends Command
         libxml_use_internal_errors(false);
 
         return $document ?? null;
+    }
+
+    public function getFileData($file)
+    {
+        $path = storage_path() . '/import-data/' . $file;
+        return file_get_contents($path);
+    }
+
+    public function getMonthAsInteger($value) {
+        $value = trim($value);
+        $dateTime = strtotime($value);
+        return !empty($dateTime) ? date('m', $dateTime) : null;
     }
 }

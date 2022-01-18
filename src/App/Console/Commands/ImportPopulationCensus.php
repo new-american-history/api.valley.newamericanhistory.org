@@ -2,8 +2,8 @@
 
 namespace App\Console\Commands;
 
-use Domain\Censuses\Models\PopulationCensus;
 use App\Console\Commands\BaseImportCommand;
+use Domain\Censuses\Models\PopulationCensus;
 
 class ImportPopulationCensus extends BaseImportCommand
 {
@@ -17,6 +17,28 @@ class ImportPopulationCensus extends BaseImportCommand
         'data/pop_fr_60.xml',
         'data/pop_fr_70.xml',
         'data/pop_fr_70_v2.xml',
+    ];
+
+    protected $defaultColumnMap = [
+        'age' => 'age',
+        'birth_place' => 'birthplace',
+        'color' => 'race',
+        'deaf_dumb' => 'disability',
+        'district' => 'district',
+        'dwelling_num' => 'dwelling_number',
+        'family_num' => 'family_number',
+        'first' => 'first_name',
+        'head_num' => 'head_number',
+        'middle' => 'middle_name',
+        'notes' => 'notes',
+        'occupation' => 'occupation',
+        'page_num' => 'page_number',
+        'persest' => 'personal_estate_value',
+        'post_office' => 'post_office',
+        'realest' => 'real_estate_value',
+        'sex' => 'sex',
+        'subdistrict' => 'subdistrict',
+        'suffix' => 'suffix',
     ];
 
     public function handle()
@@ -40,13 +62,8 @@ class ImportPopulationCensus extends BaseImportCommand
 
                     foreach ($columns as $column) {
                         if (!$itemIsEmpty) {
-                            switch ($column->getAttribute('name')) {
-                                case 'first':
-                                    $modelData['first_name'] = trim($column->nodeValue) ?: null;
-                                    break;
-                                case 'middle':
-                                    $modelData['middle_name'] = trim($column->nodeValue) ?: null;
-                                    break;
+                            $columnName = $column->getAttribute('name');
+                            switch ($columnName) {
                                 case 'last':
                                     $value = trim($column->nodeValue);
                                     if ($value === 'Unoccupied') {
@@ -55,36 +72,9 @@ class ImportPopulationCensus extends BaseImportCommand
                                     }
                                     $modelData['last_name'] = $value ?: null;
                                     break;
-                                case 'suffix':
-                                    $modelData['suffix'] = trim($column->nodeValue) ?: null;
-                                    break;
-                                case 'age':
-                                    $modelData['age'] = trim($column->nodeValue) ?: null;
-                                    break;
-                                case 'birth_place':
-                                    $modelData['birthplace'] = trim($column->nodeValue) ?: null;
-                                    break;
-                                case 'color':
-                                    $modelData['race'] = trim($column->nodeValue) ?: null;
-                                    break;
-                                case 'sex':
-                                    $modelData['sex'] = trim($column->nodeValue) ?: null;
-                                    break;
                                 case 'occcode':
                                     $value = trim($column->nodeValue);
                                     $modelData['occupation_code'] = $value && $value !== 'NULL' ? $value : null;
-                                    break;
-                                case 'occupation':
-                                    $modelData['occupation'] = trim($column->nodeValue) ?: null;
-                                    break;
-                                case 'dwelling_num':
-                                    $modelData['dwelling_number'] = trim($column->nodeValue) ?: null;
-                                    break;
-                                case 'family_num':
-                                    $modelData['family_number'] = trim($column->nodeValue) ?: null;
-                                    break;
-                                case 'head_num':
-                                    $modelData['head_number'] = trim($column->nodeValue) ?: null;
                                     break;
                                 case 'school':
                                     $modelData['attended_school'] = static::getBoolean($column->nodeValue);
@@ -100,9 +90,6 @@ class ImportPopulationCensus extends BaseImportCommand
                                         $modelData['cannot_read'] = true;
                                         $modelData['cannot_write'] = true;
                                     }
-                                    break;
-                                case 'deaf_dumb':
-                                    $modelData['disability'] = trim($column->nodeValue) ?: null;
                                     break;
                                 case 'for_father':
                                     $modelData['father_foreign_born'] = static::getBoolean($column->nodeValue);
@@ -125,29 +112,14 @@ class ImportPopulationCensus extends BaseImportCommand
                                 case 'birth_month':
                                     $modelData['birth_month'] = static::getMonthAsInteger($column->nodeValue);
                                     break;
-                                case 'persest':
-                                    $modelData['personal_estate_value'] = trim($column->nodeValue) ?: null;
-                                    break;
-                                case 'realest':
-                                    $modelData['real_estate_value'] = trim($column->nodeValue) ?: null;
-                                    break;
                                 case 'date_taken':
                                     $modelData['date_taken'] = static::getFormattedDate(trim($column->nodeValue)) ?: null;
                                     break;
-                                case 'district':
-                                    $modelData['district'] = trim($column->nodeValue) ?: null;
-                                    break;
-                                case 'subdistrict':
-                                    $modelData['subdistrict'] = trim($column->nodeValue) ?: null;
-                                    break;
-                                case 'post_office':
-                                    $modelData['post_office'] = trim($column->nodeValue) ?: null;
-                                    break;
-                                case 'page_num':
-                                    $modelData['page_number'] = trim($column->nodeValue) ?: null;
-                                    break;
-                                case 'notes':
-                                    $modelData['notes'] = trim($column->nodeValue) ?: null;
+                                default:
+                                    $modelAttribute = $this->defaultColumnMap[$columnName] ?? null;
+                                    if (!empty($modelAttribute)) {
+                                        $modelData[$modelAttribute] = trim($column->nodeValue) ?: null;
+                                    }
                                     break;
                             }
                         }
@@ -167,21 +139,5 @@ class ImportPopulationCensus extends BaseImportCommand
         $value = str_replace('?', '1', $value);
         $dateTime = strtotime($value);
         return !empty($dateTime) ? date('Y-m-d', $dateTime) : null;
-    }
-
-    public function getMonthAsInteger($value) {
-        $value = trim($value);
-        $dateTime = strtotime($value);
-        return !empty($dateTime) ? date('m', $dateTime) : null;
-    }
-
-    public function getBoolean($value) {
-        $value = trim($value);
-        if ($value === 'yes' || $value === '1') {
-            return true;
-        } elseif ($value === '1') {
-            return false;
-        }
-        return null;
     }
 }

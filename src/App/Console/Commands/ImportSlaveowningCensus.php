@@ -13,6 +13,18 @@ class ImportSlaveowningCensus extends BaseImportCommand
 
     protected $file = 'data/slave_aug_60.xml';
 
+    protected $defaultColumnMap = [
+        'black_slaves' => 'black_slaves',
+        'emp_location' => 'employer_location',
+        'emp_name' => 'employer_name',
+        'female_slaves' => 'female_slaves',
+        'last' => 'last_name',
+        'location' => 'location',
+        'male_slaves' => 'male_slaves',
+        'mulatto_slaves' => 'mulatto_slaves',
+        'total_slaves' => 'total_slaves',
+    ];
+
     public function handle()
     {
         $data = self::getFileData($this->file);
@@ -29,37 +41,17 @@ class ImportSlaveowningCensus extends BaseImportCommand
                 $columns = $item->getElementsByTagName('column');
 
                 foreach ($columns as $column) {
-                    switch ($column->getAttribute('name')) {
+                    $columnName = $column->getAttribute('name');
+                    switch ($columnName) {
                         case 'first':
                             $firstName = trim($column->nodeValue);
                             $modelData['first_name'] = (!empty($firstName) && $firstName !== '#emp.') ? $firstName : null;
                             break;
-                        case 'last':
-                            $modelData['last_name'] = trim($column->nodeValue) ?: null;
-                            break;
-                        case 'location':
-                            $modelData['location'] = trim($column->nodeValue) ?: null;
-                            break;
-                        case 'emp_name':
-                            $modelData['employer_name'] = trim($column->nodeValue) ?: null;
-                            break;
-                        case 'emp_location':
-                            $modelData['employer_location'] = trim($column->nodeValue) ?: null;
-                            break;
-                        case 'total_slaves':
-                            $modelData['total_slaves'] = $column->nodeValue ?: null;
-                            break;
-                        case 'black_slaves':
-                            $modelData['black_slaves'] = $column->nodeValue ?: null;
-                            break;
-                        case 'mulatto_slaves':
-                            $modelData['mulatto_slaves'] = $column->nodeValue ?: null;
-                            break;
-                        case 'female_slaves':
-                            $modelData['female_slaves'] = $column->nodeValue ?: null;
-                            break;
-                        case 'male_slaves':
-                            $modelData['male_slaves'] = $column->nodeValue ?: null;
+                        default:
+                            $modelAttribute = $this->defaultColumnMap[$columnName] ?? null;
+                            if (!empty($modelAttribute)) {
+                                $modelData[$modelAttribute] = trim($column->nodeValue) ?: null;
+                            }
                             break;
                     }
                 }
