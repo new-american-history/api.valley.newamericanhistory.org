@@ -12,9 +12,12 @@ class ManufacturingCensusMaterial extends Model
 
     protected $guarded = [];
 
+    public $timestamps = false;
+
     protected $casts = [
         'manufacturing_census_id' => 'integer',
         'value' => 'integer',
+        'census_data_id' => 'integer',
     ];
 
     public function manufacturing_census(): BelongsTo

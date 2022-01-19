@@ -17,7 +17,7 @@ class ManufacturingCensus extends Model
         'year' => 'integer',
         'months_active' => 'integer',
         'capital_invested' => 'integer',
-        'machine_names' => 'integer',
+        'number_of_machines' => 'integer',
         'female_hands' => 'float',
         'male_hands' => 'float',
         'child_hands' => 'float',
@@ -26,6 +26,7 @@ class ManufacturingCensus extends Model
         'total_wages' => 'integer',
         'page_number' => 'integer',
         'number_on_page' => 'integer',
+        'id_num' => 'integer',
     ];
 
     public function materials(): HasMany

@@ -43,7 +43,7 @@ class CreateManufacturingCensusTables extends Migration
             $table->string('power')->nullable();
             $table->string('horsepower')->nullable();
             $table->string('machines')->nullable();
-            $table->integer('machine_names')->unsigned()->nullable();
+            $table->integer('number_of_machines')->unsigned()->nullable();
 
             $table->float('female_hands', 4, 1)->unsigned()->nullable();
             $table->float('male_hands', 4, 1)->unsigned()->nullable();
