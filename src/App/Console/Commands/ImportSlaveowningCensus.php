@@ -42,17 +42,15 @@ class ImportSlaveowningCensus extends BaseImportCommand
 
                 foreach ($columns as $column) {
                     $columnName = $column->getAttribute('name');
-                    switch ($columnName) {
-                        case 'first':
-                            $firstName = trim($column->nodeValue);
-                            $modelData['first_name'] = (!empty($firstName) && $firstName !== '#emp.') ? $firstName : null;
-                            break;
-                        default:
-                            $modelAttribute = $this->defaultColumnMap[$columnName] ?? null;
-                            if (!empty($modelAttribute)) {
-                                $modelData[$modelAttribute] = trim($column->nodeValue) ?: null;
-                            }
-                            break;
+
+                    if ($columnName === 'first') {
+                        $firstName = trim($column->nodeValue);
+                        $modelData['first_name'] = (!empty($firstName) && $firstName !== '#emp.') ? $firstName : null;
+                    } else {
+                        $modelAttribute = $this->defaultColumnMap[$columnName] ?? null;
+                        if (!empty($modelAttribute)) {
+                            $modelData[$modelAttribute] = trim($column->nodeValue) ?: null;
+                        }
                     }
                 }
 

@@ -59,10 +59,10 @@ class ImportVeteranCensus extends BaseImportCommand
                         $columnName = $column->getAttribute('name');
                         switch ($columnName) {
                             case 'enl_date':
-                                $modelData['enlistment_date'] = static::getFormattedDate($column->nodeValue);
+                                $modelData['enlistment_date'] = self::getFormattedDate($column->nodeValue);
                                 break;
                             case 'discharge_date':
-                                $modelData['discharge_date'] = static::getFormattedDate($column->nodeValue);
+                                $modelData['discharge_date'] = self::getFormattedDate($column->nodeValue);
                                 break;
                             default:
                                 $modelAttribute = $this->defaultColumnMap[$columnName] ?? null;

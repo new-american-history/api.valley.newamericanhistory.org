@@ -77,13 +77,13 @@ class ImportPopulationCensus extends BaseImportCommand
                                     $modelData['occupation_code'] = $value && $value !== 'NULL' ? $value : null;
                                     break;
                                 case 'school':
-                                    $modelData['attended_school'] = static::getBoolean($column->nodeValue);
+                                    $modelData['attended_school'] = self::getBoolean($column->nodeValue);
                                     break;
                                 case 'read':
-                                    $modelData['cannot_read'] = static::getBoolean($column->nodeValue);
+                                    $modelData['cannot_read'] = self::getBoolean($column->nodeValue);
                                     break;
                                 case 'write':
-                                    $modelData['cannot_write'] = static::getBoolean($column->nodeValue);
+                                    $modelData['cannot_write'] = self::getBoolean($column->nodeValue);
                                     break;
                                 case 'readwrite':
                                     if (trim($column->nodeValue) === 'yes') {
@@ -92,28 +92,28 @@ class ImportPopulationCensus extends BaseImportCommand
                                     }
                                     break;
                                 case 'for_father':
-                                    $modelData['father_foreign_born'] = static::getBoolean($column->nodeValue);
+                                    $modelData['father_foreign_born'] = self::getBoolean($column->nodeValue);
                                     break;
                                 case 'for_mother':
-                                    $modelData['mother_foreign_born'] = static::getBoolean($column->nodeValue);
+                                    $modelData['mother_foreign_born'] = self::getBoolean($column->nodeValue);
                                     break;
                                 case 'male_21':
-                                    $modelData['male_citizen'] = static::getBoolean($column->nodeValue);
+                                    $modelData['male_citizen'] = self::getBoolean($column->nodeValue);
                                     break;
                                 case 'male_novote':
-                                    $modelData['male_citizen_novote'] = static::getBoolean($column->nodeValue);
+                                    $modelData['male_citizen_novote'] = self::getBoolean($column->nodeValue);
                                     break;
                                 case 'married':
-                                    $modelData['married_within_the_year'] = static::getBoolean($column->nodeValue);
+                                    $modelData['married_within_the_year'] = self::getBoolean($column->nodeValue);
                                     break;
                                 case 'marr_month':
-                                    $modelData['marriage_month'] = static::getMonthAsInteger($column->nodeValue);
+                                    $modelData['marriage_month'] = self::getMonthAsInteger($column->nodeValue);
                                     break;
                                 case 'birth_month':
-                                    $modelData['birth_month'] = static::getMonthAsInteger($column->nodeValue);
+                                    $modelData['birth_month'] = self::getMonthAsInteger($column->nodeValue);
                                     break;
                                 case 'date_taken':
-                                    $modelData['date_taken'] = static::getFormattedDate(trim($column->nodeValue)) ?: null;
+                                    $modelData['date_taken'] = self::getFormattedDate(trim($column->nodeValue)) ?: null;
                                     break;
                                 default:
                                     $modelAttribute = $this->defaultColumnMap[$columnName] ?? null;

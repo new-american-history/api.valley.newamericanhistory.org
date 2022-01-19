@@ -60,7 +60,7 @@ class ImportAgriculturalCensus extends BaseImportCommand
         'oxen' => 'oxen',
         'page_num' => 'page_number',
         'peas_beans' => 'peas_and_beans_bushels',
-        'rice' => 'rice_pounds', // chec dis
+        'rice' => 'rice_pounds',
         'rye' => 'rye_bushels',
         'sheep' => 'sheep',
         'silk_cocoons' => 'silk_cocoons_pounds',
