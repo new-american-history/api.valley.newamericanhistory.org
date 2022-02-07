@@ -12,6 +12,8 @@ class Subject extends Model
 
     protected $guarded = [];
 
+    public $timestamps = false;
+
     public function images(): HasMany
     {
         return $this->hasMany(Image::class, 'subject_id');
