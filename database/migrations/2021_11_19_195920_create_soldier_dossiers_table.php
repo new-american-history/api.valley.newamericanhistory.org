@@ -26,8 +26,8 @@ class CreateSoldierDossiersTable extends Migration
             $table->text('personal_info')->nullable();
             $table->string('physical_description')->nullable();
             $table->string('image_file')->nullable();
-            $table->string('prewar_life')->nullable();
-            $table->string('postwar_life')->nullable();
+            $table->text('prewar_life')->nullable();
+            $table->text('postwar_life')->nullable();
 
             $table->date('enlisted_date')->nullable();
             $table->string('enlisted_location')->nullable();
@@ -36,7 +36,7 @@ class CreateSoldierDossiersTable extends Migration
             $table->string('enlisted_rank')->nullable();
             $table->string('conscript_or_substitute')->nullable();
 
-            $table->string('promotions')->nullable();
+            $table->text('promotions')->nullable();
             $table->text('transfers')->nullable();
             $table->text('muster_record')->nullable();
             $table->string('hospital_record')->nullable();
@@ -69,7 +69,7 @@ class CreateSoldierDossiersTable extends Migration
             $table->date('paroled_date')->nullable();
             $table->string('pow_summary')->nullable();
             $table->date('pow_date')->nullable();
-            $table->string('wia_summary')->nullable();
+            $table->text('wia_summary')->nullable();
             $table->date('wia_date')->nullable();
 
             $table->integer('1860_census_dwelling_number')->unsigned()->nullable();

@@ -49,7 +49,7 @@ class ImportCivilWarImages extends BaseImportCommand
                             break;
                         case 'image_name':
                             if (!empty($value)) {
-                                $value = str_replace('gif', 'jpg', $value);
+                                $value = str_ireplace('gif', 'jpg', $value);
                                 $image = Image::firstOrCreate(['path' => $value]);
                                 $modelData['image_id'] = $image->id;
                             }
