@@ -4,10 +4,15 @@ namespace App\Api\Censuses\Controllers;
 
 use Illuminate\Http\Request;
 use Domain\Censuses\Models\PopulationCensus;
+use App\Api\Censuses\Resources\CensusResource;
+use App\Api\Censuses\Queries\PopulationCensusIndexQuery;
 
 class PopulationCensusController
 {
-    public function index() {
-        return PopulationCensus::all();
+    public function index(PopulationCensusIndexQuery $query)
+    {
+        return CensusResource::collection(
+            $query->paginate($request->perpage ?? 50)
+        );
     }
 }

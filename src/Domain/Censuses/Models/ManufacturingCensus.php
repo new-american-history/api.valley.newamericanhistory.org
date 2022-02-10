@@ -13,6 +13,8 @@ class ManufacturingCensus extends Model
 
     protected $guarded = [];
 
+    protected $hidden = ['created_at', 'updated_at'];
+
     protected $casts = [
         'year' => 'integer',
         'months_active' => 'integer',
@@ -27,6 +29,37 @@ class ManufacturingCensus extends Model
         'page_number' => 'integer',
         'number_on_page' => 'integer',
         'id_num' => 'integer',
+    ];
+
+    public static $exactFilters = [
+        'county',
+        'year',
+        'business_class',
+    ];
+
+    public static $fuzzyFilters = [
+        'name',
+        'business',
+        'location',
+        'machines',
+
+        'materials.type',
+        'products.type',
+    ];
+
+    public static $numericFilters = [
+        'months_active',
+        'capital_invested',
+        'number_of_machines',
+        'female_hands',
+        'male_hands',
+        'child_hands',
+        'female_wages',
+        'male_wages',
+        'total_wages',
+
+        'materials.value',
+        'products.value',
     ];
 
     public function materials(): HasMany

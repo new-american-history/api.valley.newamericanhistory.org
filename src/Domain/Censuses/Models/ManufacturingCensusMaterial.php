@@ -14,6 +14,8 @@ class ManufacturingCensusMaterial extends Model
 
     public $timestamps = false;
 
+    public $hidden = ['manufacturing_census_id'];
+
     protected $casts = [
         'manufacturing_census_id' => 'integer',
         'value' => 'integer',

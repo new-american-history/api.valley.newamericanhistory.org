@@ -10,13 +10,15 @@ class AgriculturalCensus extends Model
 
     protected $guarded = [];
 
+    protected $hidden = ['created_at', 'updated_at'];
+
     protected $dates = ['date_taken'];
 
     protected $casts = [
         'year' => 'integer',
         'number_on_page' => 'integer',
         'page_number' => 'integer',
-        // 'wages_paid' => 'integer', // ONCE WE MIGRATE TO `INT`
+        // 'wages_paid' => 'integer', // @todo ONCE WE MIGRATE TO `INT`
         'farm_value' => 'integer',
         'farm_implements_value' => 'integer',
         'forest_products_value' => 'integer',
@@ -74,19 +76,19 @@ class AgriculturalCensus extends Model
         'total_land_acres' => 'integer',
     ];
 
+    public static $exactFilters = [
+        'county',
+        'year',
+    ];
+
     public static $fuzzyFilters = [
         'first_name',
         'last_name',
         'location',
     ];
 
-    public static $exactFilters = [
-        'county',
-        'year',
-    ];
-
     public static $numericFilters = [
-        // 'wages_paid', // ONCE WE MIGRATE TO `INT`
+        // 'wages_paid', // @todo ONCE WE MIGRATE TO `INT`
         'farm_value',
         'farm_implements_value',
         'forest_products_value',
