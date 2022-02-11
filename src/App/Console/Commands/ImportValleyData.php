@@ -22,5 +22,6 @@ class ImportValleyData extends Command
         $this->call('import:veteran-census');
         $this->call('import:augusta-tax-records');
         $this->call('import:franklin-tax-records');
+        $this->call('import:cohabitation-records');
     }
 }
