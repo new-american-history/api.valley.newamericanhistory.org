@@ -64,5 +64,9 @@ class PopulationCensus extends Model
         'age',
         'personal_estate_value',
         'real_estate_value',
+
+        'dwelling_number',
+        'family_number',
+        'head_number',
     ];
 }
