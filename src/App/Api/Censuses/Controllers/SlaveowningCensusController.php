@@ -3,11 +3,15 @@
 namespace App\Api\Censuses\Controllers;
 
 use Illuminate\Http\Request;
-use Domain\Censuses\Models\SlaveowningCensus;
+use App\Api\Censuses\Resources\CensusResource;
+use App\Api\Censuses\Queries\SlaveowningCensusIndexQuery;
 
 class SlaveowningCensusController
 {
-    public function index() {
-        return SlaveowningCensus::all();
+    public function index(SlaveowningCensusIndexQuery $query)
+    {
+        return CensusResource::collection(
+            $query->paginate($request->perpage ?? 50)
+        );
     }
 }

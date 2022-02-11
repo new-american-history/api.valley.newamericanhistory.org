@@ -10,6 +10,8 @@ class VeteranCensus extends Model
 
     protected $guarded = [];
 
+    protected $hidden = ['created_at', 'updated_at'];
+
     protected $dates = [
         'enlistment_date',
         'discharge_date',
@@ -21,5 +23,29 @@ class VeteranCensus extends Model
         'superior_district_number' => 'integer',
         'page_number' => 'integer',
         'number_on_page' => 'integer',
+    ];
+
+    public static $exactFilters = [
+        'county',
+        'year',
+        'family_number',
+        'house_number',
+
+        'enlistment_date',
+        'discharge_date',
+
+        'company',
+        'rank',
+        'regiment',
+    ];
+
+    public static $fuzzyFilters = [
+        'first_name',
+        'last_name',
+        'location',
+        'post_office',
+
+        'widow_name',
+        'disability',
     ];
 }

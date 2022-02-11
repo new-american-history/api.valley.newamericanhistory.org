@@ -3,7 +3,6 @@
 namespace App\Api\Censuses\Controllers;
 
 use Illuminate\Http\Request;
-use Domain\Censuses\Models\PopulationCensus;
 use App\Api\Censuses\Resources\CensusResource;
 use App\Api\Censuses\Queries\PopulationCensusIndexQuery;
 
