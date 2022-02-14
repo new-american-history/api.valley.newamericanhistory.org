@@ -30,7 +30,8 @@ class CreateDiaryTables extends Migration
             $table->bigInteger('diary_id')->unsigned();
             $table->integer('weight')->unsigned();
 
-            $table->date('date')->nullable();
+            $table->date('start_date')->nullable();
+            $table->date('end_date')->nullable();
             $table->string('headline')->nullable();
             $table->text('body')->nullable();
             $table->timestamps();

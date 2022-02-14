@@ -47,15 +47,52 @@ class BaseImportCommand extends Command
         return $document ?? null;
     }
 
+    public function getElementValue($element) {
+        $value = $element ? $element->nodeValue : null;
+        return static::getNormalizedValue($value);
+    }
+
     public function getFileData($file)
     {
         $path = storage_path() . '/import-data/' . $file;
         return file_get_contents($path);
     }
 
+    public function getFirstElementByTagName($document, $tagName) {
+        return $document->getElementsByTagName($tagName)->item(0) ?? null;
+    }
+
+    public function getFirstElementValueByTagName($document, $tagName) {
+        $element = static::getFirstElementByTagName($document, $tagName);
+        return static::getElementValue($element);
+    }
+
+    public function getKeywordsAsArray($document) {
+        $elements = $document->getElementsByTagName('term') ?? [];
+        $keywords = [];
+
+        foreach ($elements as $element) {
+            $value = static::getElementValue($element);
+
+            if (!empty($value)) {
+                $keywords[] = explode(', ', $value);
+            }
+        }
+
+        return !empty($keywords) ? collect($keywords)->flatten()->toArray() : null;
+    }
+
     public function getMonthAsInteger($value) {
         $value = trim($value);
         $dateTime = strtotime($value);
         return !empty($dateTime) ? date('m', $dateTime) : null;
+    }
+
+    public function getNormalizedValue($value)
+    {
+        $value = preg_replace('/<!--(.|\n)*-->/', '', $value);
+        $value = str_replace("\n", ' ', $value);
+        $value = trim($value);
+        return $value;
     }
 }

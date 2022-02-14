@@ -13,16 +13,17 @@ class ImportValleyData extends Command
     public function handle()
     {
         $this->call('import:agricultural-census');
+        $this->call('import:augusta-tax-records');
+        $this->call('import:church-records');
         $this->call('import:civil-war-images');
+        $this->call('import:cohabitation-records');
+        $this->call('import:diaries');
+        $this->call('import:franklin-tax-records');
         $this->call('import:free-black-registry');
         $this->call('import:manufacturing-census');
         $this->call('import:population-census');
         $this->call('import:slaveowning-census');
         $this->call('import:soldier-dossiers');
         $this->call('import:veteran-census');
-        $this->call('import:augusta-tax-records');
-        $this->call('import:franklin-tax-records');
-        $this->call('import:cohabitation-records');
-        $this->call('import:church-records');
     }
 }
