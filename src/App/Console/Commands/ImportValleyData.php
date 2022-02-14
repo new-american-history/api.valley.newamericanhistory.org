@@ -20,6 +20,7 @@ class ImportValleyData extends Command
         $this->call('import:diaries');
         $this->call('import:franklin-tax-records');
         $this->call('import:free-black-registry');
+        $this->call('import:letters');
         $this->call('import:manufacturing-census');
         $this->call('import:population-census');
         $this->call('import:slaveowning-census');

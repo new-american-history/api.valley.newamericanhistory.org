@@ -40,8 +40,8 @@ class ImportDiaries extends BaseImportCommand
 
                 static::handleDiary();
                 static::handleDiaryEntries();
-                static::handleDiaryNotes();
-                static::handleDiaryImages();
+                static::handleNotes();
+                static::handleImages();
 
                 $this->info('Imported diary data (' . $fileName . ')');
             }
@@ -81,12 +81,12 @@ class ImportDiaries extends BaseImportCommand
         $currentWeight = static::createDiaryEntries($bodyElement->getElementsByTagName('div3'), $currentWeight);
     }
 
-    protected function handleDiaryNotes()
+    protected function handleNotes()
     {
         $possibleNoteElements = $this->document->getElementsByTagName('div1');
 
         foreach ($possibleNoteElements as $possibleNoteElement) {
-            if ($possibleNoteElement->getAttribute('type') === 'notes') {
+            if (static::elementHasAttribute($possibleNoteElement, 'type', 'notes')) {
                 $noteIds = static::createNotes($possibleNoteElement->getElementsByTagName('div2'));
                 $this->diary->notes()->sync($noteIds);
                 break;
@@ -94,7 +94,7 @@ class ImportDiaries extends BaseImportCommand
         }
     }
 
-    protected function handleDiaryImages()
+    protected function handleImages()
     {
         $imageIds = static::createImages();
         $this->diary->images()->sync($imageIds);
@@ -103,7 +103,7 @@ class ImportDiaries extends BaseImportCommand
     protected function createDiaryEntries($nodeList, $weight = 0)
     {
         foreach ($nodeList as $node) {
-            if (in_array($node->getAttribute('type'), ['entry', 'introduction'])) {
+            if (static::elementHasAttribute($node, 'type', ['entry', 'introduction'])) {
                 $modelData = [];
                 $modelData['diary_id'] = $this->diary->id;
                 $modelData['weight'] = $weight;
@@ -112,9 +112,7 @@ class ImportDiaries extends BaseImportCommand
                 $headElement = static::getFirstElementByTagName($node, 'head');
                 $modelData['headline'] = static::getElementValue($headElement);
 
-                if (!empty($headElement)) {
-                    $node->removeChild($headElement);
-                }
+                static::removeChildElement($node, $headElement);
 
                 $body = $this->document->saveHTML($node);
                 $body = preg_replace('/<\/?div\d(.*)>/', '', $body);
@@ -156,16 +154,14 @@ class ImportDiaries extends BaseImportCommand
         $noteIds = [];
 
         foreach ($nodeList as $node) {
-            if ($node->getAttribute('type') === 'section') {
+            if (static::elementHasAttribute($node, 'type', 'section')) {
                 $modelData = [];
                 $modelData['number'] = $node->getAttribute('n') ?: null;
 
                 $headElement = static::getFirstElementByTagName($node, 'head');
                 $modelData['headline'] = static::getElementValue($headElement);
 
-                if (!empty($headElement)) {
-                    $node->removeChild($headElement);
-                }
+                static::removeChildElement($node, $headElement);
 
                 $body = $this->document->saveHTML($node);
                 $body = preg_replace('/<\/?div2(.*)>/', '', $body);
@@ -184,12 +180,10 @@ class ImportDiaries extends BaseImportCommand
         $frontElement = static::getFirstElementByTagName($this->document, 'front');
         $frontDivElement = !empty($frontElement) ? static::getFirstElementByTagName($frontElement, 'div1') : null;
 
-        if (!empty($frontDivElement) && $frontDivElement->getAttribute('type') === 'bio') {
+        if (static::elementHasAttribute($frontDivElement, 'type', 'bio')) {
             $frontHeadElement = static::getFirstElementByTagName($frontDivElement, 'head');
 
-            if (!empty($frontHeadElement)) {
-                $frontDivElement->removeChild($frontHeadElement);
-            }
+            static::removeChildElement($frontDivElement, $frontHeadElement);
 
             $bio = $this->document->saveHTML($frontDivElement);
             $bio = preg_replace('/<\/?div1(.*)>/', '', $bio);
@@ -197,11 +191,5 @@ class ImportDiaries extends BaseImportCommand
             return $bio;
         }
         return null;
-    }
-
-    public function getFormattedDate($value) {
-        $value = str_replace('xx', '01', $value);
-        $dateTime = strtotime($value);
-        return !empty($dateTime) ? date('Y-m-d', $dateTime) : null;
     }
 }

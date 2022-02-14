@@ -134,10 +134,4 @@ class ImportPopulationCensus extends BaseImportCommand
             $this->info('Imported population census data (' . $file . ')');
         }
     }
-
-    public function getFormattedDate($value) {
-        $value = str_replace('?', '1', $value);
-        $dateTime = strtotime($value);
-        return !empty($dateTime) ? date('Y-m-d', $dateTime) : null;
-    }
 }

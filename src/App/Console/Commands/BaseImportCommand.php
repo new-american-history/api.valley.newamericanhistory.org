@@ -11,7 +11,15 @@ class BaseImportCommand extends Command
 
     protected $description = 'Base class for data import commands';
 
-    public function getBoolean($value) {
+    public function elementHasAttribute($element, $attribute, $value)
+    {
+        return is_array($value)
+            ? !empty($element) && in_array($element->getAttribute($attribute), $value)
+            : !empty($element) && $element->getAttribute($attribute) === $value;
+    }
+
+    public function getBoolean($value)
+    {
         $value = trim($value);
         if ($value === 'yes' || $value === '1') {
             return true;
@@ -47,7 +55,8 @@ class BaseImportCommand extends Command
         return $document ?? null;
     }
 
-    public function getElementValue($element) {
+    public function getElementValue($element)
+    {
         $value = $element ? $element->nodeValue : null;
         return static::getNormalizedValue($value);
     }
@@ -58,16 +67,26 @@ class BaseImportCommand extends Command
         return file_get_contents($path);
     }
 
-    public function getFirstElementByTagName($document, $tagName) {
+    public function getFirstElementByTagName($document, $tagName)
+    {
         return $document->getElementsByTagName($tagName)->item(0) ?? null;
     }
 
-    public function getFirstElementValueByTagName($document, $tagName) {
+    public function getFirstElementValueByTagName($document, $tagName)
+    {
         $element = static::getFirstElementByTagName($document, $tagName);
         return static::getElementValue($element);
     }
 
-    public function getKeywordsAsArray($document) {
+    public function getFormattedDate($value) {
+        $value = str_replace('?', '1', $value);
+        $value = str_replace('xx', '01', $value);
+        $dateTime = strtotime($value);
+        return !empty($dateTime) ? date('Y-m-d', $dateTime) : null;
+    }
+
+    public function getKeywordsAsArray($document)
+    {
         $elements = $document->getElementsByTagName('term') ?? [];
         $keywords = [];
 
@@ -82,7 +101,8 @@ class BaseImportCommand extends Command
         return !empty($keywords) ? collect($keywords)->flatten()->toArray() : null;
     }
 
-    public function getMonthAsInteger($value) {
+    public function getMonthAsInteger($value)
+    {
         $value = trim($value);
         $dateTime = strtotime($value);
         return !empty($dateTime) ? date('m', $dateTime) : null;
@@ -92,7 +112,15 @@ class BaseImportCommand extends Command
     {
         $value = preg_replace('/<!--(.|\n)*-->/', '', $value);
         $value = str_replace("\n", ' ', $value);
+        $value = preg_replace('/\s+/', ' ', $value);
         $value = trim($value);
-        return $value;
+        return $value ?: null;
+    }
+
+    public function removeChildElement($parent, $child)
+    {
+        if (!empty($child)) {
+            $parent->removeChild($child);
+        }
     }
 }
