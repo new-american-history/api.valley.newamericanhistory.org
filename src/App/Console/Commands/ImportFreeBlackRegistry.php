@@ -34,14 +34,14 @@ class ImportFreeBlackRegistry extends BaseImportCommand
                         $modelData['county'] = 'augusta';
                         $modelData['city'] = str_contains($file, 'fblack2') ? 'Staunton' : null;
 
-                        $name = $document->getElementsByTagName('b')->item(0) ?? null;
-                        if (!empty($name)) {
-                            $nameValue = $name->nodeValue;
+                        $nameElement = static::getFirstElementByTagName($document, 'b');
+                        if (!empty($nameElement)) {
+                            $nameValue = static::getElementValue($nameElement);
                             $modelData['name'] = trim($nameValue, ', ');
-                            $name->parentNode->removeChild($name);
+                            $nameElement->parentNode->removeChild($nameElement);
                         }
 
-                        $description = $document->saveHTML($document->getElementsByTagName('body')->item(0));
+                        $description = $document->saveHTML(static::getFirstElementByTagName($document, 'body'));
                         $description = preg_replace('/<\/?body>/', '', $description);
                         $description = trim(str_replace('<p></p>', '', $description));
 

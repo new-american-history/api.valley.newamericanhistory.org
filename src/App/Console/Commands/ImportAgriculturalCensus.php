@@ -106,7 +106,7 @@ class ImportAgriculturalCensus extends BaseImportCommand
                         $modelAttribute = $this->columnMap[$column->getAttribute('name')] ?? null;
 
                         if (!empty($modelAttribute)) {
-                            $value = trim($column->nodeValue);
+                            $value = static::getElementValue($column);
                             $modelData[$modelAttribute] = !empty($value) || $value === 0 ? $value : null;
                         }
                     }

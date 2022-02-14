@@ -63,9 +63,10 @@ class ImportPopulationCensus extends BaseImportCommand
                     foreach ($columns as $column) {
                         if (!$itemIsEmpty) {
                             $columnName = $column->getAttribute('name');
+                            $value = static::getElementValue($column);
+
                             switch ($columnName) {
                                 case 'last':
-                                    $value = trim($column->nodeValue);
                                     if ($value === 'Unoccupied') {
                                         $itemIsEmpty = true;
                                         break;
@@ -73,52 +74,51 @@ class ImportPopulationCensus extends BaseImportCommand
                                     $modelData['last_name'] = $value ?: null;
                                     break;
                                 case 'occcode':
-                                    $value = trim($column->nodeValue);
                                     $modelData['occupation_code'] = $value && $value !== 'NULL' ? $value : null;
                                     break;
                                 case 'school':
-                                    $modelData['attended_school'] = self::getBoolean($column->nodeValue);
+                                    $modelData['attended_school'] = self::getBoolean($value);
                                     break;
                                 case 'read':
-                                    $modelData['cannot_read'] = self::getBoolean($column->nodeValue);
+                                    $modelData['cannot_read'] = self::getBoolean($value);
                                     break;
                                 case 'write':
-                                    $modelData['cannot_write'] = self::getBoolean($column->nodeValue);
+                                    $modelData['cannot_write'] = self::getBoolean($value);
                                     break;
                                 case 'readwrite':
-                                    if (trim($column->nodeValue) === 'yes') {
+                                    if ($value === 'yes') {
                                         $modelData['cannot_read'] = true;
                                         $modelData['cannot_write'] = true;
                                     }
                                     break;
                                 case 'for_father':
-                                    $modelData['father_foreign_born'] = self::getBoolean($column->nodeValue);
+                                    $modelData['father_foreign_born'] = self::getBoolean($value);
                                     break;
                                 case 'for_mother':
-                                    $modelData['mother_foreign_born'] = self::getBoolean($column->nodeValue);
+                                    $modelData['mother_foreign_born'] = self::getBoolean($value);
                                     break;
                                 case 'male_21':
-                                    $modelData['male_citizen'] = self::getBoolean($column->nodeValue);
+                                    $modelData['male_citizen'] = self::getBoolean($value);
                                     break;
                                 case 'male_novote':
-                                    $modelData['male_citizen_novote'] = self::getBoolean($column->nodeValue);
+                                    $modelData['male_citizen_novote'] = self::getBoolean($value);
                                     break;
                                 case 'married':
-                                    $modelData['married_within_the_year'] = self::getBoolean($column->nodeValue);
+                                    $modelData['married_within_the_year'] = self::getBoolean($value);
                                     break;
                                 case 'marr_month':
-                                    $modelData['marriage_month'] = self::getMonthAsInteger($column->nodeValue);
+                                    $modelData['marriage_month'] = self::getMonthAsInteger($value);
                                     break;
                                 case 'birth_month':
-                                    $modelData['birth_month'] = self::getMonthAsInteger($column->nodeValue);
+                                    $modelData['birth_month'] = self::getMonthAsInteger($value);
                                     break;
                                 case 'date_taken':
-                                    $modelData['date_taken'] = self::getFormattedDate(trim($column->nodeValue)) ?: null;
+                                    $modelData['date_taken'] = self::getFormattedDate($value) ?: null;
                                     break;
                                 default:
                                     $modelAttribute = $this->defaultColumnMap[$columnName] ?? null;
                                     if (!empty($modelAttribute)) {
-                                        $modelData[$modelAttribute] = trim($column->nodeValue) ?: null;
+                                        $modelData[$modelAttribute] = $value ?: null;
                                     }
                                     break;
                             }

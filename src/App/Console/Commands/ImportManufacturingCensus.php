@@ -104,7 +104,7 @@ class ImportManufacturingCensus extends BaseImportCommand
                         $columnName = $column->getAttribute('name');
 
                         if (in_array($columnName, ['first_name', 'middle_name', 'last_name'])) {
-                            $value = trim($column->nodeValue);
+                            $value = static::getElementValue($column);
 
                             switch ($columnName) {
                                 case 'first_name':
@@ -121,7 +121,7 @@ class ImportManufacturingCensus extends BaseImportCommand
                             $modelAttribute = $this->censusColumnMap[$columnName] ?? null;
 
                             if (!empty($modelAttribute)) {
-                                $modelData[$modelAttribute] = trim($column->nodeValue) ?: null;
+                                $modelData[$modelAttribute] = static::getElementValue($column) ?: null;
                             }
                         }
                     }
@@ -163,16 +163,16 @@ class ImportManufacturingCensus extends BaseImportCommand
                     foreach ($columns as $column) {
                         $columnName = $column->getAttribute('name');
                         $modelAttribute = $columnMap[$columnName] ?? null;
+                        $value = static::getElementValue($column);
 
                         if (!empty($modelAttribute)) {
-                            $value = trim($column->nodeValue);
                             $modelData[$modelAttribute] = !empty($value) || $value === 0 ? $value : null;
                         }
 
                         if ($columnName === 'id_num') {
                             $census = ManufacturingCensus::where('county', $county)
                                 ->where('year', $year)
-                                ->where('data_id', trim($column->nodeValue))
+                                ->where('data_id', $value)
                                 ->first();
                             $modelData['manufacturing_census_id'] = $census->id ?? null;
                         }
