@@ -14,6 +14,8 @@ class Page extends Model
 
     protected $guarded = [];
 
+    public $timestamps = false;
+
     protected $dates = ['date'];
 
     protected $casts = [

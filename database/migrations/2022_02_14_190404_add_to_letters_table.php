@@ -16,6 +16,7 @@ class AddToLettersTable extends Migration
         Schema::table('letters', function (Blueprint $table) {
             $table->text('epigraph')->nullable()->after('location');
             $table->text('valley_notes')->nullable()->after('postscript');
+
             $table->text('headline')->nullable()->change();
             $table->text('closing_salutation')->nullable()->change();
             $table->text('signed')->nullable()->change();
@@ -33,6 +34,7 @@ class AddToLettersTable extends Migration
             $table->string('signed')->nullable()->change();
             $table->string('closing_salutation')->nullable()->change();
             $table->string('headline')->nullable()->change();
+
             $table->dropColumn('valley_notes');
             $table->dropColumn('epigraph');
         });

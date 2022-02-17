@@ -12,6 +12,8 @@ class Name extends Model
 
     protected $guarded = [];
 
+    public $timestamps = false;
+
     protected $casts = [
         'newspaper_story_id' => 'integer',
         'weight' => 'integer',

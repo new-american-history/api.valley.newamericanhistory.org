@@ -2,7 +2,7 @@
 
 namespace Domain\Newspapers\Models;
 
-use Domain\Newspapers\Models\Edition;
+use Domain\Newspapers\Models\Story;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -13,17 +13,19 @@ class Topic extends Model
 
     protected $guarded = [];
 
+    public $timestamps = false;
+
     protected $casts = [
         'parent_id' => 'integer',
     ];
 
-    public function editions(): BelongsToMany
+    public function stories(): BelongsToMany
     {
         return $this->belongsToMany(
-            Edition::class,
-            'newspaper_edition_topic',
+            Story::class,
+            'newspaper_story_topic',
             'newspaper_topic_id',
-            'newspaper_edition_id'
+            'newspaper_story_id'
         );
     }
 
