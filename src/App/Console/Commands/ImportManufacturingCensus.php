@@ -102,10 +102,9 @@ class ImportManufacturingCensus extends BaseImportCommand
 
                     foreach ($columns as $column) {
                         $columnName = $column->getAttribute('name');
+                        $value = static::getElementValue($column, ['-']);
 
                         if (in_array($columnName, ['first_name', 'middle_name', 'last_name'])) {
-                            $value = static::getElementValue($column);
-
                             switch ($columnName) {
                                 case 'first_name':
                                     $firstName = $value;
@@ -121,7 +120,7 @@ class ImportManufacturingCensus extends BaseImportCommand
                             $modelAttribute = $this->censusColumnMap[$columnName] ?? null;
 
                             if (!empty($modelAttribute)) {
-                                $modelData[$modelAttribute] = static::getElementValue($column) ?: null;
+                                $modelData[$modelAttribute] = $value;
                             }
                         }
                     }
@@ -163,10 +162,10 @@ class ImportManufacturingCensus extends BaseImportCommand
                     foreach ($columns as $column) {
                         $columnName = $column->getAttribute('name');
                         $modelAttribute = $columnMap[$columnName] ?? null;
-                        $value = static::getElementValue($column);
+                        $value = static::getElementValue($column, [0]);
 
                         if (!empty($modelAttribute)) {
-                            $modelData[$modelAttribute] = !empty($value) || $value === 0 ? $value : null;
+                            $modelData[$modelAttribute] = $value;
                         }
 
                         if ($columnName === 'id_num') {

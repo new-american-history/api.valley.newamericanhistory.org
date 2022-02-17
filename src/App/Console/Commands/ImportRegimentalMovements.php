@@ -62,7 +62,7 @@ class ImportRegimentalMovements extends BaseImportCommand
 
                 foreach ($columns as $column) {
                     $columnName = $column->getAttribute('name');
-                    $value = static::getElementValue($column);
+                    $value = static::getElementValue($column, ['n.a.']);
 
                     $modelAttribute = $this->columnMap[$column->getAttribute('name')] ?? null;
                     $regimentModelAttribute = $this->regimentColumnMap[$column->getAttribute('name')] ?? null;

@@ -55,12 +55,12 @@ class BaseImportCommand extends Command
         return $document ?? null;
     }
 
-    public function getElementValue($element)
+    public function getElementValue($element, $nullValues = [])
     {
         $value = $element ? $element->nodeValue : null;
         $value = static::getNormalizedValue($value);
 
-        if ($value === 'n.a.') {
+        if (in_array($value, $nullValues)) {
             return null;
         }
 

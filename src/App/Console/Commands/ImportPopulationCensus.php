@@ -63,7 +63,7 @@ class ImportPopulationCensus extends BaseImportCommand
                     foreach ($columns as $column) {
                         if (!$itemIsEmpty) {
                             $columnName = $column->getAttribute('name');
-                            $value = static::getElementValue($column);
+                            $value = static::getElementValue($column, ['NULL']);
 
                             switch ($columnName) {
                                 case 'last':
@@ -71,10 +71,10 @@ class ImportPopulationCensus extends BaseImportCommand
                                         $itemIsEmpty = true;
                                         break;
                                     }
-                                    $modelData['last_name'] = $value ?: null;
+                                    $modelData['last_name'] = $value;
                                     break;
                                 case 'occcode':
-                                    $modelData['occupation_code'] = $value && $value !== 'NULL' ? $value : null;
+                                    $modelData['occupation_code'] = $value;
                                     break;
                                 case 'school':
                                     $modelData['attended_school'] = self::getBoolean($value);
@@ -118,7 +118,7 @@ class ImportPopulationCensus extends BaseImportCommand
                                 default:
                                     $modelAttribute = $this->columnMap[$columnName] ?? null;
                                     if (!empty($modelAttribute)) {
-                                        $modelData[$modelAttribute] = $value ?: null;
+                                        $modelData[$modelAttribute] = $value;
                                     }
                                     break;
                             }

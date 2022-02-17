@@ -57,19 +57,22 @@ class ImportVeteranCensus extends BaseImportCommand
 
                     foreach ($columns as $column) {
                         $columnName = $column->getAttribute('name');
-                        $value = static::getElementValue($column);
 
                         switch ($columnName) {
                             case 'enl_date':
+                                $value = static::getElementValue($column, [0]);
                                 $modelData['enlistment_date'] = self::getFormattedDate($value);
                                 break;
                             case 'discharge_date':
+                                $value = static::getElementValue($column, [0]);
                                 $modelData['discharge_date'] = self::getFormattedDate($value);
                                 break;
                             default:
+                                $value = static::getElementValue($column);
                                 $modelAttribute = $this->columnMap[$columnName] ?? null;
+
                                 if (!empty($modelAttribute)) {
-                                    $modelData[$modelAttribute] = $value ?: null;
+                                    $modelData[$modelAttribute] = $value;
                                 }
                                 break;
                         }
@@ -84,7 +87,7 @@ class ImportVeteranCensus extends BaseImportCommand
     }
 
     public function getFormattedDate($value) {
-        if (!empty($value) && $value !== 0) {
+        if (!empty($value)) {
             $value = str_replace('00/', '01/', $value);
             $dateTime = DateTime::createFromFormat('m-d-y', $value) ?: DateTime::createFromFormat('m/d/y', $value);
             return !empty($dateTime) ? '18' . $dateTime->format('y-m-d') : null;

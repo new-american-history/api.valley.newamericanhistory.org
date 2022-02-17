@@ -66,9 +66,7 @@ class ImportCohabitationRecords extends BaseImportCommand
                     $modelAttribute = $this->familyColumnMap[$column->getAttribute('name')] ?? null;
 
                     if (!empty($modelAttribute)) {
-                        $value = trim($column->nodeValue);
-                        $value = $value === '[No entry]' ? null : $value;
-                        $modelData[$modelAttribute] = !empty($value) || $value === 0 ? $value : null;
+                        $modelData[$modelAttribute] = static::getElementValue($column, ['[No entry]', 0]);
                     }
                 }
 

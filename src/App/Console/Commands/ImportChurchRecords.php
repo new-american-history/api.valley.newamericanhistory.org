@@ -59,15 +59,12 @@ class ImportChurchRecords extends BaseImportCommand
                     foreach ($columns as $column) {
                         $attributeName = $column->getAttribute('name');
                         $modelAttribute = $this->columnMap[$attributeName] ?? null;
-                        $value = trim(str_replace('"', '', $column->nodeValue));
-
+                        $value = static::getElementValue($column, ['NA']);
+                        $value = str_replace('"', '', $value);
                         
-                        if ($attributeName === 'dob'
-                            && !empty($value)
-                            && $value !== 'NA'
-                        ) {
+                        if ($attributeName === 'dob' && !empty($value)) {
                             // Manually parse out date of birth/age.
-                            $cleanValue = $this->cleanDateString($value);
+                            $cleanValue = static::cleanDateString($value);
                             if (!empty($cleanValue)) {
                                 try {
                                     $modelData['dob'] = new Carbon($cleanValue);
@@ -78,14 +75,11 @@ class ImportChurchRecords extends BaseImportCommand
                             } else {
                                 $modelData['age'] = $value;
                             }
-                        } elseif (in_array($attributeName, $this->dateRecordKeys)
-                            && !empty($value)
-                            && $value !== 'NA'
-                        ) {
+                        } elseif (in_array($attributeName, $this->dateRecordKeys) && !empty($value)) {
                             // Manually assign the various date columns into one.
                             $modelData['date_written'] = $value;
 
-                            $cleanValue = $this->cleanDateString($value);
+                            $cleanValue = static::cleanDateString($value);
 
                             if (!empty($cleanValue)) {
                                 try {
@@ -95,10 +89,7 @@ class ImportChurchRecords extends BaseImportCommand
                                 }
                             }
                         } elseif (!empty($modelAttribute)) {
-                            $modelData[$modelAttribute] =
-                                (!empty($value) || $value === 0) && $value !== 'NA'
-                                    ? $value
-                                    : null;
+                            $modelData[$modelAttribute] = !empty($value) || $value === 0 ? $value : null;
                         }
                     }
 
@@ -114,7 +105,7 @@ class ImportChurchRecords extends BaseImportCommand
         }
     }
 
-    public function cleanDateString($str)
+    public static function cleanDateString($str)
     {
         $str = str_ireplace('(', '', $str);
         $str = str_ireplace(')', '', $str);

@@ -18,6 +18,7 @@ class ImportSlaveowningCensus extends BaseImportCommand
         'emp_location' => 'employer_location',
         'emp_name' => 'employer_name',
         'female_slaves' => 'female_slaves',
+        'first' => 'first_name',
         'last' => 'last_name',
         'location' => 'location',
         'male_slaves' => 'male_slaves',
@@ -42,16 +43,12 @@ class ImportSlaveowningCensus extends BaseImportCommand
 
                 foreach ($columns as $column) {
                     $columnName = $column->getAttribute('name');
-                    $value = static::getElementValue($column);
+                    $value = static::getElementValue($column, ['#emp.']);
 
-                    if ($columnName === 'first') {
-                        $firstName = $value;
-                        $modelData['first_name'] = (!empty($firstName) && $firstName !== '#emp.') ? $firstName : null;
-                    } else {
-                        $modelAttribute = $this->columnMap[$columnName] ?? null;
-                        if (!empty($modelAttribute)) {
-                            $modelData[$modelAttribute] = $value ?: null;
-                        }
+                    $modelAttribute = $this->columnMap[$columnName] ?? null;
+
+                    if (!empty($modelAttribute)) {
+                        $modelData[$modelAttribute] = $value ?: null;
                     }
                 }
 

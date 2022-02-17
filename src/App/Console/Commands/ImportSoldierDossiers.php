@@ -123,11 +123,10 @@ class ImportSoldierDossiers extends BaseImportCommand
 
                     foreach ($columns as $column) {
                         $columnName = $column->getAttribute('name');
-                        $value = static::getElementValue($column);
+                        $value = static::getElementValue($column, ['0']);
 
                         if (in_array($columnName, array_keys($this->dateMap))) {
                             $modelAttribute = $this->dateMap[$columnName] ?? null;
-                            $value = !empty($value) && $value !== '0' ? $value : null;
 
                             if (str_contains($columnName, 'year')) {
                                 $value = $value ? str_pad($value, 4, '18', STR_PAD_LEFT) : null;
@@ -141,7 +140,7 @@ class ImportSoldierDossiers extends BaseImportCommand
                             }
 
                             if (!empty($modelAttribute) && !empty($part)) {
-                                $modelData[$modelAttribute][$part] = $value ?: null;
+                                $modelData[$modelAttribute][$part] = $value;
                             }
                         } elseif ($columnName === 'photos') {
                             if (!empty($value)) {
@@ -152,8 +151,9 @@ class ImportSoldierDossiers extends BaseImportCommand
                             break;
                         } else {
                             $modelAttribute = $this->columnMap[$columnName] ?? null;
+
                             if (!empty($modelAttribute)) {
-                                $modelData[$modelAttribute] = $value ?: null;
+                                $modelData[$modelAttribute] = $value;
                             }
                         }
                     }
