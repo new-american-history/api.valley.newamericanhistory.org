@@ -15,7 +15,7 @@ class ImportCivilWarImages extends BaseImportCommand
 
     protected $file = 'data/images.xml';
 
-    protected $defaultColumnMap = [
+    protected $columnMap = [
         'artist' => 'artist',
         'description' => 'description',
         'people_name' => 'person_name',
@@ -76,7 +76,7 @@ class ImportCivilWarImages extends BaseImportCommand
                             }
                             break;
                         default:
-                            $modelAttribute = $this->defaultColumnMap[$columnName] ?? null;
+                            $modelAttribute = $this->columnMap[$columnName] ?? null;
                             if (!empty($modelAttribute)) {
                                 $modelData[$modelAttribute] = $value ?: null;
                             }

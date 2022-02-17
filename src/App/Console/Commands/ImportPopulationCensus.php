@@ -19,7 +19,7 @@ class ImportPopulationCensus extends BaseImportCommand
         'data/pop_fr_70_v2.xml',
     ];
 
-    protected $defaultColumnMap = [
+    protected $columnMap = [
         'age' => 'age',
         'birth_place' => 'birthplace',
         'color' => 'race',
@@ -116,7 +116,7 @@ class ImportPopulationCensus extends BaseImportCommand
                                     $modelData['date_taken'] = self::getFormattedDate($value) ?: null;
                                     break;
                                 default:
-                                    $modelAttribute = $this->defaultColumnMap[$columnName] ?? null;
+                                    $modelAttribute = $this->columnMap[$columnName] ?? null;
                                     if (!empty($modelAttribute)) {
                                         $modelData[$modelAttribute] = $value ?: null;
                                     }

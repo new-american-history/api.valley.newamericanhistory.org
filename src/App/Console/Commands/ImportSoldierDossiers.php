@@ -18,7 +18,7 @@ class ImportSoldierDossiers extends BaseImportCommand
         // 'data/va_rosters.xml',
     ];
 
-    protected $defaultColumnMap = [
+    protected $columnMap = [
         'age_enl' => 'enlisted_age',
         'awol' => 'awol_summary',
         'birth_place' => 'birthplace',
@@ -151,7 +151,7 @@ class ImportSoldierDossiers extends BaseImportCommand
                             }
                             break;
                         } else {
-                            $modelAttribute = $this->defaultColumnMap[$columnName] ?? null;
+                            $modelAttribute = $this->columnMap[$columnName] ?? null;
                             if (!empty($modelAttribute)) {
                                 $modelData[$modelAttribute] = $value ?: null;
                             }

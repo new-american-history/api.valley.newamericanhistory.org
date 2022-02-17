@@ -13,7 +13,7 @@ class ImportSlaveowningCensus extends BaseImportCommand
 
     protected $file = 'data/slave_aug_60.xml';
 
-    protected $defaultColumnMap = [
+    protected $columnMap = [
         'black_slaves' => 'black_slaves',
         'emp_location' => 'employer_location',
         'emp_name' => 'employer_name',
@@ -48,7 +48,7 @@ class ImportSlaveowningCensus extends BaseImportCommand
                         $firstName = $value;
                         $modelData['first_name'] = (!empty($firstName) && $firstName !== '#emp.') ? $firstName : null;
                     } else {
-                        $modelAttribute = $this->defaultColumnMap[$columnName] ?? null;
+                        $modelAttribute = $this->columnMap[$columnName] ?? null;
                         if (!empty($modelAttribute)) {
                             $modelData[$modelAttribute] = $value ?: null;
                         }

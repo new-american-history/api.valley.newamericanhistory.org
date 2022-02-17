@@ -17,21 +17,21 @@ class ImportCohabitationRecords extends BaseImportCommand
     protected $childrenFile = 'data/cohabitation_1866_children.xml';
 
     protected $familyColumnMap = [
-        'cohab_id' => 'alternate_family_id',
-        'cohab_family_id' => 'family_id', // Contains a `0` as a value.
-        'cohab_report_date' => 'report_date', // format: '1866-04-24'
+        'cohab_current_residence' => 'residence',
+        'cohab_family_id' => 'family_id'
+        'cohab_husband_age' => 'husband_age',
+        'cohab_husband_birth_place' => 'husband_birthplace',
         'cohab_husband_first_name' => 'husband_first_name',
         'cohab_husband_last_name' => 'husband_last_name',
+        'cohab_husband_occupation' => 'husband_occupation',
+        'cohab_id' => 'alternate_family_id',
+        'cohab_num_children' => 'number_of_children',
+        'cohab_original_remarks' => 'original_remarks',
+        'cohab_report_date' => 'report_date',
+        'cohab_wife_age' => 'wife_age',
+        'cohab_wife_birth_place' => 'wife_birthplace',
         'cohab_wife_first_name' => 'wife_first_name',
         'cohab_wife_last_name' => 'wife_last_name',
-        'cohab_husband_age' => 'husband_age',
-        'cohab_wife_age' => 'wife_age',
-        'cohab_husband_birth_place' => 'husband_birthplace',
-        'cohab_wife_birth_place' => 'wife_birthplace',
-        'cohab_husband_occupation' => 'husband_occupation',
-        'cohab_current_residence' => 'residence',
-        'cohab_original_remarks' => 'original_remarks',
-        'cohab_num_children' => 'number_of_children',
     ];
 
     protected $childColumnMap = [

@@ -14,47 +14,36 @@ class ImportFranklinTaxRecords extends BaseImportCommand
     protected $file = 'data/tax_chburg_60.xml';
 
     protected $columnMap = [
-        'last' => 'last_name',
-        'first' => 'first_name',
-        'other' => 'other_name',
-        'census_notes' => 'census_notes',
-
-        // 'pop_census' => '',
-        // 'agr_census' => '',
-
-        'ward' => 'ward',
-        'occupation' => 'occupation',
-        'occ_val' => 'occupation_value',
-
-        'num_seat' => 'seated_acres',
-        'amt_per_acre_seat' => 'value_per_seated_acre',
-        'tot_amt_seat' => 'seated_land_value',
-
-        'num_unseat' => 'unseated_acres',
-        'tot_amt_unseat' => 'unseated_land_value',
-
-        'num_seat_town' => 'number_seated_lots',
-        'amt_seat_town' => 'seated_lot_value',
-        'num_unseat_town' => 'number_unseated_lots',
-        'amt_unseat_town' => 'unseated_lot_value',
-
-        'num_horses' => 'horses_count',
-        'amt_horses' => 'horses_tax_amount',
-        'num_cattle' => 'cattle_tax_amount',
-        'amt_cattle' => 'cattle_count',
-        'amt_money' => 'money_tax_amount',
-        'amt_furniture' => 'furniture_tax_amount',
-        'num_watches' => 'watches_count',
-        'amt_watches' => 'watches_tax_amount',
-        'num_carriages' => 'carriages_count',
         'amt_carriages' => 'carriages_tax_amount',
-
+        'amt_cattle' => 'cattle_count',
+        'amt_furniture' => 'furniture_tax_amount',
+        'amt_horses' => 'horses_tax_amount',
+        'amt_money' => 'money_tax_amount',
+        'amt_per_acre_seat' => 'value_per_seated_acre',
+        'amt_seat_town' => 'seated_lot_value',
+        'amt_unseat_town' => 'unseated_lot_value',
+        'amt_watches' => 'watches_tax_amount',
+        'census_notes' => 'census_notes',
         'county_tax' => 'county_tax_amount',
-        'state_tax' => 'state_tax_amount',
-        'state_personal_tax' => 'state_personal_tax_amount',
+        'first' => 'first_name',
+        'last' => 'last_name',
         'mil_fine' => 'military_fine',
-
-        // 'id_num' => '',
+        'num_carriages' => 'carriages_count',
+        'num_cattle' => 'cattle_tax_amount',
+        'num_horses' => 'horses_count',
+        'num_seat' => 'seated_acres',
+        'num_seat_town' => 'number_seated_lots',
+        'num_unseat' => 'unseated_acres',
+        'num_unseat_town' => 'number_unseated_lots',
+        'num_watches' => 'watches_count',
+        'occ_val' => 'occupation_value',
+        'occupation' => 'occupation',
+        'other' => 'other_name',
+        'state_personal_tax' => 'state_personal_tax_amount',
+        'state_tax' => 'state_tax_amount',
+        'tot_amt_seat' => 'seated_land_value',
+        'tot_amt_unseat' => 'unseated_land_value',
+        'ward' => 'ward',
     ];
 
     public function handle()

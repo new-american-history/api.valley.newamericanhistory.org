@@ -20,36 +20,24 @@ class ImportChurchRecords extends BaseImportCommand
 
     protected $columnMap = [
         'church' => 'church_name',
-        'location' => 'location',
-        'last' => 'last_name',
-        'first' => 'first_name',
-        'record_type' => 'record_type',
-        
-        // Date records are all merged into one `date` column.
-        /*
-        'dob' => '',
-        'confirmation' => '',
-        'baptism' => '',
-        'communion' => '',
-        'marriage' => '',
-        'death' => '',
-        */
-    
-        'sex' => 'sex',
-        'race' => 'race',
         'clergy' => 'clergy',
         'family' => 'family',
-        'witness' => 'witness',
+        'first' => 'first_name',
+        'last' => 'last_name',
+        'location' => 'location',
         'notes' => 'notes',
+        'race' => 'race',
+        'record_type' => 'record_type',
+        'sex' => 'sex',
+        'witness' => 'witness',
     ];
 
     protected $dateRecordKeys = [
-        // 'dob',
-        'confirmation',
         'baptism',
         'communion',
-        'marriage',
+        'confirmation',
         'death',
+        'marriage',
     ];
 
     public function handle()

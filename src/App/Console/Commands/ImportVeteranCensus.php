@@ -17,7 +17,7 @@ class ImportVeteranCensus extends BaseImportCommand
         'data/vet_census_aug_90.xml',
     ];
 
-    protected $defaultColumnMap = [
+    protected $columnMap = [
         'company' => 'company',
         'disability' => 'disability',
         'enum_dist_num' => 'enumerator_district',
@@ -67,7 +67,7 @@ class ImportVeteranCensus extends BaseImportCommand
                                 $modelData['discharge_date'] = self::getFormattedDate($value);
                                 break;
                             default:
-                                $modelAttribute = $this->defaultColumnMap[$columnName] ?? null;
+                                $modelAttribute = $this->columnMap[$columnName] ?? null;
                                 if (!empty($modelAttribute)) {
                                     $modelData[$modelAttribute] = $value ?: null;
                                 }
