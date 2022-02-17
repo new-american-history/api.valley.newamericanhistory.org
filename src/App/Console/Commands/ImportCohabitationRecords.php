@@ -18,7 +18,7 @@ class ImportCohabitationRecords extends BaseImportCommand
 
     protected $familyColumnMap = [
         'cohab_current_residence' => 'residence',
-        'cohab_family_id' => 'family_id'
+        'cohab_family_id' => 'family_id',
         'cohab_husband_age' => 'husband_age',
         'cohab_husband_birth_place' => 'husband_birthplace',
         'cohab_husband_first_name' => 'husband_first_name',

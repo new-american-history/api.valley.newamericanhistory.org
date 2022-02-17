@@ -10,6 +10,8 @@ class Regiment extends Model
 {
     protected $guarded = [];
 
+    public $timestamps = false;
+
     public function movements(): HasMany
     {
         return $this->hasMany(RegimentalMovement::class, 'regiment_id')

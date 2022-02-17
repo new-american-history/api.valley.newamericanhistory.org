@@ -58,7 +58,13 @@ class BaseImportCommand extends Command
     public function getElementValue($element)
     {
         $value = $element ? $element->nodeValue : null;
-        return static::getNormalizedValue($value);
+        $value = static::getNormalizedValue($value);
+
+        if ($value === 'n.a.') {
+            return null;
+        }
+
+        return $value;
     }
 
     public function getFileData($file)

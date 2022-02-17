@@ -36,7 +36,6 @@ class ImportNewspapers extends BaseImportCommand
         'o' => 'obituary',
         'p' => 'poem',
         's' => 'society',
-
     ];
 
     public function handle()
