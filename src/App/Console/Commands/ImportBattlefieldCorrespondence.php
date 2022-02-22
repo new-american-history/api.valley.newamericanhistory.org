@@ -3,61 +3,59 @@
 namespace App\Console\Commands;
 
 use Domain\Papers\Models\Note;
-use Domain\Images\Models\Image;
-use Domain\Papers\Models\Letter;
 use Illuminate\Support\Facades\File;
 use App\Console\Commands\BaseImportCommand;
+use Domain\BattlefieldCorrespondence\Models\BattlefieldCorrespondence;
 
-class ImportLetters extends BaseImportCommand
+class ImportBattlefieldCorrespondence extends BaseImportCommand
 {
-    protected $signature = 'import:letters';
+    protected $signature = 'import:battlefield-correspondence';
 
-    protected $description = 'Import data for letters';
+    protected $description = 'Import data for battlefield correspondence';
 
     protected $fileName;
 
     protected $document;
 
-    protected $letter;
+    protected $battlefield_correspondence;
 
     public function handle()
     {
-        $files = File::files(storage_path('import-data/papers'));
+        $files = File::files(storage_path('import-data/or'));
 
         foreach ($files as $file) {
             $file = str_replace(storage_path('import-data'), '', $file);
             $file = ltrim($file, '/');
-            $fileName = str_replace('papers/', '', $file);
+            $fileName = str_replace('or/', '', $file);
             $this->fileName = $fileName;
 
-            $isDiary = preg_match('/^(AD(\d+)\.xml|BD4000\.xml|EmeDiar\.xml|FD(\d+)\.xml)$/', $fileName);
+            $data = self::getFileData($file);
+            $document = self::getDomDocumentWithXml($data);
+            $this->document = $document;
 
-            if (!$isDiary) {
-                $data = self::getFileData($file);
-                $this->document = self::getDomDocumentWithXml($data);
+            static::handleBattlefieldCorrespondence();
+            static::handleNotes();
 
-                static::handleLetter();
-                static::handleNotes();
-                static::handleImages();
-
-                $this->info('Imported letter data (' . $fileName . ')');
-            }
+            $this->info('Imported battlefield correspondence data (' . $fileName . ')');
         }
     }
 
-    protected function handleLetter()
+    protected function handleBattlefieldCorrespondence()
     {
         $document = $this->document;
+
         $modelData = [];
         $modelData['source_file'] = $this->fileName;
         $modelData['valley_id'] = str_replace('.xml', '', $this->fileName);
 
         $modelData['keywords'] = static::getKeywords($document);
-        $modelData['county'] = preg_match('/^FN?(\d+)\.xml$/', $this->fileName) ? 'franklin' : 'augusta';
         $modelData['title'] = static::getFirstElementValueByTagName($document, 'title');
         $modelData['author'] = static::getFirstElementValueByTagName($document, 'author');
-        $modelData['epigraph'] = static::getEpigraph();
-        $modelData['valley_notes'] = static::getValleyNotes();
+
+        $possibleCountyAbbreviation = static::getFirstElementByTagName($document, 'TEI.2')->getAttribute('n') ?: null;
+        if (!empty($possibleCountyAbbreviation)) {
+            $modelData['county'] = $possibleCountyAbbreviation === 'au' ? 'augusta' : 'franklin';
+        }
 
         $frontElement = static::getFirstElementByTagName($document, 'front');
         $bodyElement = static::getFirstElementByTagName($document, 'body');
@@ -119,7 +117,9 @@ class ImportLetters extends BaseImportCommand
         }
 
         $modelData['body'] = static::getBody($bodyDivElement);
-        $this->letter = Letter::create($modelData);
+
+        $battlefieldCorrespondence = BattlefieldCorrespondence::create($modelData);
+        $this->battlefield_correspondence = $battlefieldCorrespondence;
     }
 
     protected function handleNotes()
@@ -130,37 +130,28 @@ class ImportLetters extends BaseImportCommand
             if (static::elementHasAttribute($possibleNoteElement, 'type', 'notes')) {
                 $noteIds = static::createNotes($possibleNoteElement->getElementsByTagName('note'));
 
-                $this->letter->notes()->sync($noteIds);
+                $this->battlefield_correspondence->notes()->sync($noteIds);
                 break;
             }
         }
     }
 
-    protected function handleImages()
+    public function getBody($bodyDivElement)
     {
-        $imageIds = static::createImages();
-        $this->letter->images()->sync($imageIds);
+        $body = $this->document->saveHTML($bodyDivElement);
+        $body = static::removeTags($body, 'div\d');
+        $body = static::getNormalizedValue($body);
+        return $body;
     }
 
-    protected function createImages()
-    {
-        $internalSubset = $this->document->doctype->internalSubset;
-        $imageMatches = [];
-        preg_match_all('/<!ENTITY (.*) SYSTEM (.*) uvaHighRes>/', $internalSubset, $imageMatches);
-        $imageNames = $imageMatches[1] ?? null;
+    public function getBodyDivElement() {
+        $bodyElement = static::getFirstElementByTagName($this->document, 'body');
+        $possibleBodyDivElements = $bodyElement->getElementsByTagName('div1');
 
-        if (!empty($imageNames)) {
-            $imageIds = [];
-            $weight = 0;
-
-            foreach ($imageNames as $imageName) {
-                $path = 'papers/' . $imageName . '.jpg';
-                $image = Image::firstOrCreate(['path' => $path]);
-
-                $imageIds[$image->id] = ['weight' => $weight];
-                $weight ++;
+        foreach ($possibleBodyDivElements as $possibleBodyDivElement) {
+            if (static::elementHasAttribute($possibleBodyDivElement, 'type', 'letter')) {
+                return $possibleBodyDivElement;
             }
-            return $imageIds;
         }
         return null;
     }
@@ -189,51 +180,5 @@ class ImportLetters extends BaseImportCommand
             $noteIds[] = $note->id;
         }
         return $noteIds;
-    }
-
-    public function getBody($bodyDivElement)
-    {
-        $body = $this->document->saveHTML($bodyDivElement);
-        $body = static::removeTags($body, 'div\d');
-        $body = static::getNormalizedValue($body);
-        return $body;
-    }
-
-    public function getBodyDivElement() {
-        $bodyElement = static::getFirstElementByTagName($this->document, 'body');
-        $possibleBodyDivElements = $bodyElement->getElementsByTagName('div1');
-        $possibleBodyDivTypes = ['letter', 'statement', 'contract', 'testimony', 'report', 'section'];
-
-        foreach ($possibleBodyDivElements as $possibleBodyDivElement) {
-            if (static::elementHasAttribute($possibleBodyDivElement, 'type', $possibleBodyDivTypes)) {
-                return $possibleBodyDivElement;
-            }
-        }
-        return null;
-    }
-
-    public function getEpigraph()
-    {
-        $bodyElement = static::getFirstElementByTagName($this->document, 'body');
-        $possibleEpigraphElements = $bodyElement->getElementsByTagName('div1');
-
-        foreach ($possibleEpigraphElements as $possibleEpigraphElement) {
-            if (static::elementHasAttribute($possibleEpigraphElement, 'type', 'epigraph')) {
-                return static::getElementValue($possibleEpigraphElement);
-            }
-        }
-        return null;
-    }
-
-    public function getValleyNotes() {
-        $notesStmtElements = $this->document->getElementsByTagName('notesStmt');
-
-        foreach ($notesStmtElements as $notesStmtElement) {
-            $notesElement = static::getFirstElementByTagName($notesStmtElement, 'note');
-            if (!empty($notesElement)) {
-                return static::getElementValue($notesElement);
-            }
-        }
-        return null;
     }
 }

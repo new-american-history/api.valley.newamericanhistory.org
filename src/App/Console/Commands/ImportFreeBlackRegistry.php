@@ -42,7 +42,7 @@ class ImportFreeBlackRegistry extends BaseImportCommand
                         }
 
                         $description = $document->saveHTML(static::getFirstElementByTagName($document, 'body'));
-                        $description = preg_replace('/<\/?body>/', '', $description);
+                        $description = static::removeTags($description, 'body');
                         $description = trim(str_replace('<p></p>', '', $description));
 
                         $matches = [];

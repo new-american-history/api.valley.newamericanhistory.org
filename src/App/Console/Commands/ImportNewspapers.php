@@ -230,7 +230,7 @@ class ImportNewspapers extends BaseImportCommand
 
             $bodyElement = static::getFirstElementByTagName($storyElement, 'transcript');
             $body = $this->document->saveHTML($bodyElement);
-            $body = preg_replace('/<\/?transcript>/', '', $body);
+            $body = static::removeTags($body, 'transcript');
             $body = static::getNormalizedValue($body);
             $modelData['body'] = $body;
 

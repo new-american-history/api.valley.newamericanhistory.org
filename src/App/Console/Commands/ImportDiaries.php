@@ -55,9 +55,7 @@ class ImportDiaries extends BaseImportCommand
         $modelData['source_file'] = $this->fileName;
         $modelData['valley_id'] = str_replace('.xml', '', $this->fileName);
 
-        $keywords = static::getKeywordsAsArray($document);
-        $modelData['keywords'] = json_encode($keywords) ?: null;
-
+        $modelData['keywords'] = static::getKeywords($document);
         $modelData['county'] = preg_match('/^FD(\d+)\.xml$/', $this->fileName) ? 'franklin' : 'augusta';
         $modelData['title'] = static::getFirstElementValueByTagName($document, 'title');
         $modelData['author'] = static::getFirstElementValueByTagName($document, 'author');
@@ -116,7 +114,7 @@ class ImportDiaries extends BaseImportCommand
                 static::removeChildElement($node, $headElement);
 
                 $body = $this->document->saveHTML($node);
-                $body = preg_replace('/<\/?div\d(.*)>/', '', $body);
+                $body = static::removeTags($body, 'div\d');
                 $body = static::getNormalizedValue($body);
                 $modelData['body'] = $body;
 
@@ -165,7 +163,7 @@ class ImportDiaries extends BaseImportCommand
                 static::removeChildElement($node, $headElement);
 
                 $body = $this->document->saveHTML($node);
-                $body = preg_replace('/<\/?div2(.*)>/', '', $body);
+                $body = static::removeTags($body, 'div2');
                 $body = static::getNormalizedValue($body);
                 $modelData['body'] = $body;
 
@@ -187,7 +185,7 @@ class ImportDiaries extends BaseImportCommand
             static::removeChildElement($frontDivElement, $frontHeadElement);
 
             $bio = $this->document->saveHTML($frontDivElement);
-            $bio = preg_replace('/<\/?div1(.*)>/', '', $bio);
+            $body = static::removeTags($body, 'div1');
             $bio = static::getNormalizedValue($bio);
             return $bio;
         }

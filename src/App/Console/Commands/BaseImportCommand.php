@@ -91,7 +91,7 @@ class BaseImportCommand extends Command
         return !empty($dateTime) ? date('Y-m-d', $dateTime) : null;
     }
 
-    public function getKeywordsAsArray($document)
+    public function getKeywords($document)
     {
         $elements = $document->getElementsByTagName('term') ?? [];
         $keywords = [];
@@ -104,7 +104,7 @@ class BaseImportCommand extends Command
             }
         }
 
-        return !empty($keywords) ? collect($keywords)->flatten()->toArray() : null;
+        return !empty($keywords) ? json_encode(collect($keywords)->flatten()->toArray()) : null;
     }
 
     public function getMonthAsInteger($value)
@@ -128,5 +128,10 @@ class BaseImportCommand extends Command
         if (!empty($child)) {
             $parent->removeChild($child);
         }
+    }
+
+    public function removeTags($value, $tag)
+    {
+        return preg_replace('/<\/?' . $tag . '[^>]*>/', '', $value);
     }
 }

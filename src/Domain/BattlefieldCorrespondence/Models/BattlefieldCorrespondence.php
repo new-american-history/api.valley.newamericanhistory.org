@@ -2,8 +2,9 @@
 
 namespace Domain\BattlefieldCorrespondence\Models;
 
+use Domain\Papers\Models\Note;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class BattlefieldCorrespondence extends Model
 {
@@ -12,4 +13,9 @@ class BattlefieldCorrespondence extends Model
     protected $guarded = [];
 
     protected $dates = ['date'];
+
+    public function notes(): BelongsToMany
+    {
+        return $this->belongsToMany(Note::class);
+    }
 }
