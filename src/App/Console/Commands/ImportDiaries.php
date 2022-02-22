@@ -2,8 +2,8 @@
 
 namespace App\Console\Commands;
 
-use Domain\Papers\Models\Note;
-use Domain\Images\Models\Image;
+use Domain\Shared\Models\Note;
+use Domain\Shared\Models\Image;
 use Domain\Papers\Models\Diary;
 use Domain\Papers\Models\DiaryEntry;
 use Illuminate\Support\Facades\File;

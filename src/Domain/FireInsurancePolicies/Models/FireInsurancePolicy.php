@@ -2,7 +2,7 @@
 
 namespace Domain\FireInsurancePolicies\Models;
 
-use Domain\Images\Models\Image;
+use Domain\Shared\Models\Image;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 

@@ -2,7 +2,7 @@
 
 namespace App\Console\Commands;
 
-use Domain\Images\Models\Image;
+use Domain\Shared\Models\Image;
 use App\Console\Commands\BaseImportCommand;
 use Domain\SoldierDossiers\Models\SoldierDossier;
 

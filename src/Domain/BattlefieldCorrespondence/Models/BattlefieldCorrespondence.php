@@ -2,7 +2,7 @@
 
 namespace Domain\BattlefieldCorrespondence\Models;
 
-use Domain\Papers\Models\Note;
+use Domain\Papers\Shared\Note;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 

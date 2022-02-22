@@ -2,8 +2,8 @@
 
 namespace Domain\Papers\Models;
 
-use Domain\Papers\Models\Note;
-use Domain\Images\Models\Image;
+use Domain\Shared\Models\Note;
+use Domain\Shared\Models\Image;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 

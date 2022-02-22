@@ -2,7 +2,7 @@
 
 namespace App\Console\Commands;
 
-use Domain\Images\Models\Image;
+use Domain\Shared\Models\Image;
 use Domain\CivilWarImages\Models\Subject;
 use App\Console\Commands\BaseImportCommand;
 use Domain\CivilWarImages\Models\Image as CivilWarImage;

@@ -4,7 +4,7 @@ namespace Domain\CivilWarImages\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Domain\CivilWarImages\Models\Subject;
-use Domain\Images\Models\Image as SharedImage;
+use Domain\Shared\Models\Image as SharedImage;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Image extends Model

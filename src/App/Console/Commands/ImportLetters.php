@@ -2,8 +2,8 @@
 
 namespace App\Console\Commands;
 
-use Domain\Papers\Models\Note;
-use Domain\Images\Models\Image;
+use Domain\Papers\Shared\Note;
+use Domain\Shared\Models\Image;
 use Domain\Papers\Models\Letter;
 use Illuminate\Support\Facades\File;
 use App\Console\Commands\BaseImportCommand;

@@ -1,6 +1,6 @@
 <?php
 
-namespace Domain\Images\Models;
+namespace Domain\Shared\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;

@@ -2,7 +2,7 @@
 
 namespace App\Console\Commands;
 
-use Domain\Papers\Models\Note;
+use Domain\Shared\Models\Note;
 use Illuminate\Support\Facades\File;
 use App\Console\Commands\BaseImportCommand;
 use Domain\BattlefieldCorrespondence\Models\BattlefieldCorrespondence;
