@@ -20,6 +20,7 @@ class CreateChambersburgClaimsTable extends Migration
             $table->date('claim_date')->nullable();
             $table->string('first_name')->nullable();
             $table->string('last_name')->nullable();
+            $table->string('transcription_name')->nullable();
             $table->string('race')->nullable();
             $table->string('sex')->nullable();
 
@@ -32,7 +33,6 @@ class CreateChambersburgClaimsTable extends Migration
             $table->string('notes')->nullable();
 
             $table->string('building_number')->nullable();
-            $table->string('name')->nullable();
             $table->text('description')->nullable();
             $table->string('file_name')->nullable();
             $table->timestamps();

@@ -15,6 +15,7 @@ class ImportValleyData extends Command
         $this->call('import:agricultural-census');
         $this->call('import:augusta-tax-records');
         $this->call('import:battlefield-correspondence');
+        $this->call('import:chambersburg-claims');
         $this->call('import:church-records');
         $this->call('import:civil-war-images');
         $this->call('import:cohabitation-records');
