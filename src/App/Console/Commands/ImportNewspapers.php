@@ -40,9 +40,9 @@ class ImportNewspapers extends BaseImportCommand
 
     public function handle()
     {
-        static::handleNewspapers();
-        static::handlePdfs();
-        static::handleTopics();
+        self::handleNewspapers();
+        self::handlePdfs();
+        self::handleTopics();
     }
 
     protected function handleNewspapers()
@@ -58,9 +58,9 @@ class ImportNewspapers extends BaseImportCommand
             $data = self::getFileData($file);
             $this->document = self::getDomDocumentWithXml($data);
 
-            static::handleNewspaper();
-            static::handleEdition();
-            static::handlePages();
+            self::handleNewspaper();
+            self::handleEdition();
+            self::handlePages();
 
             $this->info('Imported newspaper data (' . $fileName . ')');
         }
@@ -121,18 +121,18 @@ class ImportNewspapers extends BaseImportCommand
                 $parentTopicElements = $document->getElementsByTagName('div1');
 
                 foreach ($parentTopicElements as $parentTopicElement) {
-                    $parentTopic = static::createTopic($parentTopicElement);
+                    $parentTopic = self::createTopic($parentTopicElement);
 
                     $childTopicElements = $parentTopicElement->getElementsByTagName('div3');
 
                     foreach ($childTopicElements as $childTopicElement) {
-                        $childTopic = static::createTopic($childTopicElement, $parentTopic);
+                        $childTopic = self::createTopic($childTopicElement, $parentTopic);
 
-                        static::addStoriesToTopic($childTopic, $childTopicElement);
-                        static::removeChildElement($childTopicElement->parentNode, $childTopicElement);
+                        self::addStoriesToTopic($childTopic, $childTopicElement);
+                        self::removeChildElement($childTopicElement->parentNode, $childTopicElement);
                     }
 
-                    static::addStoriesToTopic($parentTopic, $parentTopicElement);
+                    self::addStoriesToTopic($parentTopic, $parentTopicElement);
                 }
 
                 $this->info('Imported newspaper topic data (' . $fileName . ')');
@@ -142,8 +142,8 @@ class ImportNewspapers extends BaseImportCommand
 
     protected function handleNewspaper()
     {
-        $headerElement = static::getFirstElementByTagName($this->document, 'header');
-        $name = static::getFirstElementValueByTagName($headerElement, 'title');
+        $headerElement = self::getFirstElementByTagName($this->document, 'header');
+        $name = self::getFirstElementValueByTagName($headerElement, 'title');
         $existingNewspaper = Newspaper::where('name', $name)->first();
 
         if (!empty($existingNewspaper)) {
@@ -153,8 +153,8 @@ class ImportNewspapers extends BaseImportCommand
 
         $modelData = [];
         $modelData['name'] = $name;
-        $modelData['city'] = static::getFirstElementValueByTagName($headerElement, 'city');
-        $modelData['frequency'] = static::getFirstElementValueByTagName($headerElement, 'frequency');
+        $modelData['city'] = self::getFirstElementValueByTagName($headerElement, 'city');
+        $modelData['frequency'] = self::getFirstElementValueByTagName($headerElement, 'frequency');
 
         if (preg_match('/\/va\.au/', $this->fileName)) {
             $modelData['county'] = 'augusta';
@@ -173,22 +173,22 @@ class ImportNewspapers extends BaseImportCommand
         $modelData['newspaper_id'] = $this->newspaper->id;
         $modelData['source_file'] = $this->fileName;
 
-        $headerElement = static::getFirstElementByTagName($this->document, 'header');
-        $dateElement = static::getFirstElementByTagName($headerElement, 'date');
+        $headerElement = self::getFirstElementByTagName($this->document, 'header');
+        $dateElement = self::getFirstElementByTagName($headerElement, 'date');
 
-        $modelData['weekday'] = strtolower(static::getFirstElementValueByTagName($dateElement, 'weekday'));
+        $modelData['weekday'] = strtolower(self::getFirstElementValueByTagName($dateElement, 'weekday'));
 
         if (!empty($dateElement->getAttribute('n'))) {
             $modelData['date'] = $dateElement->getAttribute('n');
         } else {
-            $year = static::getFirstElementValueByTagName($dateElement, 'year');
-            $month = static::getFirstElementByTagName($dateElement, 'month')->getAttribute('norm');
-            $day = static::getFirstElementByTagName($dateElement, 'day')->getAttribute('norm');
-            $modelData['date'] = static::getFormattedDate("{$year}-{$month}-{$day}");
+            $year = self::getFirstElementValueByTagName($dateElement, 'year');
+            $month = self::getFirstElementByTagName($dateElement, 'month')->getAttribute('norm');
+            $day = self::getFirstElementByTagName($dateElement, 'day')->getAttribute('norm');
+            $modelData['date'] = self::getFormattedDate("{$year}-{$month}-{$day}");
         }
 
-        $bodyElement = static::getFirstElementByTagName($this->document, 'paperBody');
-        $modelData['headline'] = static::getFirstElementValueByTagName($bodyElement, 'head');
+        $bodyElement = self::getFirstElementByTagName($this->document, 'paperBody');
+        $modelData['headline'] = self::getFirstElementValueByTagName($bodyElement, 'head');
 
         $this->edition = Edition::updateOrCreate(['source_file' => $modelData['source_file']], $modelData);
     }
@@ -202,10 +202,10 @@ class ImportNewspapers extends BaseImportCommand
             $modelData = [];
             $modelData['newspaper_edition_id'] = $editionId;
             $modelData['number'] = preg_replace('/[^\d]/', '', $pageElement->getAttribute('n'));
-            $modelData['description'] = static::getFirstElementValueByTagName($pageElement, 'pageNote');
+            $modelData['description'] = self::getFirstElementValueByTagName($pageElement, 'pageNote');
 
             $page = Page::create($modelData);
-            static::handleStories($pageElement, $page->id);
+            self::handleStories($pageElement, $page->id);
         }
     }
 
@@ -217,31 +217,31 @@ class ImportNewspapers extends BaseImportCommand
             $modelData = [];
             $modelData['newspaper_page_id'] = $pageId;
             $modelData['weight'] = $index;
-            $modelData['column'] = ltrim(static::getFirstElementValueByTagName($storyElement, 'column'), '0');
-            $modelData['headline'] = static::getFirstElementValueByTagName($storyElement, 'head');
-            $modelData['summary'] = static::getFirstElementValueByTagName($storyElement, 'summary');
-            $modelData['origin'] = static::getFirstElementValueByTagName($storyElement, 'origin');
-            $modelData['excerpt'] = static::getFirstElementValueByTagName($storyElement, 'excerpt');
-            $modelData['trailer'] = static::getFirstElementValueByTagName($storyElement, 'trailer');
-            $modelData['commentary'] = static::getFirstElementValueByTagName($storyElement, 'commentary');
+            $modelData['column'] = ltrim(self::getFirstElementValueByTagName($storyElement, 'column'), '0');
+            $modelData['headline'] = self::getFirstElementValueByTagName($storyElement, 'head');
+            $modelData['summary'] = self::getFirstElementValueByTagName($storyElement, 'summary');
+            $modelData['origin'] = self::getFirstElementValueByTagName($storyElement, 'origin');
+            $modelData['excerpt'] = self::getFirstElementValueByTagName($storyElement, 'excerpt');
+            $modelData['trailer'] = self::getFirstElementValueByTagName($storyElement, 'trailer');
+            $modelData['commentary'] = self::getFirstElementValueByTagName($storyElement, 'commentary');
 
             $typeValue = $storyElement->getAttribute('type');
             $modelData['type'] = $this->storyTypeMap[$typeValue] ?? null;
 
-            $bodyElement = static::getFirstElementByTagName($storyElement, 'transcript');
+            $bodyElement = self::getFirstElementByTagName($storyElement, 'transcript');
             $body = $this->document->saveHTML($bodyElement);
-            $body = static::removeTags($body, 'transcript');
-            $body = static::getNormalizedValue($body);
+            $body = self::removeTags($body, 'transcript');
+            $body = self::getNormalizedValue($body);
             $modelData['body'] = $body;
 
             $story = Story::create($modelData);
-            static::handleNames($storyElement, $story->id);
+            self::handleNames($storyElement, $story->id);
         }
     }
 
     protected function handleNames($storyElement, $storyId)
     {
-        $namesElement = static::getFirstElementByTagName($storyElement, 'names');
+        $namesElement = self::getFirstElementByTagName($storyElement, 'names');
 
         if (!empty($namesElement)) {
             $nameElements = $namesElement->getElementsByTagName('name');
@@ -250,10 +250,10 @@ class ImportNewspapers extends BaseImportCommand
                 $modelData = [];
                 $modelData['newspaper_story_id'] = $storyId;
                 $modelData['weight'] = $index;
-                $modelData['prefix'] = static::getFirstElementValueByTagName($storyElement, 'pf');
-                $modelData['first_name'] = static::getFirstElementValueByTagName($storyElement, 'fn');
-                $modelData['last_name'] = static::getFirstElementValueByTagName($storyElement, 'ln');
-                $modelData['suffix'] = static::getFirstElementValueByTagName($storyElement, 'sf');
+                $modelData['prefix'] = self::getFirstElementValueByTagName($storyElement, 'pf');
+                $modelData['first_name'] = self::getFirstElementValueByTagName($storyElement, 'fn');
+                $modelData['last_name'] = self::getFirstElementValueByTagName($storyElement, 'ln');
+                $modelData['suffix'] = self::getFirstElementValueByTagName($storyElement, 'sf');
 
                 Name::create($modelData);
             }
@@ -262,7 +262,7 @@ class ImportNewspapers extends BaseImportCommand
 
     protected function createTopic($topicElement, $parentTopic = null)
     {
-        $name = static::getFirstElementValueByTagName($topicElement, 'head');
+        $name = self::getFirstElementValueByTagName($topicElement, 'head');
 
         if (empty($name)) {
             return $parentTopic;
@@ -270,7 +270,7 @@ class ImportNewspapers extends BaseImportCommand
 
         $modelData = [];
         $modelData['chapter'] = $this->chapter;
-        $modelData['name'] = static::getFirstElementValueByTagName($topicElement, 'head');
+        $modelData['name'] = self::getFirstElementValueByTagName($topicElement, 'head');
         $modelData['parent_id'] = $parentTopic->id ?? null;
 
         $topic = Topic::create($modelData);
@@ -283,7 +283,7 @@ class ImportNewspapers extends BaseImportCommand
         $storyIds = [];
 
         foreach ($entryElements as $entryElement) {
-            $xrefElement = static::getFirstElementByTagName($entryElement, 'xref');
+            $xrefElement = self::getFirstElementByTagName($entryElement, 'xref');
 
             $link = $xrefElement->getAttribute('link');
             $editionFileName = preg_replace('/,.*$/', '', $link);
@@ -300,7 +300,7 @@ class ImportNewspapers extends BaseImportCommand
                 $edition = Edition::where('source_file', $editionSourceFile)->first();
 
                 if (!empty($edition)) {
-                    $title = static::getElementValue($xrefElement);
+                    $title = self::getElementValue($xrefElement);
 
                     $titleMatches = [];
                     preg_match('/\d\d\d\d, p\. (\d+), c\. (\d+)/', $title, $titleMatches);

@@ -38,10 +38,10 @@ class ImportDiaries extends BaseImportCommand
                 $data = self::getFileData($file);
                 $this->document = self::getDomDocumentWithXml($data);
 
-                static::handleDiary();
-                static::handleDiaryEntries();
-                static::handleNotes();
-                static::handleImages();
+                self::handleDiary();
+                self::handleDiaryEntries();
+                self::handleNotes();
+                self::handleImages();
 
                 $this->info('Imported diary data (' . $fileName . ')');
             }
@@ -55,18 +55,18 @@ class ImportDiaries extends BaseImportCommand
         $modelData['source_file'] = $this->fileName;
         $modelData['valley_id'] = str_replace('.xml', '', $this->fileName);
 
-        $modelData['keywords'] = static::getKeywords($document);
+        $modelData['keywords'] = self::getKeywords($document);
         $modelData['county'] = preg_match('/^FD(\d+)\.xml$/', $this->fileName) ? 'franklin' : 'augusta';
-        $modelData['title'] = static::getFirstElementValueByTagName($document, 'title');
-        $modelData['author'] = static::getFirstElementValueByTagName($document, 'author');
-        $modelData['bio'] = static::getBio();
+        $modelData['title'] = self::getFirstElementValueByTagName($document, 'title');
+        $modelData['author'] = self::getFirstElementValueByTagName($document, 'author');
+        $modelData['bio'] = self::getBio();
 
-        $dateRangeElement = static::getFirstElementByTagName($document, 'dateRange');
+        $dateRangeElement = self::getFirstElementByTagName($document, 'dateRange');
         $modelData['start_date'] = !empty($dateRangeElement)
-            ? static::getFormattedDate($dateRangeElement->getAttribute('from'))
+            ? self::getFormattedDate($dateRangeElement->getAttribute('from'))
             : null;
         $modelData['end_date'] = !empty($dateRangeElement)
-            ? static::getFormattedDate($dateRangeElement->getAttribute('to'))
+            ? self::getFormattedDate($dateRangeElement->getAttribute('to'))
             : null;
 
         $this->diary = Diary::create($modelData);
@@ -74,10 +74,10 @@ class ImportDiaries extends BaseImportCommand
 
     protected function handleDiaryEntries()
     {
-        $bodyElement = static::getFirstElementByTagName($this->document, 'body');
-        $currentWeight = static::createDiaryEntries($bodyElement->getElementsByTagName('div1'));
-        $currentWeight = static::createDiaryEntries($bodyElement->getElementsByTagName('div2'), $currentWeight);
-        $currentWeight = static::createDiaryEntries($bodyElement->getElementsByTagName('div3'), $currentWeight);
+        $bodyElement = self::getFirstElementByTagName($this->document, 'body');
+        $currentWeight = self::createDiaryEntries($bodyElement->getElementsByTagName('div1'));
+        $currentWeight = self::createDiaryEntries($bodyElement->getElementsByTagName('div2'), $currentWeight);
+        $currentWeight = self::createDiaryEntries($bodyElement->getElementsByTagName('div3'), $currentWeight);
     }
 
     protected function handleNotes()
@@ -85,8 +85,8 @@ class ImportDiaries extends BaseImportCommand
         $possibleNoteElements = $this->document->getElementsByTagName('div1');
 
         foreach ($possibleNoteElements as $possibleNoteElement) {
-            if (static::elementHasAttribute($possibleNoteElement, 'type', 'notes')) {
-                $noteIds = static::createNotes($possibleNoteElement->getElementsByTagName('div2'));
+            if (self::elementHasAttribute($possibleNoteElement, 'type', 'notes')) {
+                $noteIds = self::createNotes($possibleNoteElement->getElementsByTagName('div2'));
                 $this->diary->notes()->sync($noteIds);
                 break;
             }
@@ -95,27 +95,27 @@ class ImportDiaries extends BaseImportCommand
 
     protected function handleImages()
     {
-        $imageIds = static::createImages();
+        $imageIds = self::createImages();
         $this->diary->images()->sync($imageIds);
     }
 
     protected function createDiaryEntries($nodeList, $weight = 0)
     {
         foreach ($nodeList as $node) {
-            if (static::elementHasAttribute($node, 'type', ['entry', 'introduction'])) {
+            if (self::elementHasAttribute($node, 'type', ['entry', 'introduction'])) {
                 $modelData = [];
                 $modelData['diary_id'] = $this->diary->id;
                 $modelData['weight'] = $weight;
-                $modelData['date'] = static::getFormattedDate($node->getAttribute('n')) ?: null;
+                $modelData['date'] = self::getFormattedDate($node->getAttribute('n')) ?: null;
 
-                $headElement = static::getFirstElementByTagName($node, 'head');
-                $modelData['headline'] = static::getElementValue($headElement);
+                $headElement = self::getFirstElementByTagName($node, 'head');
+                $modelData['headline'] = self::getElementValue($headElement);
 
-                static::removeChildElement($node, $headElement);
+                self::removeChildElement($node, $headElement);
 
                 $body = $this->document->saveHTML($node);
-                $body = static::removeTags($body, 'div\d');
-                $body = static::getNormalizedValue($body);
+                $body = self::removeTags($body, 'div\d');
+                $body = self::getNormalizedValue($body);
                 $modelData['body'] = $body;
 
                 DiaryEntry::create($modelData);
@@ -153,18 +153,18 @@ class ImportDiaries extends BaseImportCommand
         $noteIds = [];
 
         foreach ($nodeList as $node) {
-            if (static::elementHasAttribute($node, 'type', 'section')) {
+            if (self::elementHasAttribute($node, 'type', 'section')) {
                 $modelData = [];
                 $modelData['number'] = $node->getAttribute('n') ?: null;
 
-                $headElement = static::getFirstElementByTagName($node, 'head');
-                $modelData['headline'] = static::getElementValue($headElement);
+                $headElement = self::getFirstElementByTagName($node, 'head');
+                $modelData['headline'] = self::getElementValue($headElement);
 
-                static::removeChildElement($node, $headElement);
+                self::removeChildElement($node, $headElement);
 
                 $body = $this->document->saveHTML($node);
-                $body = static::removeTags($body, 'div2');
-                $body = static::getNormalizedValue($body);
+                $body = self::removeTags($body, 'div2');
+                $body = self::getNormalizedValue($body);
                 $modelData['body'] = $body;
 
                 $note = Note::create($modelData);
@@ -176,17 +176,17 @@ class ImportDiaries extends BaseImportCommand
 
     protected function getBio()
     {
-        $frontElement = static::getFirstElementByTagName($this->document, 'front');
-        $frontDivElement = !empty($frontElement) ? static::getFirstElementByTagName($frontElement, 'div1') : null;
+        $frontElement = self::getFirstElementByTagName($this->document, 'front');
+        $frontDivElement = !empty($frontElement) ? self::getFirstElementByTagName($frontElement, 'div1') : null;
 
-        if (static::elementHasAttribute($frontDivElement, 'type', 'bio')) {
-            $frontHeadElement = static::getFirstElementByTagName($frontDivElement, 'head');
+        if (self::elementHasAttribute($frontDivElement, 'type', 'bio')) {
+            $frontHeadElement = self::getFirstElementByTagName($frontDivElement, 'head');
 
-            static::removeChildElement($frontDivElement, $frontHeadElement);
+            self::removeChildElement($frontDivElement, $frontHeadElement);
 
             $bio = $this->document->saveHTML($frontDivElement);
-            $body = static::removeTags($body, 'div1');
-            $bio = static::getNormalizedValue($bio);
+            $body = self::removeTags($body, 'div1');
+            $bio = self::getNormalizedValue($bio);
             return $bio;
         }
         return null;

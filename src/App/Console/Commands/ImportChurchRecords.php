@@ -59,12 +59,12 @@ class ImportChurchRecords extends BaseImportCommand
                     foreach ($columns as $column) {
                         $attributeName = $column->getAttribute('name');
                         $modelAttribute = $this->columnMap[$attributeName] ?? null;
-                        $value = static::getElementValue($column, ['NA']);
+                        $value = self::getElementValue($column, ['NA']);
                         $value = str_replace('"', '', $value);
                         
                         if ($attributeName === 'dob' && !empty($value)) {
                             // Manually parse out date of birth/age.
-                            $cleanValue = static::cleanDateString($value);
+                            $cleanValue = self::cleanDateString($value);
                             if (!empty($cleanValue)) {
                                 try {
                                     $modelData['dob'] = new Carbon($cleanValue);
@@ -79,7 +79,7 @@ class ImportChurchRecords extends BaseImportCommand
                             // Manually assign the various date columns into one.
                             $modelData['date_written'] = $value;
 
-                            $cleanValue = static::cleanDateString($value);
+                            $cleanValue = self::cleanDateString($value);
 
                             if (!empty($cleanValue)) {
                                 try {
@@ -105,7 +105,7 @@ class ImportChurchRecords extends BaseImportCommand
         }
     }
 
-    public static function cleanDateString($str)
+    public function cleanDateString($str)
     {
         $str = str_ireplace('(', '', $str);
         $str = str_ireplace(')', '', $str);

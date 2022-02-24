@@ -41,7 +41,7 @@ class ImportCivilWarImages extends BaseImportCommand
 
                 foreach ($columns as $column) {
                     $columnName = $column->getAttribute('name');
-                    $value = static::getElementValue($column, ['nd']);
+                    $value = self::getElementValue($column, ['nd']);
 
                     switch ($columnName) {
                         case 'image_date':

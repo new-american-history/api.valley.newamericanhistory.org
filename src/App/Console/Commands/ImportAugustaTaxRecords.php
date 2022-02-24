@@ -52,7 +52,7 @@ class ImportAugustaTaxRecords extends BaseImportCommand
                     $modelAttribute = $this->columnMap[$column->getAttribute('name')] ?? null;
 
                     if (!empty($modelAttribute)) {
-                        $modelData[$modelAttribute] = static::getElementValue($column, [0]);
+                        $modelData[$modelAttribute] = self::getElementValue($column, [0]);
                     }
                 }
 

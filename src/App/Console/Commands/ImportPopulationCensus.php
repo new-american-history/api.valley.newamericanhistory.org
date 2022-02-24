@@ -63,7 +63,7 @@ class ImportPopulationCensus extends BaseImportCommand
                     foreach ($columns as $column) {
                         if (!$itemIsEmpty) {
                             $columnName = $column->getAttribute('name');
-                            $value = static::getElementValue($column, ['NULL']);
+                            $value = self::getElementValue($column, ['NULL']);
 
                             switch ($columnName) {
                                 case 'last':

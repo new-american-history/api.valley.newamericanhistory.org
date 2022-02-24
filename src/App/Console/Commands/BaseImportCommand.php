@@ -58,7 +58,7 @@ class BaseImportCommand extends Command
     public function getElementValue($element, $nullValues = [])
     {
         $value = $element ? $element->nodeValue : null;
-        $value = static::getNormalizedValue($value);
+        $value = self::getNormalizedValue($value);
 
         if (in_array($value, $nullValues)) {
             return null;
@@ -80,11 +80,12 @@ class BaseImportCommand extends Command
 
     public function getFirstElementValueByTagName($document, $tagName)
     {
-        $element = static::getFirstElementByTagName($document, $tagName);
-        return static::getElementValue($element);
+        $element = self::getFirstElementByTagName($document, $tagName);
+        return self::getElementValue($element);
     }
 
-    public function getFormattedDate($value) {
+    public function getFormattedDate($value)
+    {
         $value = str_replace('?', '1', $value);
         $value = str_replace('xx', '01', $value);
         $dateTime = strtotime($value);
@@ -97,7 +98,7 @@ class BaseImportCommand extends Command
         $keywords = [];
 
         foreach ($elements as $element) {
-            $value = static::getElementValue($element);
+            $value = self::getElementValue($element);
 
             if (!empty($value)) {
                 $keywords[] = explode(', ', $value);

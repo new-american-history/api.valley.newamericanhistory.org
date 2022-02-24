@@ -36,9 +36,9 @@ class ImportLetters extends BaseImportCommand
                 $data = self::getFileData($file);
                 $this->document = self::getDomDocumentWithXml($data);
 
-                static::handleLetter();
-                static::handleNotes();
-                static::handleImages();
+                self::handleLetter();
+                self::handleNotes();
+                self::handleImages();
 
                 $this->info('Imported letter data (' . $fileName . ')');
             }
@@ -52,73 +52,73 @@ class ImportLetters extends BaseImportCommand
         $modelData['source_file'] = $this->fileName;
         $modelData['valley_id'] = str_replace('.xml', '', $this->fileName);
 
-        $modelData['keywords'] = static::getKeywords($document);
+        $modelData['keywords'] = self::getKeywords($document);
         $modelData['county'] = preg_match('/^FN?(\d+)\.xml$/', $this->fileName) ? 'franklin' : 'augusta';
-        $modelData['title'] = static::getFirstElementValueByTagName($document, 'title');
-        $modelData['author'] = static::getFirstElementValueByTagName($document, 'author');
-        $modelData['epigraph'] = static::getEpigraph();
-        $modelData['valley_notes'] = static::getValleyNotes();
+        $modelData['title'] = self::getFirstElementValueByTagName($document, 'title');
+        $modelData['author'] = self::getFirstElementValueByTagName($document, 'author');
+        $modelData['epigraph'] = self::getEpigraph();
+        $modelData['valley_notes'] = self::getValleyNotes();
 
-        $frontElement = static::getFirstElementByTagName($document, 'front');
-        $bodyElement = static::getFirstElementByTagName($document, 'body');
-        $bodyDivElement = static::getBodyDivElement();
-        $headElement = static::getFirstElementByTagName($bodyElement, 'head');
-        $openerElement = static::getFirstElementByTagName($bodyElement, 'opener');
-        $closerElement = static::getFirstElementByTagName($bodyElement, 'closer');
+        $frontElement = self::getFirstElementByTagName($document, 'front');
+        $bodyElement = self::getFirstElementByTagName($document, 'body');
+        $bodyDivElement = self::getBodyDivElement();
+        $headElement = self::getFirstElementByTagName($bodyElement, 'head');
+        $openerElement = self::getFirstElementByTagName($bodyElement, 'opener');
+        $closerElement = self::getFirstElementByTagName($bodyElement, 'closer');
 
         if (!empty($frontElement)) {
-            $possibleSummaryElement = static::getFirstElementByTagName($frontElement, 'div1');
+            $possibleSummaryElement = self::getFirstElementByTagName($frontElement, 'div1');
 
-            if (static::elementHasAttribute($possibleSummaryElement, 'type', 'summary')) {
-                $modelData['summary'] = static::getElementValue($possibleSummaryElement);
+            if (self::elementHasAttribute($possibleSummaryElement, 'type', 'summary')) {
+                $modelData['summary'] = self::getElementValue($possibleSummaryElement);
             }
         }
 
         if (!empty($headElement)) {
-            $modelData['headline'] = static::getElementValue($headElement);
-            $possibleRecipientElement = static::getFirstElementByTagName($headElement, 'name');
+            $modelData['headline'] = self::getElementValue($headElement);
+            $possibleRecipientElement = self::getFirstElementByTagName($headElement, 'name');
 
-            if (static::elementHasAttribute($possibleRecipientElement, 'type', 'recipient')) {
-                $modelData['recipient'] = static::getElementValue($possibleRecipientElement);
+            if (self::elementHasAttribute($possibleRecipientElement, 'type', 'recipient')) {
+                $modelData['recipient'] = self::getElementValue($possibleRecipientElement);
             }
 
-            static::removeChildElement($bodyDivElement, $headElement);
+            self::removeChildElement($bodyDivElement, $headElement);
         }
 
         if (!empty($openerElement)) {
-            $dateElement = static::getFirstElementByTagName($openerElement, 'date');
+            $dateElement = self::getFirstElementByTagName($openerElement, 'date');
             $modelData['date'] = !empty($dateElement)
-                ? static::getFormattedDate($dateElement->getAttribute('value'))
+                ? self::getFormattedDate($dateElement->getAttribute('value'))
                 : null;
             $modelData['dateline'] = !empty($dateElement)
-                ? static::getElementValue($dateElement)
+                ? self::getElementValue($dateElement)
                 : null;
-            $openerSaluteElement = static::getFirstElementByTagName($openerElement, 'salute');
-            $modelData['opening_salutation'] = static::getElementValue($openerSaluteElement);
-            $possibleLocationElement = static::getFirstElementByTagName($openerElement, 'name');
+            $openerSaluteElement = self::getFirstElementByTagName($openerElement, 'salute');
+            $modelData['opening_salutation'] = self::getElementValue($openerSaluteElement);
+            $possibleLocationElement = self::getFirstElementByTagName($openerElement, 'name');
 
-            if (static::elementHasAttribute($possibleLocationElement, 'type', 'place')) {
-                $modelData['location'] = static::getElementValue($possibleLocationElement);
+            if (self::elementHasAttribute($possibleLocationElement, 'type', 'place')) {
+                $modelData['location'] = self::getElementValue($possibleLocationElement);
             }
 
-            static::removeChildElement($bodyDivElement, $openerElement);
+            self::removeChildElement($bodyDivElement, $openerElement);
         }
 
         if (!empty($closerElement)) {
-            $closerSaluteElement = static::getFirstElementByTagName($closerElement, 'salute');
-            $modelData['closing_salutation'] = static::getElementValue($closerSaluteElement);
-            $signedElement = static::getFirstElementByTagName($closerElement, 'signed');
-            $modelData['signed'] = static::getElementValue($signedElement);
-            $possiblePostscriptElement = static::getFirstElementByTagName($closerElement, 'seg');
+            $closerSaluteElement = self::getFirstElementByTagName($closerElement, 'salute');
+            $modelData['closing_salutation'] = self::getElementValue($closerSaluteElement);
+            $signedElement = self::getFirstElementByTagName($closerElement, 'signed');
+            $modelData['signed'] = self::getElementValue($signedElement);
+            $possiblePostscriptElement = self::getFirstElementByTagName($closerElement, 'seg');
 
-            if (static::elementHasAttribute($possiblePostscriptElement, 'type', 'postscript')) {
-                $modelData['postscript'] = static::getElementValue($possiblePostscriptElement);
+            if (self::elementHasAttribute($possiblePostscriptElement, 'type', 'postscript')) {
+                $modelData['postscript'] = self::getElementValue($possiblePostscriptElement);
             }
 
-            static::removeChildElement($bodyDivElement, $closerElement);
+            self::removeChildElement($bodyDivElement, $closerElement);
         }
 
-        $modelData['body'] = static::getBody($bodyDivElement);
+        $modelData['body'] = self::getBody($bodyDivElement);
         $this->letter = Letter::create($modelData);
     }
 
@@ -127,8 +127,8 @@ class ImportLetters extends BaseImportCommand
         $possibleNoteElements = $this->document->getElementsByTagName('div1');
 
         foreach ($possibleNoteElements as $possibleNoteElement) {
-            if (static::elementHasAttribute($possibleNoteElement, 'type', 'notes')) {
-                $noteIds = static::createNotes($possibleNoteElement->getElementsByTagName('note'));
+            if (self::elementHasAttribute($possibleNoteElement, 'type', 'notes')) {
+                $noteIds = self::createNotes($possibleNoteElement->getElementsByTagName('note'));
 
                 $this->letter->notes()->sync($noteIds);
                 break;
@@ -138,7 +138,7 @@ class ImportLetters extends BaseImportCommand
 
     protected function handleImages()
     {
-        $imageIds = static::createImages();
+        $imageIds = self::createImages();
         $this->letter->images()->sync($imageIds);
     }
 
@@ -173,16 +173,16 @@ class ImportLetters extends BaseImportCommand
             $modelData = [];
             $modelData['number'] = $node->getAttribute('n') ?: null;
 
-            $headElement = static::getFirstElementByTagName($node, 'head');
-            $modelData['headline'] = static::getElementValue($headElement);
+            $headElement = self::getFirstElementByTagName($node, 'head');
+            $modelData['headline'] = self::getElementValue($headElement);
 
             if (!empty($headElement)) {
                 $node->removeChild($headElement);
             }
 
             $body = $this->document->saveHTML($node);
-            $body = static::removeTags($body, 'note');
-            $body = static::getNormalizedValue($body);
+            $body = self::removeTags($body, 'note');
+            $body = self::getNormalizedValue($body);
             $modelData['body'] = $body;
 
             $note = Note::create($modelData);
@@ -194,18 +194,18 @@ class ImportLetters extends BaseImportCommand
     public function getBody($bodyDivElement)
     {
         $body = $this->document->saveHTML($bodyDivElement);
-        $body = static::removeTags($body, 'div\d');
-        $body = static::getNormalizedValue($body);
+        $body = self::removeTags($body, 'div\d');
+        $body = self::getNormalizedValue($body);
         return $body;
     }
 
     public function getBodyDivElement() {
-        $bodyElement = static::getFirstElementByTagName($this->document, 'body');
+        $bodyElement = self::getFirstElementByTagName($this->document, 'body');
         $possibleBodyDivElements = $bodyElement->getElementsByTagName('div1');
         $possibleBodyDivTypes = ['letter', 'statement', 'contract', 'testimony', 'report', 'section'];
 
         foreach ($possibleBodyDivElements as $possibleBodyDivElement) {
-            if (static::elementHasAttribute($possibleBodyDivElement, 'type', $possibleBodyDivTypes)) {
+            if (self::elementHasAttribute($possibleBodyDivElement, 'type', $possibleBodyDivTypes)) {
                 return $possibleBodyDivElement;
             }
         }
@@ -214,12 +214,12 @@ class ImportLetters extends BaseImportCommand
 
     public function getEpigraph()
     {
-        $bodyElement = static::getFirstElementByTagName($this->document, 'body');
+        $bodyElement = self::getFirstElementByTagName($this->document, 'body');
         $possibleEpigraphElements = $bodyElement->getElementsByTagName('div1');
 
         foreach ($possibleEpigraphElements as $possibleEpigraphElement) {
-            if (static::elementHasAttribute($possibleEpigraphElement, 'type', 'epigraph')) {
-                return static::getElementValue($possibleEpigraphElement);
+            if (self::elementHasAttribute($possibleEpigraphElement, 'type', 'epigraph')) {
+                return self::getElementValue($possibleEpigraphElement);
             }
         }
         return null;
@@ -229,9 +229,9 @@ class ImportLetters extends BaseImportCommand
         $notesStmtElements = $this->document->getElementsByTagName('notesStmt');
 
         foreach ($notesStmtElements as $notesStmtElement) {
-            $notesElement = static::getFirstElementByTagName($notesStmtElement, 'note');
+            $notesElement = self::getFirstElementByTagName($notesStmtElement, 'note');
             if (!empty($notesElement)) {
-                return static::getElementValue($notesElement);
+                return self::getElementValue($notesElement);
             }
         }
         return null;

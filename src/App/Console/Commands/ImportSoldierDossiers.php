@@ -123,7 +123,7 @@ class ImportSoldierDossiers extends BaseImportCommand
 
                     foreach ($columns as $column) {
                         $columnName = $column->getAttribute('name');
-                        $value = static::getElementValue($column, ['0']);
+                        $value = self::getElementValue($column, ['0']);
 
                         if (in_array($columnName, array_keys($this->dateMap))) {
                             $modelAttribute = $this->dateMap[$columnName] ?? null;

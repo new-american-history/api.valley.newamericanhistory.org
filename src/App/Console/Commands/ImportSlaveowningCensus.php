@@ -43,7 +43,7 @@ class ImportSlaveowningCensus extends BaseImportCommand
 
                 foreach ($columns as $column) {
                     $columnName = $column->getAttribute('name');
-                    $value = static::getElementValue($column, ['#emp.']);
+                    $value = self::getElementValue($column, ['#emp.']);
 
                     $modelAttribute = $this->columnMap[$columnName] ?? null;
 

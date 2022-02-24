@@ -62,17 +62,17 @@ class ImportRegimentalMovements extends BaseImportCommand
 
                 foreach ($columns as $column) {
                     $columnName = $column->getAttribute('name');
-                    $value = static::getElementValue($column, ['n.a.']);
+                    $value = self::getElementValue($column, ['n.a.']);
 
                     $modelAttribute = $this->columnMap[$column->getAttribute('name')] ?? null;
                     $regimentModelAttribute = $this->regimentColumnMap[$column->getAttribute('name')] ?? null;
 
                     switch ($columnName) {
                         case 'battle_date':
-                            $modelData['battle_start_date'] = static::getFormattedDate($value);
+                            $modelData['battle_start_date'] = self::getFormattedDate($value);
                             break;
                         case 'battle_date2':
-                            $modelData['battle_end_date'] = static::getFormattedDate($value);
+                            $modelData['battle_end_date'] = self::getFormattedDate($value);
                             break;
                         case 'regiment_state':
                             $regimentModelData['state'] = $this->stateMap[$value] ?? null;

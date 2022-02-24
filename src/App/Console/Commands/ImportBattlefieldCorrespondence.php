@@ -33,8 +33,8 @@ class ImportBattlefieldCorrespondence extends BaseImportCommand
             $document = self::getDomDocumentWithXml($data);
             $this->document = $document;
 
-            static::handleBattlefieldCorrespondence();
-            static::handleNotes();
+            self::handleBattlefieldCorrespondence();
+            self::handleNotes();
 
             $this->info('Imported battlefield correspondence data (' . $fileName . ')');
         }
@@ -48,75 +48,75 @@ class ImportBattlefieldCorrespondence extends BaseImportCommand
         $modelData['source_file'] = $this->fileName;
         $modelData['valley_id'] = str_replace('.xml', '', $this->fileName);
 
-        $modelData['keywords'] = static::getKeywords($document);
-        $modelData['title'] = static::getFirstElementValueByTagName($document, 'title');
-        $modelData['author'] = static::getFirstElementValueByTagName($document, 'author');
+        $modelData['keywords'] = self::getKeywords($document);
+        $modelData['title'] = self::getFirstElementValueByTagName($document, 'title');
+        $modelData['author'] = self::getFirstElementValueByTagName($document, 'author');
 
-        $possibleCountyAbbreviation = static::getFirstElementByTagName($document, 'TEI.2')->getAttribute('n') ?: null;
+        $possibleCountyAbbreviation = self::getFirstElementByTagName($document, 'TEI.2')->getAttribute('n') ?: null;
         if (!empty($possibleCountyAbbreviation)) {
             $modelData['county'] = $possibleCountyAbbreviation === 'au' ? 'augusta' : 'franklin';
         }
 
-        $frontElement = static::getFirstElementByTagName($document, 'front');
-        $bodyElement = static::getFirstElementByTagName($document, 'body');
-        $bodyDivElement = static::getBodyDivElement();
-        $headElement = static::getFirstElementByTagName($bodyElement, 'head');
-        $openerElement = static::getFirstElementByTagName($bodyElement, 'opener');
-        $closerElement = static::getFirstElementByTagName($bodyElement, 'closer');
+        $frontElement = self::getFirstElementByTagName($document, 'front');
+        $bodyElement = self::getFirstElementByTagName($document, 'body');
+        $bodyDivElement = self::getBodyDivElement();
+        $headElement = self::getFirstElementByTagName($bodyElement, 'head');
+        $openerElement = self::getFirstElementByTagName($bodyElement, 'opener');
+        $closerElement = self::getFirstElementByTagName($bodyElement, 'closer');
 
         if (!empty($frontElement)) {
-            $possibleSummaryElement = static::getFirstElementByTagName($frontElement, 'div1');
+            $possibleSummaryElement = self::getFirstElementByTagName($frontElement, 'div1');
 
-            if (static::elementHasAttribute($possibleSummaryElement, 'type', 'summary')) {
-                $modelData['summary'] = static::getElementValue($possibleSummaryElement);
+            if (self::elementHasAttribute($possibleSummaryElement, 'type', 'summary')) {
+                $modelData['summary'] = self::getElementValue($possibleSummaryElement);
             }
         }
 
         if (!empty($headElement)) {
-            $modelData['headline'] = static::getElementValue($headElement);
-            $possibleRecipientElement = static::getFirstElementByTagName($headElement, 'name');
+            $modelData['headline'] = self::getElementValue($headElement);
+            $possibleRecipientElement = self::getFirstElementByTagName($headElement, 'name');
 
-            if (static::elementHasAttribute($possibleRecipientElement, 'type', 'recipient')) {
-                $modelData['recipient'] = static::getElementValue($possibleRecipientElement);
+            if (self::elementHasAttribute($possibleRecipientElement, 'type', 'recipient')) {
+                $modelData['recipient'] = self::getElementValue($possibleRecipientElement);
             }
 
-            static::removeChildElement($bodyDivElement, $headElement);
+            self::removeChildElement($bodyDivElement, $headElement);
         }
 
         if (!empty($openerElement)) {
-            $dateElement = static::getFirstElementByTagName($openerElement, 'date');
+            $dateElement = self::getFirstElementByTagName($openerElement, 'date');
             $modelData['date'] = !empty($dateElement)
-                ? static::getFormattedDate($dateElement->getAttribute('value'))
+                ? self::getFormattedDate($dateElement->getAttribute('value'))
                 : null;
             $modelData['dateline'] = !empty($dateElement)
-                ? static::getElementValue($dateElement)
+                ? self::getElementValue($dateElement)
                 : null;
-            $openerSaluteElement = static::getFirstElementByTagName($openerElement, 'salute');
-            $modelData['opening_salutation'] = static::getElementValue($openerSaluteElement);
-            $possibleLocationElement = static::getFirstElementByTagName($openerElement, 'name');
+            $openerSaluteElement = self::getFirstElementByTagName($openerElement, 'salute');
+            $modelData['opening_salutation'] = self::getElementValue($openerSaluteElement);
+            $possibleLocationElement = self::getFirstElementByTagName($openerElement, 'name');
 
-            if (static::elementHasAttribute($possibleLocationElement, 'type', 'place')) {
-                $modelData['location'] = static::getElementValue($possibleLocationElement);
+            if (self::elementHasAttribute($possibleLocationElement, 'type', 'place')) {
+                $modelData['location'] = self::getElementValue($possibleLocationElement);
             }
 
-            static::removeChildElement($bodyDivElement, $openerElement);
+            self::removeChildElement($bodyDivElement, $openerElement);
         }
 
         if (!empty($closerElement)) {
-            $closerSaluteElement = static::getFirstElementByTagName($closerElement, 'salute');
-            $modelData['closing_salutation'] = static::getElementValue($closerSaluteElement);
-            $signedElement = static::getFirstElementByTagName($closerElement, 'signed');
-            $modelData['signed'] = static::getElementValue($signedElement);
-            $possiblePostscriptElement = static::getFirstElementByTagName($closerElement, 'seg');
+            $closerSaluteElement = self::getFirstElementByTagName($closerElement, 'salute');
+            $modelData['closing_salutation'] = self::getElementValue($closerSaluteElement);
+            $signedElement = self::getFirstElementByTagName($closerElement, 'signed');
+            $modelData['signed'] = self::getElementValue($signedElement);
+            $possiblePostscriptElement = self::getFirstElementByTagName($closerElement, 'seg');
 
-            if (static::elementHasAttribute($possiblePostscriptElement, 'type', 'postscript')) {
-                $modelData['postscript'] = static::getElementValue($possiblePostscriptElement);
+            if (self::elementHasAttribute($possiblePostscriptElement, 'type', 'postscript')) {
+                $modelData['postscript'] = self::getElementValue($possiblePostscriptElement);
             }
 
-            static::removeChildElement($bodyDivElement, $closerElement);
+            self::removeChildElement($bodyDivElement, $closerElement);
         }
 
-        $modelData['body'] = static::getBody($bodyDivElement);
+        $modelData['body'] = self::getBody($bodyDivElement);
 
         $battlefieldCorrespondence = BattlefieldCorrespondence::create($modelData);
         $this->battlefield_correspondence = $battlefieldCorrespondence;
@@ -127,8 +127,8 @@ class ImportBattlefieldCorrespondence extends BaseImportCommand
         $possibleNoteElements = $this->document->getElementsByTagName('div1');
 
         foreach ($possibleNoteElements as $possibleNoteElement) {
-            if (static::elementHasAttribute($possibleNoteElement, 'type', 'notes')) {
-                $noteIds = static::createNotes($possibleNoteElement->getElementsByTagName('note'));
+            if (self::elementHasAttribute($possibleNoteElement, 'type', 'notes')) {
+                $noteIds = self::createNotes($possibleNoteElement->getElementsByTagName('note'));
 
                 $this->battlefield_correspondence->notes()->sync($noteIds);
                 break;
@@ -139,17 +139,17 @@ class ImportBattlefieldCorrespondence extends BaseImportCommand
     public function getBody($bodyDivElement)
     {
         $body = $this->document->saveHTML($bodyDivElement);
-        $body = static::removeTags($body, 'div\d');
-        $body = static::getNormalizedValue($body);
+        $body = self::removeTags($body, 'div\d');
+        $body = self::getNormalizedValue($body);
         return $body;
     }
 
     public function getBodyDivElement() {
-        $bodyElement = static::getFirstElementByTagName($this->document, 'body');
+        $bodyElement = self::getFirstElementByTagName($this->document, 'body');
         $possibleBodyDivElements = $bodyElement->getElementsByTagName('div1');
 
         foreach ($possibleBodyDivElements as $possibleBodyDivElement) {
-            if (static::elementHasAttribute($possibleBodyDivElement, 'type', 'letter')) {
+            if (self::elementHasAttribute($possibleBodyDivElement, 'type', 'letter')) {
                 return $possibleBodyDivElement;
             }
         }
@@ -164,16 +164,16 @@ class ImportBattlefieldCorrespondence extends BaseImportCommand
             $modelData = [];
             $modelData['number'] = $node->getAttribute('n') ?: null;
 
-            $headElement = static::getFirstElementByTagName($node, 'head');
-            $modelData['headline'] = static::getElementValue($headElement);
+            $headElement = self::getFirstElementByTagName($node, 'head');
+            $modelData['headline'] = self::getElementValue($headElement);
 
             if (!empty($headElement)) {
                 $node->removeChild($headElement);
             }
 
             $body = $this->document->saveHTML($node);
-            $body = static::removeTags($body, 'note');
-            $body = static::getNormalizedValue($body);
+            $body = self::removeTags($body, 'note');
+            $body = self::getNormalizedValue($body);
             $modelData['body'] = $body;
 
             $note = Note::create($modelData);
