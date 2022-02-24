@@ -10,6 +10,8 @@ class SouthernClaimsCommissionItem extends Model
 {
     protected $guarded = [];
 
+    public $timestamps = false;
+
     protected $casts = [
         'claim_id' => 'integer',
         'amount_claimed' => 'float',

@@ -10,6 +10,8 @@ class SouthernClaimsCommissionTestimony extends Model
 {
     protected $guarded = [];
 
+    public $timestamps = false;
+
     protected $casts = [
         'claim_id' => 'integer',
         'weight' => 'float',

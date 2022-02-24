@@ -30,6 +30,7 @@ class ImportValleyData extends Command
         $this->call('import:regimental-movements');
         $this->call('import:slaveowning-census');
         $this->call('import:soldier-dossiers');
+        $this->call('import:southern-claims-commission');
         $this->call('import:veteran-census');
     }
 }

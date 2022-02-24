@@ -20,7 +20,7 @@ class CreateSouthernClaimsCommissionTables extends Migration
             $table->string('author')->nullable();
             $table->date('date')->nullable();
             $table->text('summary')->nullable();
-            $table->text('claims_summary')->nullable();
+            $table->text('commission_summary')->nullable();
 
             $table->text('keywords')->nullable();
             $table->string('source_file')->nullable();
@@ -31,9 +31,9 @@ class CreateSouthernClaimsCommissionTables extends Migration
             $table->id();
             $table->bigInteger('claim_id')->unsigned()->nullable();
             $table->string('item')->nullable();
-            $table->float('amount_claimed', 5, 2)->unsigned()->nullable();
-            $table->float('amount_allowed', 5, 2)->unsigned()->nullable();
-            $table->float('amount_disallowed', 5, 2)->unsigned()->nullable();
+            $table->float('amount_claimed', 6, 2)->unsigned()->nullable();
+            $table->float('amount_allowed', 6, 2)->unsigned()->nullable();
+            $table->float('amount_disallowed', 6, 2)->unsigned()->nullable();
             $table->integer('weight')->unsigned()->nullable();
 
             $table->foreign('claim_id')

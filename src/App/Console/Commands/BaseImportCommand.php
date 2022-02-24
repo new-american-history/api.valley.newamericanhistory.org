@@ -55,6 +55,16 @@ class BaseImportCommand extends Command
         return $document ?? null;
     }
 
+    public function getElementHtml($document, $element, $tagsToRemove)
+    {
+        $html = $document->saveHTML($element);
+        foreach ($tagsToRemove as $tag) {
+            $html = self::removeTags($html, $tag);
+        }
+        $html = self::getNormalizedValue($html);
+        return $html;
+    }
+
     public function getElementValue($element, $nullValues = [])
     {
         $value = $element ? $element->nodeValue : null;
