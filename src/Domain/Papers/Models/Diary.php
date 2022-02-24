@@ -2,7 +2,7 @@
 
 namespace Domain\Papers\Models;
 
-use Domain\Papers\Shared\Note;
+use Domain\Shared\Models\Note;
 use Domain\Shared\Models\Image;
 use Domain\Papers\Models\DiaryEntry;
 use Illuminate\Database\Eloquent\Model;

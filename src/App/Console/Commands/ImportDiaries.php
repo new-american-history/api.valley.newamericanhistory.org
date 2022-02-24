@@ -113,12 +113,9 @@ class ImportDiaries extends BaseImportCommand
 
                 self::removeChildElement($node, $headElement);
 
-                $body = $this->document->saveHTML($node);
-                $body = self::removeTags($body, 'div\d');
-                $body = self::getNormalizedValue($body);
-                $modelData['body'] = $body;
-
+                $modelData['body'] = self::getElementHtml($this->document, $node, ['div\d']);
                 DiaryEntry::create($modelData);
+
                 $weight++;
             }
         }
@@ -162,10 +159,7 @@ class ImportDiaries extends BaseImportCommand
 
                 self::removeChildElement($node, $headElement);
 
-                $body = $this->document->saveHTML($node);
-                $body = self::removeTags($body, 'div2');
-                $body = self::getNormalizedValue($body);
-                $modelData['body'] = $body;
+                $modelData['body'] = self::getElementHtml($this->document, $node, ['div2']);
 
                 $note = Note::create($modelData);
                 $noteIds[] = $note->id;
@@ -183,11 +177,7 @@ class ImportDiaries extends BaseImportCommand
             $frontHeadElement = self::getFirstElementByTagName($frontDivElement, 'head');
 
             self::removeChildElement($frontDivElement, $frontHeadElement);
-
-            $bio = $this->document->saveHTML($frontDivElement);
-            $body = self::removeTags($body, 'div1');
-            $bio = self::getNormalizedValue($bio);
-            return $bio;
+            return self::getElementHtml($this->document, $frontDivElement, ['div1']);
         }
         return null;
     }

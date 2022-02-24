@@ -41,8 +41,11 @@ class ImportFreeBlackRegistry extends BaseImportCommand
                             $nameElement->parentNode->removeChild($nameElement);
                         }
 
-                        $description = $document->saveHTML(self::getFirstElementByTagName($document, 'body'));
-                        $description = self::removeTags($description, 'body');
+                        $description = self::getElementHtml(
+                            $document,
+                            self::getFirstElementByTagName($document, 'body'),
+                            ['body']
+                        );
                         $description = trim(str_replace('<p></p>', '', $description));
 
                         $matches = [];

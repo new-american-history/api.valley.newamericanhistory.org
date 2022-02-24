@@ -35,11 +35,7 @@ class ImportFireInsurancePolicies extends BaseImportCommand
                         $modelData['image_id'] = $image->id;
                     }
 
-                    $body = $document->saveHTML($document);
-                    $body = self::removeTags($body, 'html');
-                    $body = self::removeTags($body, 'body');
-                    $body = self::removeTags($body, 'a');
-                    $body = self::getNormalizedValue($body);
+                    $body = self::getElementHtml($document, $document, ['html', 'body', 'a']);
 
                     $matches = [];
                     preg_match('/Policy #(\w+), ([^<]*)<br\s?\/?>(.*)/', $body, $matches);

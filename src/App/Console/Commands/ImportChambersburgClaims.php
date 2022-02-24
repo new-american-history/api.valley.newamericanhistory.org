@@ -21,7 +21,6 @@ class ImportChambersburgClaims extends BaseImportCommand
     protected $claimColumnMap = [
         'amount_award' => 'amount_awarded',
         'amount_rec' => 'amount_received',
-        'bld_num' => 'building_number',
         'claim_num' => 'claim_number',
         'claim_total' => 'claim_total',
         'first' => 'first_name',
@@ -110,12 +109,7 @@ class ImportChambersburgClaims extends BaseImportCommand
                         $titleElement->parentNode->removeChild($titleElement);
                     }
 
-                    $description = $document->saveHTML($document);
-                    $description = self::removeTags($description, 'html');
-                    $description = self::removeTags($description, 'body');
-                    $description = self::getNormalizedValue($description);
-                    $modelData['description'] = $description;
-
+                    $modelData['description'] = self::getElementHtml($document, $document, ['html', 'body']);
                     ChambersburgClaimBuilding::create($modelData);
                 }
             }

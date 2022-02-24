@@ -118,7 +118,7 @@ class ImportLetters extends BaseImportCommand
             self::removeChildElement($bodyDivElement, $closerElement);
         }
 
-        $modelData['body'] = self::getBody($bodyDivElement);
+        $modelData['body'] = self::getElementHtml($this->document, $bodyDivElement, ['div\d']);
         $this->letter = Letter::create($modelData);
     }
 
@@ -180,23 +180,12 @@ class ImportLetters extends BaseImportCommand
                 $node->removeChild($headElement);
             }
 
-            $body = $this->document->saveHTML($node);
-            $body = self::removeTags($body, 'note');
-            $body = self::getNormalizedValue($body);
-            $modelData['body'] = $body;
+            $modelData['body'] = self::getElementHtml($this->document, $node, ['note']);
 
             $note = Note::create($modelData);
             $noteIds[] = $note->id;
         }
         return $noteIds;
-    }
-
-    public function getBody($bodyDivElement)
-    {
-        $body = $this->document->saveHTML($bodyDivElement);
-        $body = self::removeTags($body, 'div\d');
-        $body = self::getNormalizedValue($body);
-        return $body;
     }
 
     public function getBodyDivElement() {

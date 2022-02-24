@@ -116,7 +116,7 @@ class ImportBattlefieldCorrespondence extends BaseImportCommand
             self::removeChildElement($bodyDivElement, $closerElement);
         }
 
-        $modelData['body'] = self::getBody($bodyDivElement);
+        $modelData['body'] = self::getElementHtml($this->document, $bodyDivElement, ['div\d']);
 
         $battlefieldCorrespondence = BattlefieldCorrespondence::create($modelData);
         $this->battlefield_correspondence = $battlefieldCorrespondence;
@@ -134,14 +134,6 @@ class ImportBattlefieldCorrespondence extends BaseImportCommand
                 break;
             }
         }
-    }
-
-    public function getBody($bodyDivElement)
-    {
-        $body = $this->document->saveHTML($bodyDivElement);
-        $body = self::removeTags($body, 'div\d');
-        $body = self::getNormalizedValue($body);
-        return $body;
     }
 
     public function getBodyDivElement() {
@@ -171,10 +163,7 @@ class ImportBattlefieldCorrespondence extends BaseImportCommand
                 $node->removeChild($headElement);
             }
 
-            $body = $this->document->saveHTML($node);
-            $body = self::removeTags($body, 'note');
-            $body = self::getNormalizedValue($body);
-            $modelData['body'] = $body;
+            $modelData['body'] = self::getElementHtml($this->document, $node, ['note\d']);
 
             $note = Note::create($modelData);
             $noteIds[] = $note->id;
