@@ -20,6 +20,7 @@ class ImportValleyData extends Command
         $this->call('import:civil-war-images');
         $this->call('import:cohabitation-records');
         $this->call('import:diaries');
+        $this->call('import:fire-insurance-policies');
         $this->call('import:franklin-tax-records');
         $this->call('import:free-black-registry');
         $this->call('import:letters');
