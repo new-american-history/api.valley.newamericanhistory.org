@@ -138,15 +138,4 @@ class ImportSouthernClaimsCommission extends BaseImportCommand
             }
         }
     }
-
-    public function getElementWithAttribute($parentElement, $tag, $attribute, $type) {
-        $possibleElements = $parentElement->getElementsByTagName($tag);
-
-        foreach ($possibleElements as $possibleBodyDivElement) {
-            if (self::elementHasAttribute($possibleBodyDivElement, $attribute, $type)) {
-                return $possibleBodyDivElement;
-            }
-        }
-        return null;
-    }
 }
