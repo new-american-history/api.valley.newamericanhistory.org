@@ -59,26 +59,21 @@ class ImportBattlefieldCorrespondence extends BaseImportCommand
 
         $frontElement = self::getFirstElementByTagName($document, 'front');
         $bodyElement = self::getFirstElementByTagName($document, 'body');
-        $bodyDivElement = self::getBodyDivElement();
+        $bodyDivElement = self::getFirstElementWithAttribute($bodyElement, 'div1', 'type', 'letter');
         $headElement = self::getFirstElementByTagName($bodyElement, 'head');
         $openerElement = self::getFirstElementByTagName($bodyElement, 'opener');
         $closerElement = self::getFirstElementByTagName($bodyElement, 'closer');
 
         if (!empty($frontElement)) {
-            $possibleSummaryElement = self::getFirstElementByTagName($frontElement, 'div1');
-
-            if (self::elementHasAttribute($possibleSummaryElement, 'type', 'summary')) {
-                $modelData['summary'] = self::getElementValue($possibleSummaryElement);
-            }
+            $summaryElement = self::getFirstElementWithAttribute($frontElement, 'div1', 'type', 'summary');
+            $modelData['summary'] = !empty($summaryElement) ? self::getElementValue($summaryElement) : null;
         }
 
         if (!empty($headElement)) {
             $modelData['headline'] = self::getElementValue($headElement);
-            $possibleRecipientElement = self::getFirstElementByTagName($headElement, 'name');
 
-            if (self::elementHasAttribute($possibleRecipientElement, 'type', 'recipient')) {
-                $modelData['recipient'] = self::getElementValue($possibleRecipientElement);
-            }
+            $recipientElement = self::getFirstElementWithAttribute($headElement, 'name', 'type', 'recipient');
+            $modelData['recipient'] = !empty($recipientElement) ? self::getElementValue($recipientElement) : null;
 
             self::removeChildElement($bodyDivElement, $headElement);
         }
@@ -93,11 +88,9 @@ class ImportBattlefieldCorrespondence extends BaseImportCommand
                 : null;
             $openerSaluteElement = self::getFirstElementByTagName($openerElement, 'salute');
             $modelData['opening_salutation'] = self::getElementValue($openerSaluteElement);
-            $possibleLocationElement = self::getFirstElementByTagName($openerElement, 'name');
 
-            if (self::elementHasAttribute($possibleLocationElement, 'type', 'place')) {
-                $modelData['location'] = self::getElementValue($possibleLocationElement);
-            }
+            $locationElement = self::getFirstElementWithAttribute($openerElement, 'name', 'type', 'place');
+            $modelData['location'] = !empty($locationElement) ? self::getElementValue($locationElement) : null;
 
             self::removeChildElement($bodyDivElement, $openerElement);
         }
@@ -107,11 +100,9 @@ class ImportBattlefieldCorrespondence extends BaseImportCommand
             $modelData['closing_salutation'] = self::getElementValue($closerSaluteElement);
             $signedElement = self::getFirstElementByTagName($closerElement, 'signed');
             $modelData['signed'] = self::getElementValue($signedElement);
-            $possiblePostscriptElement = self::getFirstElementByTagName($closerElement, 'seg');
 
-            if (self::elementHasAttribute($possiblePostscriptElement, 'type', 'postscript')) {
-                $modelData['postscript'] = self::getElementValue($possiblePostscriptElement);
-            }
+            $postscriptElement = self::getFirstElementWithAttribute($closerElement, 'seg', 'type', 'postscript');
+            $modelData['postscript'] = !empty($postscriptElement) ? self::getElementValue($postscriptElement) : null;
 
             self::removeChildElement($bodyDivElement, $closerElement);
         }
@@ -134,18 +125,6 @@ class ImportBattlefieldCorrespondence extends BaseImportCommand
                 break;
             }
         }
-    }
-
-    public function getBodyDivElement() {
-        $bodyElement = self::getFirstElementByTagName($this->document, 'body');
-        $possibleBodyDivElements = $bodyElement->getElementsByTagName('div1');
-
-        foreach ($possibleBodyDivElements as $possibleBodyDivElement) {
-            if (self::elementHasAttribute($possibleBodyDivElement, 'type', 'letter')) {
-                return $possibleBodyDivElement;
-            }
-        }
-        return null;
     }
 
     protected function createNotes($nodeList)

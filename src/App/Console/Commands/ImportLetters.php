@@ -2,7 +2,7 @@
 
 namespace App\Console\Commands;
 
-use Domain\Papers\Shared\Note;
+use Domain\Shared\Models\Note;
 use Domain\Shared\Models\Image;
 use Domain\Papers\Models\Letter;
 use Illuminate\Support\Facades\File;
@@ -56,31 +56,30 @@ class ImportLetters extends BaseImportCommand
         $modelData['county'] = preg_match('/^FN?(\d+)\.xml$/', $this->fileName) ? 'franklin' : 'augusta';
         $modelData['title'] = self::getFirstElementValueByTagName($document, 'title');
         $modelData['author'] = self::getFirstElementValueByTagName($document, 'author');
-        $modelData['epigraph'] = self::getEpigraph();
         $modelData['valley_notes'] = self::getValleyNotes();
 
         $frontElement = self::getFirstElementByTagName($document, 'front');
         $bodyElement = self::getFirstElementByTagName($document, 'body');
-        $bodyDivElement = self::getBodyDivElement();
         $headElement = self::getFirstElementByTagName($bodyElement, 'head');
         $openerElement = self::getFirstElementByTagName($bodyElement, 'opener');
         $closerElement = self::getFirstElementByTagName($bodyElement, 'closer');
+        $bodyDivElement = self::getFirstElementWithAttribute(
+            $bodyElement,
+            'div1',
+            'type',
+            ['letter', 'statement', 'contract', 'testimony', 'report', 'section']
+        );
 
         if (!empty($frontElement)) {
-            $possibleSummaryElement = self::getFirstElementByTagName($frontElement, 'div1');
-
-            if (self::elementHasAttribute($possibleSummaryElement, 'type', 'summary')) {
-                $modelData['summary'] = self::getElementValue($possibleSummaryElement);
-            }
+            $summaryElement = self::getFirstElementWithAttribute($frontElement, 'div1', 'type', 'summary');
+            $modelData['summary'] = !empty($summaryElement) ? self::getElementValue($summaryElement) : null;
         }
 
         if (!empty($headElement)) {
             $modelData['headline'] = self::getElementValue($headElement);
-            $possibleRecipientElement = self::getFirstElementByTagName($headElement, 'name');
 
-            if (self::elementHasAttribute($possibleRecipientElement, 'type', 'recipient')) {
-                $modelData['recipient'] = self::getElementValue($possibleRecipientElement);
-            }
+            $recipientElement = self::getFirstElementWithAttribute($headElement, 'name', 'type', 'recipient');
+            $modelData['recipient'] = !empty($recipientElement) ? self::getElementValue($recipientElement) : null;
 
             self::removeChildElement($bodyDivElement, $headElement);
         }
@@ -95,11 +94,9 @@ class ImportLetters extends BaseImportCommand
                 : null;
             $openerSaluteElement = self::getFirstElementByTagName($openerElement, 'salute');
             $modelData['opening_salutation'] = self::getElementValue($openerSaluteElement);
-            $possibleLocationElement = self::getFirstElementByTagName($openerElement, 'name');
 
-            if (self::elementHasAttribute($possibleLocationElement, 'type', 'place')) {
-                $modelData['location'] = self::getElementValue($possibleLocationElement);
-            }
+            $locationElement = self::getFirstElementWithAttribute($openerElement, 'name', 'type', 'place');
+            $modelData['location'] = !empty($locationElement) ? self::getElementValue($locationElement) : null;
 
             self::removeChildElement($bodyDivElement, $openerElement);
         }
@@ -109,14 +106,15 @@ class ImportLetters extends BaseImportCommand
             $modelData['closing_salutation'] = self::getElementValue($closerSaluteElement);
             $signedElement = self::getFirstElementByTagName($closerElement, 'signed');
             $modelData['signed'] = self::getElementValue($signedElement);
-            $possiblePostscriptElement = self::getFirstElementByTagName($closerElement, 'seg');
 
-            if (self::elementHasAttribute($possiblePostscriptElement, 'type', 'postscript')) {
-                $modelData['postscript'] = self::getElementValue($possiblePostscriptElement);
-            }
+            $postscriptElement = self::getFirstElementWithAttribute($closerElement, 'seg', 'type', 'postscript');
+            $modelData['postscript'] = !empty($postscriptElement) ? self::getElementValue($postscriptElement) : null;
 
             self::removeChildElement($bodyDivElement, $closerElement);
         }
+
+        $epigraphElement = self::getFirstElementWithAttribute($bodyElement, 'div1', 'type', 'epigraph');
+        $modelData['epigraph'] = !empty($epigraphElement) ? self::getElementValue($epigraphElement) : null;
 
         $modelData['body'] = self::getElementHtml($this->document, $bodyDivElement, ['div\d']);
         $this->letter = Letter::create($modelData);
@@ -186,32 +184,6 @@ class ImportLetters extends BaseImportCommand
             $noteIds[] = $note->id;
         }
         return $noteIds;
-    }
-
-    public function getBodyDivElement() {
-        $bodyElement = self::getFirstElementByTagName($this->document, 'body');
-        $possibleBodyDivElements = $bodyElement->getElementsByTagName('div1');
-        $possibleBodyDivTypes = ['letter', 'statement', 'contract', 'testimony', 'report', 'section'];
-
-        foreach ($possibleBodyDivElements as $possibleBodyDivElement) {
-            if (self::elementHasAttribute($possibleBodyDivElement, 'type', $possibleBodyDivTypes)) {
-                return $possibleBodyDivElement;
-            }
-        }
-        return null;
-    }
-
-    public function getEpigraph()
-    {
-        $bodyElement = self::getFirstElementByTagName($this->document, 'body');
-        $possibleEpigraphElements = $bodyElement->getElementsByTagName('div1');
-
-        foreach ($possibleEpigraphElements as $possibleEpigraphElement) {
-            if (self::elementHasAttribute($possibleEpigraphElement, 'type', 'epigraph')) {
-                return self::getElementValue($possibleEpigraphElement);
-            }
-        }
-        return null;
     }
 
     public function getValleyNotes() {

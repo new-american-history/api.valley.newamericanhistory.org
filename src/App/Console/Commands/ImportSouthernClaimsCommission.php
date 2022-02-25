@@ -56,7 +56,7 @@ class ImportSouthernClaimsCommission extends BaseImportCommand
         $frontElement = self::getFirstElementByTagName($document, 'front');
         $bodyElement = self::getFirstElementByTagName($document, 'body');
         $creationElement = self::getFirstElementByTagName($document, 'creation');
-        $claimSummaryElement = self::getElementWithAttribute($bodyElement, 'div1', 'type', 'claim_summary');
+        $claimSummaryElement = self::getFirstElementWithAttribute($bodyElement, 'div1', 'type', 'claim_summary');
 
         $modelData['commission_summary'] = self::getElementHtml($this->document, $claimSummaryElement, ['div1']);
 
@@ -65,11 +65,8 @@ class ImportSouthernClaimsCommission extends BaseImportCommand
         );
 
         if (!empty($frontElement)) {
-            $possibleSummaryElement = self::getFirstElementByTagName($frontElement, 'div1');
-
-            if (self::elementHasAttribute($possibleSummaryElement, 'type', 'summary')) {
-                $modelData['summary'] = self::getElementValue($possibleSummaryElement);
-            }
+            $summaryElement = self::getFirstElementWithAttribute($frontElement, 'div1', 'type', 'summary');
+            $modelData['summary'] = !empty($summaryElement) ? self::getElementValue($summaryElement) : null;
         }
 
         $claim = SouthernClaimsCommissionClaim::create($modelData);
@@ -78,7 +75,7 @@ class ImportSouthernClaimsCommission extends BaseImportCommand
 
     protected function handleItems()
     {
-        $claimItemsElement = self::getElementWithAttribute($this->document, 'div1', 'type', 'claim_items');
+        $claimItemsElement = self::getFirstElementWithAttribute($this->document, 'div1', 'type', 'claim_items');
 
         if (!empty($claimItemsElement)) {
             $rows = $claimItemsElement->getElementsByTagName('row');

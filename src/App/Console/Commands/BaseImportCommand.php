@@ -88,12 +88,12 @@ class BaseImportCommand extends Command
         return $document->getElementsByTagName($tagName)->item(0) ?? null;
     }
 
-    public function getElementWithAttribute($parentElement, $tag, $attribute, $type) {
+    public function getFirstElementWithAttribute($parentElement, $tag, $attribute, $type) {
         $possibleElements = $parentElement->getElementsByTagName($tag);
 
-        foreach ($possibleElements as $possibleBodyDivElement) {
-            if (self::elementHasAttribute($possibleBodyDivElement, $attribute, $type)) {
-                return $possibleBodyDivElement;
+        foreach ($possibleElements as $possibleElement) {
+            if (self::elementHasAttribute($possibleElement, $attribute, $type)) {
+                return $possibleElement;
             }
         }
         return null;

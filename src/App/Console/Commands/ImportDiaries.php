@@ -171,13 +171,13 @@ class ImportDiaries extends BaseImportCommand
     protected function getBio()
     {
         $frontElement = self::getFirstElementByTagName($this->document, 'front');
-        $frontDivElement = !empty($frontElement) ? self::getFirstElementByTagName($frontElement, 'div1') : null;
+        $bioElement = !empty($frontElement) ? self::getFirstElementWithAttribute($frontElement, 'div1', 'type', 'bio') : null;
 
-        if (self::elementHasAttribute($frontDivElement, 'type', 'bio')) {
-            $frontHeadElement = self::getFirstElementByTagName($frontDivElement, 'head');
+        if (!empty($bioElement)) {
+            $frontHeadElement = self::getFirstElementByTagName($bioElement, 'head');
 
-            self::removeChildElement($frontDivElement, $frontHeadElement);
-            return self::getElementHtml($this->document, $frontDivElement, ['div1']);
+            self::removeChildElement($bioElement, $frontHeadElement);
+            return self::getElementHtml($this->document, $bioElement, ['div1']);
         }
         return null;
     }
