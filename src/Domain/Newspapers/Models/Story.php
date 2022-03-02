@@ -4,9 +4,11 @@ namespace Domain\Newspapers\Models;
 
 use Domain\Newspapers\Models\Name;
 use Domain\Newspapers\Models\Page;
+use Domain\Newspapers\Models\Topic;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Story extends Model
 {
@@ -30,5 +32,15 @@ class Story extends Model
     public function page(): BelongsTo
     {
         return $this->belongsTo(Page::class, 'newspaper_page_id');
+    }
+
+    public function topics(): BelongsToMany
+    {
+        return $this->belongsToMany(
+            Topic::class,
+            'newspaper_story_topic',
+            'newspaper_story_id',
+            'newspaper_topic_id'
+        );
     }
 }

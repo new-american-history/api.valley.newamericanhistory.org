@@ -15,4 +15,15 @@ class Newspaper extends Model
         return $this->hasMany(Edition::class)
             ->orderBy('date');
     }
+
+    public static $exactFilters = [
+        'county',
+        'state',
+        'frequency',
+    ];
+
+    public static $fuzzyFilters = [
+        'name',
+        'city',
+    ];
 }

@@ -3,12 +3,10 @@
 namespace Domain\Newspapers\Models;
 
 use Domain\Newspapers\Models\Page;
-use Domain\Newspapers\Models\Topic;
 use Domain\Newspapers\Models\Newspaper;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Edition extends Model
 {
@@ -33,13 +31,32 @@ class Edition extends Model
             ->orderBy('number');
     }
 
-    public function topics(): BelongsToMany
-    {
-        return $this->belongsToMany(
-            Topic::class,
-            'newspaper_edition_topic',
-            'newspaper_edition_id',
-            'newspaper_topic_id'
-        );
-    }
+    public static $exactFilters = [
+        'newspaper_id',
+        'date',
+        'source_file',
+        'weekday',
+        'newspaper.county',
+        'newspaper.state',
+        'pages.stories.type',
+        'pages.stories.topics.id',
+    ];
+
+    public static $fuzzyFilters = [
+        'headline',
+        'pages.description',
+        'newspaper.name',
+        'newspaper.city',
+        'pages.stories.headline',
+        'pages.stories.summary',
+        'pages.stories.body',
+        'pages.stories.origin',
+        'pages.stories.excerpt',
+        'pages.stories.trailer',
+        'pages.stories.names.prefix',
+        'pages.stories.names.first_name',
+        'pages.stories.names.last_name',
+        'pages.stories.names.suffix',
+        'pages.stories.topics.name',
+    ];
 }

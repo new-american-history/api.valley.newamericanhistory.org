@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Api\Censuses\Resources;
+namespace App\Api\Newspapers\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class CensusResource extends JsonResource
+class NewspaperResource extends JsonResource
 {
     public function toArray($request)
     {
