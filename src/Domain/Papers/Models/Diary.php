@@ -31,4 +31,21 @@ class Diary extends Model
     {
         return $this->belongsToMany(Note::class);
     }
+
+    public static $exactFilters = [
+        'county',
+        'valley_id',
+        'start_date',
+        'end_date',
+        'entries.date',
+    ];
+
+    public static $fuzzyFilters = [
+        'title',
+        'author',
+        'bio',
+        'entries.headline',
+        'entries.body',
+        'keywords',
+    ];
 }

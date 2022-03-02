@@ -29,12 +29,17 @@ Route::get('/chambersburg-claims', [ChambersburgClaimController::class, 'index']
 Route::get('/church-records', [ChurchRecordController::class, 'index']);
 Route::get('/civil-war-images', [CivilWarImageController::class, 'index']);
 Route::get('/cohabitation-records', [CohabitationRecordController::class, 'index']);
+
 Route::get('/diaries', [DiaryController::class, 'index']);
+Route::get('/diaries/{valley_id}', [DiaryController::class, 'show']);
+
 Route::get('/fire-insurance-policies', [FireInsurancePolicyController::class, 'index']);
 Route::get('/franklin-tax-records', [FranklinTaxRecordController::class, 'index']);
 Route::get('/free-black-registry', [FreeBlackRegistryController::class, 'index']);
+
 Route::get('/letters', [LetterController::class, 'index']);
 Route::get('/letters/{valley_id}', [LetterController::class, 'show']);
+
 Route::get('/manufacturing-census', [ManufacturingCensusController::class, 'index']);
 Route::get('/memory-articles', [MemoryArticleController::class, 'index']);
 Route::get('/newspapers', [NewspaperController::class, 'index']);
