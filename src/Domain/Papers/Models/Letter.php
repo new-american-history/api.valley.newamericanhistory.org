@@ -13,6 +13,8 @@ class Letter extends Model
 
     protected $dates = ['date'];
 
+    protected $hidden = ['created_at', 'updated_at'];
+
     public function images(): BelongsToMany
     {
         return $this->belongsToMany(Image::class, 'letter_image')
@@ -23,4 +25,20 @@ class Letter extends Model
     {
         return $this->belongsToMany(Note::class);
     }
+
+    public static $exactFilters = [
+        'county',
+        'valley_id',
+        'date',
+    ];
+
+    public static $fuzzyFilters = [
+        'title',
+        'author',
+        'headline',
+        'summary',
+        'recipient',
+        'location',
+        'keywords',
+    ];
 }

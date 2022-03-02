@@ -8,6 +8,8 @@ class Note extends Model
 {
     protected $guarded = [];
 
+    protected $hidden = ['created_at', 'updated_at', 'pivot'];
+
     protected $casts = [
         'number' => 'integer',
     ];
