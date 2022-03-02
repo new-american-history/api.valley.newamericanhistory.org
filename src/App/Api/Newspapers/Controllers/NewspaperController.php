@@ -3,11 +3,15 @@
 namespace App\Api\Newspapers\Controllers;
 
 use Illuminate\Http\Request;
-use Domain\Newspapers\Models\Newspaper;
+use App\Api\Newspapers\Resources\NewspaperResource;
+use App\Api\Newspapers\Queries\NewspaperIndexQuery;
 
 class NewspaperController
 {
-    public function index() {
-        return Newspaper::all();
+    public function index(NewspaperIndexQuery $query)
+    {
+        return NewspaperResource::collection(
+            $query->paginate($request->perpage ?? 50)
+        );
     }
 }

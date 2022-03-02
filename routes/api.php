@@ -2,6 +2,7 @@
 
 use App\Api\Papers\Controllers\DiaryController;
 use App\Api\Papers\Controllers\LetterController;
+use App\Api\Newspapers\Controllers\EditionController;
 use App\Api\Newspapers\Controllers\NewspaperController;
 use App\Api\Censuses\Controllers\VeteranCensusController;
 use App\Api\Claims\Controllers\ChambersburgClaimController;
@@ -38,6 +39,7 @@ Route::get('/letters/{valley_id}', [LetterController::class, 'show']);
 Route::get('/manufacturing-census', [ManufacturingCensusController::class, 'index']);
 Route::get('/memory-articles', [MemoryArticleController::class, 'index']);
 Route::get('/newspapers', [NewspaperController::class, 'index']);
+Route::get('/newspaper-editions', [EditionController::class, 'index']);
 Route::get('/population-census', [PopulationCensusController::class, 'index']);
 Route::get('/regimental-movements', [RegimentalMovementController::class, 'index']);
 Route::get('/slaveowning-census', [SlaveOwningCensusController::class, 'index']);
