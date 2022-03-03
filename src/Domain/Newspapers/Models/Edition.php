@@ -33,7 +33,6 @@ class Edition extends Model
 
     public static $exactFilters = [
         'newspaper_id',
-        'date',
         'source_file',
         'weekday',
 
@@ -65,5 +64,9 @@ class Edition extends Model
         'pages.stories.names.suffix',
 
         'pages.stories.topics.name',
+    ];
+
+    public static $numericFilters = [
+        'date',
     ];
 }

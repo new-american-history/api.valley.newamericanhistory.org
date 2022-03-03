@@ -28,9 +28,7 @@ class ChurchRecord extends Model
         'family',
     ];
 
-    // @todo Let's handle these types with greater_than and less_than comparisons,
-    // similar to the numericFilters.
-    public static $dateFilters = [
+    public static $numericFilters = [
         'date',
         'dob',
     ];
