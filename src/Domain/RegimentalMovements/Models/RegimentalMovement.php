@@ -23,4 +23,33 @@ class RegimentalMovement extends Model
     {
         return $this->belongsTo(Regiment::class);
     }
+
+    public static $exactFilters = [
+        'battle_state',
+        'state',
+        'battle_start_date',
+        'battle_end_date',
+        'regiment_id',
+        'killed',
+        'wounded',
+        'missing',
+
+        'regiment.county',
+        'regiment.state',
+    ];
+
+    public static $fuzzyFilters = [
+        'battle_name',
+        'summary',
+        'commander',
+        'corps',
+        'division',
+        'brigade',
+        'regiment_strength',
+        'local_weather',
+        'georgetown_weather',
+
+        'regiment.name',
+        'regiment.name_in_dossiers',
+    ];
 }

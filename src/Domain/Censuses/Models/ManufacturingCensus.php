@@ -28,7 +28,7 @@ class ManufacturingCensus extends Model
         'total_wages' => 'integer',
         'page_number' => 'integer',
         'number_on_page' => 'integer',
-        'id_num' => 'integer',
+        'data_id' => 'integer',
     ];
 
     public static $exactFilters = [

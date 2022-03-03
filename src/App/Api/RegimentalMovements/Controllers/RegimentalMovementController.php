@@ -3,11 +3,15 @@
 namespace App\Api\RegimentalMovements\Controllers;
 
 use Illuminate\Http\Request;
-use Domain\RegimentalMovements\Models\RegimentalMovement;
+use App\Api\RegimentalMovements\Resources\RegimentalMovementResource;
+use App\Api\RegimentalMovements\Queries\RegimentalMovementIndexQuery;
 
 class RegimentalMovementController
 {
-    public function index() {
-        return RegimentalMovement::all();
+    public function index(RegimentalMovementIndexQuery $query)
+    {
+        return RegimentalMovementResource::collection(
+            $query->paginate($request->perpage ?? 50)
+        );
     }
 }

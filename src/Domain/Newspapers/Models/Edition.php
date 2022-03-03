@@ -36,27 +36,34 @@ class Edition extends Model
         'date',
         'source_file',
         'weekday',
+
         'newspaper.county',
         'newspaper.state',
+
         'pages.stories.type',
         'pages.stories.topics.id',
     ];
 
     public static $fuzzyFilters = [
         'headline',
-        'pages.description',
+
         'newspaper.name',
         'newspaper.city',
+
+        'pages.description',
+
         'pages.stories.headline',
         'pages.stories.summary',
         'pages.stories.body',
         'pages.stories.origin',
         'pages.stories.excerpt',
         'pages.stories.trailer',
+
         'pages.stories.names.prefix',
         'pages.stories.names.first_name',
         'pages.stories.names.last_name',
         'pages.stories.names.suffix',
+
         'pages.stories.topics.name',
     ];
 }
