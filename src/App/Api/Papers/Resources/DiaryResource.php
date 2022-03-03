@@ -3,6 +3,7 @@
 namespace App\Api\Papers\Resources;
 
 use App\Api\Papers\Resources\NoteResource;
+use App\Api\Images\Resources\ImageResource;
 use App\Api\Papers\Resources\DiaryEntryResource;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -19,10 +20,13 @@ class DiaryResource extends JsonResource
         $res = parent::toArray($request);
 
         $res += [
-            // @todo Include images.
             'entries' => $this->entries && $this->entries->count() > 0
                 ? $this->entries->map(function ($note) {
                     return new DiaryEntryResource($note);
+                }) : null,
+            'images' => $this->images && $this->images->count() > 0
+                ? $this->images->map(function ($image) {
+                    return new ImageResource($image);
                 }) : null,
             'notes' => $this->notes && $this->notes->count() > 0
                 ? $this->notes->map(function ($note) {
