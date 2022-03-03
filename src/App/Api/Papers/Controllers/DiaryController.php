@@ -16,7 +16,8 @@ class DiaryController
         );
     }
 
-    public function show(string $valley_id) {
+    public function show(string $valley_id)
+    {
         $diary = Diary::where(['valley_id' => $valley_id])->firstOrFail();
         return new DiaryResource($diary);
     }

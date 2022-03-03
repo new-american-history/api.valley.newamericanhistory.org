@@ -44,9 +44,12 @@ Route::get('/letters/{valley_id}', [LetterController::class, 'show']);
 
 Route::get('/manufacturing-census', [ManufacturingCensusController::class, 'index']);
 Route::get('/memory-articles', [MemoryArticleController::class, 'index']);
+
 Route::get('/newspapers', [NewspaperController::class, 'index']);
+Route::get('/newspapers/{slug}/editions/{year}/{month}/{day}', [NewspaperController::class, 'showEdition']);
 Route::get('/newspaper-editions', [EditionController::class, 'index']);
 Route::get('/newspaper-topics', [TopicController::class, 'index']);
+
 Route::get('/population-census', [PopulationCensusController::class, 'index']);
 Route::get('/regimental-movements', [RegimentalMovementController::class, 'index']);
 Route::get('/slaveowning-census', [SlaveOwningCensusController::class, 'index']);

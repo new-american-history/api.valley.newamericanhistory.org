@@ -35,7 +35,7 @@ class RenameNewspaperEditionTopicToNewspaperStoryTopic extends Migration
         Schema::rename('newspaper_story_topic', 'newspaper_edition_topic');
 
         Schema::table('newspaper_edition_topic', function (Blueprint $table) {
-            $table->dropForeign(['newspaper_story_id']); //?
+            $table->dropForeign(['newspaper_story_id']);
             $table->renameColumn('newspaper_story_id', 'newspaper_edition_id');
 
             $table->foreign('newspaper_edition_id')

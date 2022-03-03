@@ -16,7 +16,8 @@ class LetterController
         );
     }
 
-    public function show(string $valley_id) {
+    public function show(string $valley_id)
+    {
         $letter = Letter::where(['valley_id' => $valley_id])->firstOrFail();
         return new LetterResource($letter);
     }
