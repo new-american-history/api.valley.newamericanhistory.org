@@ -33,4 +33,14 @@ class Topic extends Model
     {
         return $this->belongsTo(Topic::class);
     }
+
+    public static $exactFilters = [
+        'chapter',
+        'parent_id',
+    ];
+
+    public static $fuzzyFilters = [
+        'name',
+        'parent.name',
+    ];
 }
