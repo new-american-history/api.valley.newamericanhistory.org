@@ -11,4 +11,21 @@ class MemoryArticle extends Model
     protected $casts = [
         'year' => 'integer',
     ];
+
+    public static $exactFilters = [
+        'county',
+        'valley_id',
+    ];
+
+    public static $fuzzyFilters = [
+        'title',
+        'author',
+        'summary',
+        'body',
+        'keywords',
+    ];
+
+    public static $numericFilters = [
+        'date',
+    ];
 }
