@@ -19,6 +19,7 @@ class NewspaperController
     }
 
     public function showEdition(
+        Request $request,
         string $slug,
         string $year,
         string $month,
@@ -28,6 +29,7 @@ class NewspaperController
         $edition = Edition::where(['newspaper_id' => $newspaper->id])
             ->where(['date' => "{$year}-{$month}-{$day}"])
             ->firstOrFail();
-        return new EditionResource($edition);
+        $res = new EditionResource($edition);
+        return $res->toFull($request);
     }
 }

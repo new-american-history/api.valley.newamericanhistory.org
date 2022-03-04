@@ -14,6 +14,8 @@ class Edition extends Model
 
     protected $guarded = [];
 
+    protected $hidden = ['created_at', 'updated_at', 'newspaper_id'];
+
     protected $dates = ['date'];
 
     protected $casts = [

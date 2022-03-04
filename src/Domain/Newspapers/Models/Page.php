@@ -14,6 +14,8 @@ class Page extends Model
 
     protected $guarded = [];
 
+    protected $hidden = ['newspaper_edition_id'];
+
     public $timestamps = false;
 
     protected $dates = ['date'];

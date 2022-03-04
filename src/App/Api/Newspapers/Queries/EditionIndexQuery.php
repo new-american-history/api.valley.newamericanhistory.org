@@ -12,7 +12,7 @@ class EditionIndexQuery extends IndexQueryBuilder
 {
     public function __construct(Request $request)
     {
-        $query = Edition::query();
+        $query = Edition::query()->with('newspaper');
 
         parent::__construct($query, $request);
 

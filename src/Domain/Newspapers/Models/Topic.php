@@ -13,6 +13,8 @@ class Topic extends Model
 
     protected $guarded = [];
 
+    protected $hidden = ['pivot', 'parent_id'];
+
     public $timestamps = false;
 
     protected $casts = [

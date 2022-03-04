@@ -10,6 +10,8 @@ class Newspaper extends Model
 {
     protected $guarded = [];
 
+    protected $hidden = ['created_at', 'updated_at'];
+
     public function editions(): HasMany
     {
         return $this->hasMany(Edition::class)

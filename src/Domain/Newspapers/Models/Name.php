@@ -12,6 +12,8 @@ class Name extends Model
 
     protected $guarded = [];
 
+    protected $hidden = ['newspaper_story_id', 'weight'];
+
     public $timestamps = false;
 
     protected $casts = [
