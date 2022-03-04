@@ -11,7 +11,7 @@ use App\Api\Newspapers\Queries\NewspaperIndexQuery;
 
 class NewspaperController
 {
-    public function index(NewspaperIndexQuery $query)
+    public function index(Request $request, NewspaperIndexQuery $query)
     {
         return NewspaperResource::collection(
             $query->paginate($request->perpage ?? 50)

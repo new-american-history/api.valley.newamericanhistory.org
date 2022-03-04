@@ -9,7 +9,7 @@ use App\Api\Papers\Resources\LetterResource;
 
 class LetterController
 {
-    public function index(LetterIndexQuery $query)
+    public function index(Request $request, LetterIndexQuery $query)
     {
         return LetterResource::collection(
             $query->paginate($request->perpage ?? 50)

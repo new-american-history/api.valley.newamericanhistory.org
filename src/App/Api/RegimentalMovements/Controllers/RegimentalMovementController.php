@@ -8,7 +8,7 @@ use App\Api\RegimentalMovements\Queries\RegimentalMovementIndexQuery;
 
 class RegimentalMovementController
 {
-    public function index(RegimentalMovementIndexQuery $query)
+    public function index(Request $request, RegimentalMovementIndexQuery $query)
     {
         return RegimentalMovementResource::collection(
             $query->paginate($request->perpage ?? 50)

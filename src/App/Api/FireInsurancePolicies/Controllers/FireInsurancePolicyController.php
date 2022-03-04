@@ -9,8 +9,10 @@ use App\Api\FireInsurancePolicies\Resources\FireInsurancePolicyResource;
 
 class FireInsurancePolicyController
 {
-    public function index(FireInsurancePolicyIndexQuery $query)
-    {
+    public function index(
+        Request $request,
+        FireInsurancePolicyIndexQuery $query
+    ) {
         return FireInsurancePolicyResource::collection(
             $query->paginate($request->perpage ?? 100)
         );

@@ -9,7 +9,7 @@ use App\Api\ChurchRecords\Resources\ChurchRecordResource;
 
 class ChurchRecordController
 {
-    public function index(ChurchRecordIndexQuery $query)
+    public function index(Request $request, ChurchRecordIndexQuery $query)
     {
         return ChurchRecordResource::collection(
             $query->paginate($request->perpage ?? 100)

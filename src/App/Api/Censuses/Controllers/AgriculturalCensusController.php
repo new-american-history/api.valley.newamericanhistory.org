@@ -8,7 +8,7 @@ use App\Api\Censuses\Queries\AgriculturalCensusIndexQuery;
 
 class AgriculturalCensusController
 {
-    public function index(AgriculturalCensusIndexQuery $query)
+    public function index(Request $request, AgriculturalCensusIndexQuery $query)
     {
         return CensusResource::collection(
             $query->paginate($request->perpage ?? 50)

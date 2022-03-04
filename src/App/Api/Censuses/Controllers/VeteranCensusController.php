@@ -8,7 +8,7 @@ use App\Api\Censuses\Queries\VeteranCensusIndexQuery;
 
 class VeteranCensusController
 {
-    public function index(VeteranCensusIndexQuery $query)
+    public function index(Request $request, VeteranCensusIndexQuery $query)
     {
         return CensusResource::collection(
             $query->paginate($request->perpage ?? 50)

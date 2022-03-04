@@ -9,8 +9,10 @@ use Domain\BattlefieldCorrespondence\Models\BattlefieldCorrespondence;
 
 class BattlefieldCorrespondenceController
 {
-    public function index(BattlefieldCorrespondenceIndexQuery $query)
-    {
+    public function index(
+        Request $request,
+        BattlefieldCorrespondenceIndexQuery $query
+    ) {
         return BattlefieldCorrespondenceResource::collection(
             $query->paginate($request->perpage ?? 50)
         );
@@ -18,7 +20,9 @@ class BattlefieldCorrespondenceController
 
     public function show(string $valley_id)
     {
-        $battlefieldCorrespondence = BattlefieldCorrespondence::where(['valley_id' => $valley_id])->firstOrFail();
+        $battlefieldCorrespondence = BattlefieldCorrespondence::where([
+            'valley_id' => $valley_id
+        ])->firstOrFail();
         return new BattlefieldCorrespondenceResource($battlefieldCorrespondence);
     }
 }
