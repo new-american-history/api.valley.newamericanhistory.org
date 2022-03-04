@@ -39,4 +39,42 @@ class SoldierDossier extends Model
     {
         return $this->belongsTo(Image::class);
     }
+
+    public static $exactFilters = [
+        'county',
+        'company',
+        'transfer_company',
+    ];
+
+    public static $fuzzyFilters = [
+        'first_name',
+        'last_name',
+        'regiment',
+        'birthplace',
+        'personal_info',
+        'prewar_life',
+        'postwar_life',
+        'enlisted_location',
+        'enlisted_occupation',
+        'death_location',
+        'burial_location',
+    ];
+
+    public static $numericFilters = [
+        'birthday',
+        'enlisted_date',
+        'enlisted_age',
+        'death_date',
+        'awol_date',
+        'captured_date',
+        'deserted_date',
+        'died_of_disease_date',
+        'died_of_wounds_date',
+        'discharged_date',
+        'kia_date',
+        'mia_date',
+        'paroled_date',
+        'pow_date',
+        'wia_date',
+    ];
 }
