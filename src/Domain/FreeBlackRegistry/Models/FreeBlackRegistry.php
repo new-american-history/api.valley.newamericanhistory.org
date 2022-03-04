@@ -10,6 +10,8 @@ class FreeBlackRegistry extends Model
 
     protected $guarded = [];
 
+    protected $hidden = ['created_at', 'updated_at'];
+
     public static $exactFilters = [
         'county',
         'city',

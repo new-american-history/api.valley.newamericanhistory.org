@@ -12,6 +12,8 @@ class Family extends Model
 
     protected $guarded = [];
 
+    protected $hidden = ['created_at', 'updated_at'];
+
     protected $dates = ['report_date'];
 
     protected $casts = [

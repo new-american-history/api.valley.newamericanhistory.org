@@ -8,7 +8,7 @@ use App\Api\CohabitationRecords\Queries\FamilyIndexQuery;
 
 class CohabitationRecordController
 {
-    public function index(FamilyIndexQuery $query)
+    public function index(Request $request, FamilyIndexQuery $query)
     {
         return FamilyResource::collection(
             $query->paginate($request->perpage ?? 50)

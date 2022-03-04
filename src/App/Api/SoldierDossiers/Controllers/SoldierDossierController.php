@@ -8,7 +8,7 @@ use App\Api\SoldierDossiers\Resources\SoldierDossierResource;
 
 class SoldierDossierController
 {
-    public function index(SoldierDossierIndexQuery $query)
+    public function index(Request $request, SoldierDossierIndexQuery $query)
     {
         return SoldierDossierResource::collection(
             $query->paginate($request->perpage ?? 50)

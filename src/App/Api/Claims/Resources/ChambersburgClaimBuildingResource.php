@@ -2,6 +2,7 @@
 
 namespace App\Api\Claims\Resources;
 
+use App\Api\Images\Resources\ImageResource;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class ChambersburgClaimBuildingResource extends JsonResource
@@ -17,7 +18,9 @@ class ChambersburgClaimBuildingResource extends JsonResource
         $res = parent::toArray($request);
 
         $res += [
-            'image' => $this->image,
+            'image' => !empty($this->image)
+                ? new ImageResource($this->image)
+                : null,
         ];
 
         return $res;

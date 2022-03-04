@@ -10,7 +10,7 @@ class SoldierDossierIndexQuery extends IndexQueryBuilder
 {
     public function __construct(Request $request)
     {
-        $query = SoldierDossier::query();
+        $query = SoldierDossier::query()->with('image');
 
         parent::__construct($query, $request);
 

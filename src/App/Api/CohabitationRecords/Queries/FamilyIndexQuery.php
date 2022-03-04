@@ -10,7 +10,7 @@ class FamilyIndexQuery extends IndexQueryBuilder
 {
     public function __construct(Request $request)
     {
-        $query = Family::query();
+        $query = Family::query()->with('children');
 
         parent::__construct($query, $request);
 

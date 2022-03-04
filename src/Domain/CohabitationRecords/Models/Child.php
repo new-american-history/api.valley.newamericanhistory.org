@@ -12,6 +12,8 @@ class Child extends Model
 
     protected $guarded = [];
 
+    protected $hidden = ['created_at', 'updated_at', 'family_id'];
+
     protected $casts = [
         'family_id' => 'integer',
         'age' => 'float',

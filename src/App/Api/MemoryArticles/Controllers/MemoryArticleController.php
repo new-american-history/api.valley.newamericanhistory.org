@@ -9,7 +9,7 @@ use App\Api\MemoryArticles\Resources\MemoryArticleResource;
 
 class MemoryArticleController
 {
-    public function index(MemoryArticleIndexQuery $query)
+    public function index(Request $request, MemoryArticleIndexQuery $query)
     {
         return MemoryArticleResource::collection(
             $query->paginate($request->perpage ?? 50)
