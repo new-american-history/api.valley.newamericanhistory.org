@@ -9,21 +9,11 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 class DiaryResource extends JsonResource
 {
-    /**
-     * Transform the resource into an array.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return array
-     */
     public function toArray($request)
     {
         $res = parent::toArray($request);
 
         $res += [
-            'entries' => $this->entries && $this->entries->count() > 0
-                ? $this->entries->map(function ($note) {
-                    return new DiaryEntryResource($note);
-                }) : null,
             'images' => $this->images && $this->images->count() > 0
                 ? $this->images->map(function ($image) {
                     return new ImageResource($image);
@@ -31,6 +21,20 @@ class DiaryResource extends JsonResource
             'notes' => $this->notes && $this->notes->count() > 0
                 ? $this->notes->map(function ($note) {
                     return new NoteResource($note);
+                }) : null,
+        ];
+
+        return $res;
+    }
+
+    public function toFull($request)
+    {
+        $res = $this->toArray($request);
+
+        $res += [
+            'entries' => $this->entries && $this->entries->count() > 0
+                ? $this->entries->map(function ($note) {
+                    return new DiaryEntryResource($note);
                 }) : null,
         ];
 

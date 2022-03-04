@@ -10,7 +10,7 @@ class LetterIndexQuery extends IndexQueryBuilder
 {
     public function __construct(Request $request)
     {
-        $query = Letter::query();
+        $query = Letter::query()->with(['images', 'notes']);
 
         parent::__construct($query, $request);
 

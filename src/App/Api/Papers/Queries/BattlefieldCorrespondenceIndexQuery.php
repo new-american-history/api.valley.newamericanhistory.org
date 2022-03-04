@@ -10,7 +10,7 @@ class BattlefieldCorrespondenceIndexQuery extends IndexQueryBuilder
 {
     public function __construct(Request $request)
     {
-        $query = BattlefieldCorrespondence::query();
+        $query = BattlefieldCorrespondence::query()->with(['notes']);
 
         parent::__construct($query, $request);
 

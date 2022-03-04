@@ -10,7 +10,7 @@ class DiaryIndexQuery extends IndexQueryBuilder
 {
     public function __construct(Request $request)
     {
-        $query = Diary::query();
+        $query = Diary::query()->with(['images', 'notes']);
 
         parent::__construct($query, $request);
 

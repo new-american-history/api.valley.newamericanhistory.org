@@ -9,16 +9,17 @@ use App\Api\Papers\Resources\DiaryResource;
 
 class DiaryController
 {
-    public function index(DiaryIndexQuery $query)
+    public function index(Request $request, DiaryIndexQuery $query)
     {
         return DiaryResource::collection(
             $query->paginate($request->perpage ?? 50)
         );
     }
 
-    public function show(string $valley_id)
+    public function show(Request $request, string $valley_id)
     {
         $diary = Diary::where(['valley_id' => $valley_id])->firstOrFail();
-        return new DiaryResource($diary);
+        $res = new DiaryResource($diary);
+        return $res->toFull($request);
     }
 }

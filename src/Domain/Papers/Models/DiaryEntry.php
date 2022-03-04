@@ -10,6 +10,8 @@ class DiaryEntry extends Model
 {
     protected $guarded = [];
 
+    protected $hidden = ['created_at', 'updated_at', 'diary_id', 'weight'];
+
     protected $dates = ['date'];
 
     protected $casts = [

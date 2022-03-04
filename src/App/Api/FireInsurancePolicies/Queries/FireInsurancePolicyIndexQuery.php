@@ -10,7 +10,7 @@ class FireInsurancePolicyIndexQuery extends IndexQueryBuilder
 {
     public function __construct(Request $request)
     {
-        $query = FireInsurancePolicy::query();
+        $query = FireInsurancePolicy::query()->with('image');
 
         parent::__construct($query, $request);
 

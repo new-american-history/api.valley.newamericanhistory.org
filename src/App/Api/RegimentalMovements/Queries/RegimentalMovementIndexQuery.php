@@ -10,7 +10,7 @@ class RegimentalMovementIndexQuery extends IndexQueryBuilder
 {
     public function __construct(Request $request)
     {
-        $query = RegimentalMovement::query();
+        $query = RegimentalMovement::query()->with('regiment');
 
         parent::__construct($query, $request);
 
