@@ -46,7 +46,9 @@ Route::get('/letters', [LetterController::class, 'index']);
 Route::get('/letters/{valley_id}', [LetterController::class, 'show']);
 
 Route::get('/manufacturing-census', [ManufacturingCensusController::class, 'index']);
+
 Route::get('/memory-articles', [MemoryArticleController::class, 'index']);
+Route::get('/memory-articles/{valley_id}', [MemoryArticleController::class, 'show']);
 
 Route::get('/newspapers', [NewspaperController::class, 'index']);
 Route::get('/newspapers/{slug}/editions/{year}/{month}/{day}', [NewspaperController::class, 'showEdition']);

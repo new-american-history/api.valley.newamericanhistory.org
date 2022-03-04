@@ -26,4 +26,30 @@ class Family extends Model
         return $this->hasMany(Child::class, 'family_id', 'family_id')
             ->orderBy('age');
     }
+
+    public static $exactFilters = [
+        'county',
+    ];
+
+    public static $fuzzyFilters = [
+        'residence',
+        'husband_first_name',
+        'husband_last_name',
+        'wife_first_name',
+        'wife_last_name',
+        'husband_birthplace',
+        'wife_birthplace',
+        'husband_occupation',
+
+        'children.name',
+    ];
+
+    public static $numericFilters = [
+        'report_date',
+        'husband_age',
+        'wife_age',
+        'number_of_children',
+
+        'children.age',
+    ];
 }
