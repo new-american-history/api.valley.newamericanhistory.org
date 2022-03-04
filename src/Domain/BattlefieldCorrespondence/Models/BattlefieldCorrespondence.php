@@ -14,6 +14,10 @@ class BattlefieldCorrespondence extends Model
 
     protected $dates = ['date'];
 
+    protected $casts = [
+        'keywords' => 'array',
+    ];
+
     public function notes(): BelongsToMany
     {
         return $this->belongsToMany(Note::class);

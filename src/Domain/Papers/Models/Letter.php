@@ -11,9 +11,13 @@ class Letter extends Model
 {
     protected $guarded = [];
 
+    protected $hidden = ['created_at', 'updated_at'];
+
     protected $dates = ['date'];
 
-    protected $hidden = ['created_at', 'updated_at'];
+    protected $casts = [
+        'keywords' => 'array',
+    ];
 
     public function images(): BelongsToMany
     {

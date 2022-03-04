@@ -13,7 +13,13 @@ class Diary extends Model
 {
     protected $guarded = [];
 
-    protected $dates = ['date'];
+    protected $hidden = ['created_at', 'updated_at'];
+
+    protected $dates = ['start_date', 'end_date'];
+
+    protected $casts = [
+        'keywords' => 'array',
+    ];
 
     public function entries(): HasMany
     {
@@ -35,9 +41,7 @@ class Diary extends Model
     public static $exactFilters = [
         'county',
         'valley_id',
-        'start_date',
 
-        'end_date',
         'entries.date',
     ];
 
@@ -49,5 +53,10 @@ class Diary extends Model
 
         'entries.headline',
         'entries.body',
+    ];
+
+    public static $numericFilters = [
+        'start_date',
+        'end_date',
     ];
 }

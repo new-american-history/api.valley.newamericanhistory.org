@@ -10,5 +10,6 @@ class MemoryArticle extends Model
 
     protected $casts = [
         'year' => 'integer',
+        'keywords' => 'array',
     ];
 }
