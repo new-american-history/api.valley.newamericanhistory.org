@@ -3,11 +3,15 @@
 namespace App\Api\FreeBlackRegistry\Controllers;
 
 use Illuminate\Http\Request;
-use Domain\FreeBlackRegistry\Models\FreeBlackRegistry;
+use App\Api\FreeBlackRegistry\Queries\FreeBlackRegistryIndexQuery;
+use App\Api\FreeBlackRegistry\Resources\FreeBlackRegistryResource;
 
 class FreeBlackRegistryController
 {
-    public function index() {
-        return FreeBlackRegistry::all();
+    public function index(FreeBlackRegistryIndexQuery $query)
+    {
+        return FreeBlackRegistryResource::collection(
+            $query->paginate($request->perpage ?? 50)
+        );
     }
 }
