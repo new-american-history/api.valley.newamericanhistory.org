@@ -3,11 +3,15 @@
 namespace App\Api\Claims\Controllers;
 
 use Illuminate\Http\Request;
-use Domain\Claims\Models\ChambersburgClaim;
+use App\Api\Claims\Queries\ChambersburgClaimIndexQuery;
+use App\Api\Claims\Resources\ChambersburgClaimResource;
 
 class ChambersburgClaimController
 {
-    public function index() {
-        return ChambersburgClaim::all();
+    public function index(Request $request, ChambersburgClaimIndexQuery $query)
+    {
+        return ChambersburgClaimResource::collection(
+            $query->paginate($request->perpage ?? 100)
+        );
     }
 }

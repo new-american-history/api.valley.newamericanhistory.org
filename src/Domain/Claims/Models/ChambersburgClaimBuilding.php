@@ -11,6 +11,13 @@ class ChambersburgClaimBuilding extends Model
 {
     protected $guarded = [];
 
+    protected $hidden = [
+        'created_at',
+        'updated_at',
+        'possible_claim_id',
+        'image_id',
+    ];
+
     protected $casts = [
         'building_number' => 'integer',
         'possible_claim_id' => 'integer',

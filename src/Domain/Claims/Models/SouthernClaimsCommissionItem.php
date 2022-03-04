@@ -10,6 +10,8 @@ class SouthernClaimsCommissionItem extends Model
 {
     protected $guarded = [];
 
+    protected $hidden = ['claim_id', 'weight'];
+
     public $timestamps = false;
 
     protected $casts = [

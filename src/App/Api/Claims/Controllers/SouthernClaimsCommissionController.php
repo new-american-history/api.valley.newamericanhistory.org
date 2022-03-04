@@ -4,10 +4,24 @@ namespace App\Api\Claims\Controllers;
 
 use Illuminate\Http\Request;
 use Domain\Claims\Models\SouthernClaimsCommissionClaim;
+use App\Api\Claims\Queries\SouthernClaimsCommissionIndexQuery;
+use App\Api\Claims\Resources\SouthernClaimsCommissionClaimResource;
 
 class SouthernClaimsCommissionController
 {
-    public function index() {
-        return SouthernClaimsCommissionClaim::all();
+    public function index(
+        Request $request,
+        SouthernClaimsCommissionIndexQuery $query
+    ) {
+        return SouthernClaimsCommissionClaimResource::collection(
+            $query->paginate($request->perpage ?? 50)
+        );
+    }
+
+    public function show(Request $request, int $id)
+    {
+        $claim = SouthernClaimsCommissionClaim::findOrFail($id);
+        $res = new SouthernClaimsCommissionClaimResource($claim);
+        return $res->toFull($request);
     }
 }

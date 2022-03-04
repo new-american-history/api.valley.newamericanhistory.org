@@ -13,7 +13,13 @@ class SouthernClaimsCommissionClaim extends Model
 
     protected $guarded = [];
 
+    protected $hidden = ['created_at', 'updated_at'];
+
     protected $dates = ['date'];
+
+    protected $casts = [
+        'keywords' => 'array',
+    ];
 
     public function items(): HasMany
     {
@@ -26,4 +32,29 @@ class SouthernClaimsCommissionClaim extends Model
         return $this->hasMany(SouthernClaimsCommissionTestimony::class, 'claim_id')
             ->orderBy('weight');
     }
+
+    public static $exactFilters = [
+        'county',
+    ];
+
+    public static $fuzzyFilters = [
+        'title',
+        'author',
+        'summary',
+        'commission_summary',
+        'keywords',
+
+        'items.item',
+
+        'testimonies.attestant',
+        'testimonies.body',
+    ];
+
+    public static $numericFilters = [
+        'date',
+
+        'items.amount_claimed',
+        'items.amount_allowed',
+        'items.amount_disallowed',
+    ];
 }
