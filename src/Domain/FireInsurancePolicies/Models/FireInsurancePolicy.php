@@ -10,6 +10,8 @@ class FireInsurancePolicy extends Model
 {
     protected $guarded = [];
 
+    protected $hidden = ['created_at', 'updated_at', 'image_id'];
+
     protected $casts = [
         'image_id' => 'integer',
     ];
@@ -18,4 +20,14 @@ class FireInsurancePolicy extends Model
     {
         return $this->belongsTo(Image::class);
     }
+
+    public static $exactFilters = [
+        'county',
+        'policy_number',
+    ];
+
+    public static $fuzzyFilters = [
+        'name',
+        'description',
+    ];
 }

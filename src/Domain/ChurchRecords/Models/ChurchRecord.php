@@ -16,13 +16,14 @@ class ChurchRecord extends Model
         'county',
         'record_type',
         'race',
-        'sex'
+        'sex',
     ];
 
     public static $fuzzyFilters = [
         'church_name',
         'first_name',
         'last_name',
+        'date_written',
         'clergy',
         'location',
         'family',
