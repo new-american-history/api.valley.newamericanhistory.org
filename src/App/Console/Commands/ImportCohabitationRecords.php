@@ -63,10 +63,13 @@ class ImportCohabitationRecords extends BaseImportCommand
                 $columns = $item->getElementsByTagName('column');
 
                 foreach ($columns as $column) {
-                    $modelAttribute = $this->familyColumnMap[$column->getAttribute('name')] ?? null;
+                    $columnName = $column->getAttribute('name');
+                    $value = self::getElementValue($column, ['[No entry]', '0']);
+
+                    $modelAttribute = $this->familyColumnMap[$columnName] ?? null;
 
                     if (!empty($modelAttribute)) {
-                        $modelData[$modelAttribute] = self::getElementValue($column, ['[No entry]', 0]);
+                        $modelData[$modelAttribute] = $value ?: null;
                     }
                 }
 
@@ -95,11 +98,13 @@ class ImportCohabitationRecords extends BaseImportCommand
                 $columns = $item->getElementsByTagName('column');
 
                 foreach ($columns as $column) {
-                    $modelAttribute = $this->childColumnMap[$column->getAttribute('name')] ?? null;
+                    $columnName = $column->getAttribute('name');
+                    $value = self::getElementValue($column, ['0']);
+
+                    $modelAttribute = $this->childColumnMap[$columnName] ?? null;
 
                     if (!empty($modelAttribute)) {
-                        $value = trim($column->nodeValue);
-                        $modelData[$modelAttribute] = !empty($value) || $value === 0 ? $value : null;
+                        $modelData[$modelAttribute] = $value ?: null;
                     }
                 }
 
