@@ -29,7 +29,6 @@ class Letter extends Model
     public static $exactFilters = [
         'county',
         'valley_id',
-        'date',
     ];
 
     public static $fuzzyFilters = [
@@ -40,5 +39,9 @@ class Letter extends Model
         'recipient',
         'location',
         'keywords',
+    ];
+
+    public static $numericFilters = [
+        'date',
     ];
 }

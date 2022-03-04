@@ -36,6 +36,7 @@ class Diary extends Model
         'county',
         'valley_id',
         'start_date',
+
         'end_date',
         'entries.date',
     ];
@@ -44,8 +45,9 @@ class Diary extends Model
         'title',
         'author',
         'bio',
+        'keywords',
+
         'entries.headline',
         'entries.body',
-        'keywords',
     ];
 }

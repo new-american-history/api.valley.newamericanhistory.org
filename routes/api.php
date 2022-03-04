@@ -18,15 +18,18 @@ use App\Api\MemoryArticles\Controllers\MemoryArticleController;
 use App\Api\TaxRecords\Controllers\FranklinTaxRecordController;
 use App\Api\SoldierDossiers\Controllers\SoldierDossierController;
 use App\Api\Claims\Controllers\SouthernClaimsCommissionController;
+use App\Api\Papers\Controllers\BattlefieldCorrespondenceController;
 use App\Api\FreeBlackRegistry\Controllers\FreeBlackRegistryController;
 use App\Api\CohabitationRecords\Controllers\CohabitationRecordController;
 use App\Api\RegimentalMovements\Controllers\RegimentalMovementController;
 use App\Api\FireInsurancePolicies\Controllers\FireInsurancePolicyController;
-use App\Api\BattlefieldCorrespondence\Controllers\BattlefieldCorrespondenceController;
 
 Route::get('/agricultural-census', [AgriculturalCensusController::class, 'index']);
 Route::get('/augusta-tax-records', [AugustaTaxRecordController::class, 'index']);
+
 Route::get('/battlefield-correspondence', [BattlefieldCorrespondenceController::class, 'index']);
+Route::get('/battlefield-correspondence/{valley_id}', [BattlefieldCorrespondenceController::class, 'show']);
+
 Route::get('/chambersburg-claims', [ChambersburgClaimController::class, 'index']);
 Route::get('/church-records', [ChurchRecordController::class, 'index']);
 Route::get('/civil-war-images', [CivilWarImageController::class, 'index']);

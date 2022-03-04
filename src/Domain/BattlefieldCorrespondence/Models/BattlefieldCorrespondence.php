@@ -18,4 +18,24 @@ class BattlefieldCorrespondence extends Model
     {
         return $this->belongsToMany(Note::class);
     }
+
+    public static $exactFilters = [
+        'county',
+        'valley_id',
+    ];
+
+    public static $fuzzyFilters = [
+        'title',
+        'author',
+        'summary',
+        'headline',
+        'recipient',
+        'location',
+        'postscript',
+        'keywords',
+    ];
+
+    public static $numericFilters = [
+        'date',
+    ];
 }
