@@ -161,8 +161,9 @@ class ImportManufacturingCensus extends BaseImportCommand
 
                     foreach ($columns as $column) {
                         $columnName = $column->getAttribute('name');
+                        $value = self::getElementValue($column, ['0']);
+
                         $modelAttribute = $columnMap[$columnName] ?? null;
-                        $value = self::getElementValue($column, [0]);
 
                         if (!empty($modelAttribute)) {
                             $modelData[$modelAttribute] = $value;

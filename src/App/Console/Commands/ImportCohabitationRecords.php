@@ -69,7 +69,7 @@ class ImportCohabitationRecords extends BaseImportCommand
                     $modelAttribute = $this->familyColumnMap[$columnName] ?? null;
 
                     if (!empty($modelAttribute)) {
-                        $modelData[$modelAttribute] = $value ?: null;
+                        $modelData[$modelAttribute] = $value;
                     }
                 }
 
@@ -104,7 +104,7 @@ class ImportCohabitationRecords extends BaseImportCommand
                     $modelAttribute = $this->childColumnMap[$columnName] ?? null;
 
                     if (!empty($modelAttribute)) {
-                        $modelData[$modelAttribute] = $value ?: null;
+                        $modelData[$modelAttribute] = $value;
                     }
                 }
 

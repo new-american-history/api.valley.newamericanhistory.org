@@ -48,7 +48,7 @@ class ImportSlaveowningCensus extends BaseImportCommand
                     $modelAttribute = $this->columnMap[$columnName] ?? null;
 
                     if (!empty($modelAttribute)) {
-                        $modelData[$modelAttribute] = $value ?: null;
+                        $modelData[$modelAttribute] = $value;
                     }
                 }
 

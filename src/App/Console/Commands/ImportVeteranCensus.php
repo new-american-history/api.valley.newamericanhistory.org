@@ -60,11 +60,11 @@ class ImportVeteranCensus extends BaseImportCommand
 
                         switch ($columnName) {
                             case 'enl_date':
-                                $value = self::getElementValue($column, [0]);
+                                $value = self::getElementValue($column, ['0']);
                                 $modelData['enlistment_date'] = self::getFormattedDate($value);
                                 break;
                             case 'discharge_date':
-                                $value = self::getElementValue($column, [0]);
+                                $value = self::getElementValue($column, ['0']);
                                 $modelData['discharge_date'] = self::getFormattedDate($value);
                                 break;
                             default:

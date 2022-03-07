@@ -78,7 +78,7 @@ class ImportCivilWarImages extends BaseImportCommand
                         default:
                             $modelAttribute = $this->columnMap[$columnName] ?? null;
                             if (!empty($modelAttribute)) {
-                                $modelData[$modelAttribute] = $value ?: null;
+                                $modelData[$modelAttribute] = $value;
                             }
                             break;
                     }

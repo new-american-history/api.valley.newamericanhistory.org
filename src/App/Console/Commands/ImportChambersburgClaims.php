@@ -67,7 +67,7 @@ class ImportChambersburgClaims extends BaseImportCommand
                         default:
                            $modelAttribute = $this->claimColumnMap[$columnName] ?? null;
                             if (!empty($modelAttribute)) {
-                                $modelData[$modelAttribute] = $value ?: null;
+                                $modelData[$modelAttribute] = $value;
                             }
                             break;
                     }
