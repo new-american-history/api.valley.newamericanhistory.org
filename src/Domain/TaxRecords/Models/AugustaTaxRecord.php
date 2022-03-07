@@ -10,6 +10,8 @@ class AugustaTaxRecord extends Model
 
     protected $guarded = [];
 
+    protected $hidden = ['created_at', 'updated_at'];
+
     protected $casts = [
         'year' => 'integer',
         'acres' => 'float',
@@ -19,5 +21,28 @@ class AugustaTaxRecord extends Model
         'lot_building_value' => 'float',
         'tax_amount' => 'float',
         'city_tax_amount' => 'float',
+    ];
+
+    public static $exactFilters = [
+        'county',
+        'year',
+        'estate',
+    ];
+
+    public static $fuzzyFilters = [
+        'first_name',
+        'last_name',
+        'other_name',
+        'residence',
+    ];
+
+    public static $numericFilters = [
+        'acres',
+        'rods',
+        'poles',
+        'building_value',
+        'lot_building_value',
+        'tax_amount',
+        'city_tax_amount',
     ];
 }
