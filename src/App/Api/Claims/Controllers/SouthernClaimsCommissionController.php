@@ -18,9 +18,9 @@ class SouthernClaimsCommissionController
         );
     }
 
-    public function show(Request $request, int $id)
+    public function show(Request $request, string $valley_id)
     {
-        $claim = SouthernClaimsCommissionClaim::findOrFail($id);
+        $claim = SouthernClaimsCommissionClaim::where(['valley_id' => $valley_id])->firstOrFail();
         $res = new SouthernClaimsCommissionClaimResource($claim);
         return $res->toFull($request);
     }

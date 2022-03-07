@@ -61,6 +61,6 @@ Route::get('/slaveowning-census', [SlaveOwningCensusController::class, 'index'])
 Route::get('/soldier-dossiers', [SoldierDossierController::class, 'index']);
 
 Route::get('/southern-claims-commission', [SouthernClaimsCommissionController::class, 'index']);
-Route::get('/southern-claims-commission/{id}', [SouthernClaimsCommissionController::class, 'show']);
+Route::get('/southern-claims-commission/{valley_id}', [SouthernClaimsCommissionController::class, 'show']);
 
 Route::get('/veteran-census', [VeteranCensusController::class, 'index']);
