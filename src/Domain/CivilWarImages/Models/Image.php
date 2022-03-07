@@ -13,6 +13,8 @@ class Image extends Model
 
     protected $guarded = [];
 
+    protected $hidden = ['created_at', 'updated_at'];
+
     protected $casts = [
         'image_id' => 'integer',
         'subject_id' => 'integer',
@@ -27,4 +29,22 @@ class Image extends Model
     {
         return $this->belongsTo(Subject::class, 'subject_id');
     }
+
+    public static $exactFilters = [
+        'image_type',
+        'original_source',
+    ];
+
+    public static $fuzzyFilters = [
+        'title',
+        'date',
+        'description',
+        'artist',
+        'person_name',
+        'location',
+        'regiment',
+        'contributing_source',
+
+        'subject.name',
+    ];
 }
