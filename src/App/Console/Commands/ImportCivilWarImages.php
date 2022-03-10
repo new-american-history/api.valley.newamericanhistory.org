@@ -4,7 +4,9 @@ namespace App\Console\Commands;
 
 use Domain\Shared\Models\Image;
 use Domain\CivilWarImages\Models\Subject;
+use Domain\CivilWarImages\Enums\ImageType;
 use App\Console\Commands\BaseImportCommand;
+use Domain\CivilWarImages\Enums\OriginalSource;
 use Domain\CivilWarImages\Models\Image as CivilWarImage;
 
 class ImportCivilWarImages extends BaseImportCommand
@@ -31,9 +33,6 @@ class ImportCivilWarImages extends BaseImportCommand
         $document = self::getDomDocumentWithXml($data);
         $items = $document->getElementsByTagName('row');
 
-        $originalSourceMap = self::getNormalizedMap(config('domains.civil-war-images.originalSources'));
-        $imageTypeMap = self::getNormalizedMap(config('domains.civil-war-images.imageTypes'));
-
         foreach ($items as $item) {
             if (!empty($item)) {
                 $modelData = [];
@@ -56,18 +55,14 @@ class ImportCivilWarImages extends BaseImportCommand
                             break;
                         case 'image_type':
                             $value = self::getNormalizedString($value);
-
-                            if ($value === 'photo') {
-                                $modelData['image_type'] = 'photograph';
-                            } else {
-                                $key = array_search($value, $imageTypeMap);
-                                $modelData['image_type'] = $key ?: null;
-                            }
+                            $value = $value === 'photo' ? 'photograph' : $value;
+                            $imageTypeEnum = ImageType::tryFrom($value);
+                            $modelData['image_type'] = $imageTypeEnum->value ?? null;
                             break;
                         case 'orig_location':
                             $value = self::getNormalizedString($value);
-                            $key = array_search($value, $originalSourceMap);
-                            $modelData['original_source'] = $key ?: null;
+                            $originalSourceEnum = OriginalSource::tryFrom($value);
+                            $modelData['original_source'] = $originalSourceEnum->value ?? null;
                             break;
                         case 'subject_type':
                             if (!empty($value)) {
@@ -91,20 +86,12 @@ class ImportCivilWarImages extends BaseImportCommand
         $this->info('Imported Civil War image data (' . $this->file . ')');
     }
 
-    public function getNormalizedMap($map) {
-        $modifiedMap = [];
-
-        foreach ($map as $key => $value) {
-            $modifiedMap[$key] = self::getNormalizedString($value);
-        }
-
-        return $modifiedMap;
-    }
-
     public function getNormalizedString($string) {
         $string = strtolower($string);
         $string = str_replace('’', "'", $string);
         $string = str_replace('?', '', $string);
+        $string = preg_replace('/ (.?)/', strtoupper('$1'), $string);
+
         return $string;
     }
 }

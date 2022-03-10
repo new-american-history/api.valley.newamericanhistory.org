@@ -4,7 +4,9 @@ namespace Domain\CivilWarImages\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Domain\CivilWarImages\Models\Subject;
+use Domain\CivilWarImages\Enums\ImageType;
 use Domain\Shared\Models\Image as SharedImage;
+use Domain\CivilWarImages\Enums\OriginalSource;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Image extends Model
@@ -14,6 +16,8 @@ class Image extends Model
     protected $guarded = [];
 
     protected $hidden = ['created_at', 'updated_at'];
+
+    protected $appends = ['image_type_label', 'original_source_label'];
 
     protected $casts = [
         'image_id' => 'integer',
@@ -47,4 +51,16 @@ class Image extends Model
 
         'subject.name',
     ];
+
+    protected function getImageTypeLabelAttribute(): ?string
+    {
+        $enum = ImageType::tryFrom($this->image_type);
+        return $enum->label ?? null;
+    }
+
+    protected function getOriginalSourceLabelAttribute(): ?string
+    {
+        $enum = OriginalSource::tryFrom($this->original_source);
+        return $enum->label ?? null;
+    }
 }
