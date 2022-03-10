@@ -2,6 +2,7 @@
 
 namespace Domain\Censuses\Models;
 
+use Domain\Shared\Traits\HasCountyEnum;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Domain\Censuses\Models\ManufacturingCensusProduct;
@@ -9,11 +10,15 @@ use Domain\Censuses\Models\ManufacturingCensusMaterial;
 
 class ManufacturingCensus extends Model
 {
+    use HasCountyEnum;
+
     protected $table = 'manufacturing_census';
 
     protected $guarded = [];
 
     protected $hidden = ['created_at', 'updated_at'];
+
+    protected $appends = ['county_label'];
 
     protected $casts = [
         'year' => 'integer',

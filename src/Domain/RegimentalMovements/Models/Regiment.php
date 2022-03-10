@@ -3,15 +3,18 @@
 namespace Domain\RegimentalMovements\Models;
 
 use Domain\Shared\Enums\State;
+use Domain\Shared\Traits\HasCountyEnum;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Domain\RegimentalMovements\Models\RegimentalMovement;
 
 class Regiment extends Model
 {
+    use HasCountyEnum;
+
     protected $guarded = [];
 
-    protected $appends = ['state_label'];
+    protected $appends = ['county_label', 'state_label'];
 
     public $timestamps = false;
 

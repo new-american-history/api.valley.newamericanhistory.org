@@ -4,17 +4,20 @@ namespace Domain\Censuses\Models;
 
 use Domain\Shared\Enums\Sex;
 use Domain\Shared\Enums\Race;
+use Domain\Shared\Traits\HasCountyEnum;
 use Illuminate\Database\Eloquent\Model;
 
 class PopulationCensus extends Model
 {
+    use HasCountyEnum;
+
     protected $table = 'population_census';
 
     protected $guarded = [];
 
     protected $hidden = ['created_at', 'updated_at'];
 
-    protected $appends = ['race_label', 'sex_label'];
+    protected $appends = ['county_label', 'race_label', 'sex_label'];
 
     protected $dates = ['date_taken'];
 

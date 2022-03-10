@@ -2,6 +2,7 @@
 
 namespace Domain\Claims\Models;
 
+use Domain\Shared\Traits\HasCountyEnum;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Domain\Claims\Models\SouthernClaimsCommissionItem;
@@ -9,11 +10,15 @@ use Domain\Claims\Models\SouthernClaimsCommissionTestimony;
 
 class SouthernClaimsCommissionClaim extends Model
 {
+    use HasCountyEnum;
+
     protected $table = 'southern_claims_commission';
 
     protected $guarded = [];
 
     protected $hidden = ['created_at', 'updated_at'];
+
+    protected $appends = ['county_label'];
 
     protected $dates = ['date'];
 

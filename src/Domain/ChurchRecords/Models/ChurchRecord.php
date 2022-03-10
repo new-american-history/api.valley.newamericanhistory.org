@@ -3,16 +3,19 @@
 namespace Domain\ChurchRecords\Models;
 
 use Domain\Shared\Enums\Sex;
+use Domain\Shared\Traits\HasCountyEnum;
 use Illuminate\Database\Eloquent\Model;
 use Domain\ChurchRecords\Enums\RecordType;
 
 class ChurchRecord extends Model
 {
+    use HasCountyEnum;
+
     protected $guarded = [];
 
     protected $hidden = ['created_at', 'updated_at'];
 
-    protected $appends = ['sex_label', 'record_type_label'];
+    protected $appends = ['county_label', 'sex_label', 'record_type_label'];
 
     protected $dates = ['date'];
 

@@ -5,6 +5,7 @@ namespace Domain\Claims\Models;
 use Domain\Shared\Enums\Sex;
 use Domain\Shared\Enums\Race;
 use Domain\Shared\Models\Image;
+use Domain\Shared\Traits\HasCountyEnum;
 use Illuminate\Database\Eloquent\Model;
 use Domain\Claims\Models\ChambersburgClaimBuilding;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -12,11 +13,13 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class ChambersburgClaim extends Model
 {
+    use HasCountyEnum;
+
     protected $guarded = [];
 
     protected $hidden = ['created_at', 'updated_at'];
 
-    protected $appends = ['race_label', 'sex_label'];
+    protected $appends = ['county_label', 'race_label', 'sex_label'];
 
     protected $dates = ['claim_date'];
 

@@ -2,15 +2,20 @@
 
 namespace Domain\Censuses\Models;
 
+use Domain\Shared\Traits\HasCountyEnum;
 use Illuminate\Database\Eloquent\Model;
 
 class VeteranCensus extends Model
 {
+    use HasCountyEnum;
+
     protected $table = 'veteran_census';
 
     protected $guarded = [];
 
     protected $hidden = ['created_at', 'updated_at'];
+
+    protected $appends = ['county_label'];
 
     protected $dates = [
         'enlistment_date',
