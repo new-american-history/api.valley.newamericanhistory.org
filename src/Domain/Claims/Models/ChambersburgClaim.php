@@ -2,6 +2,8 @@
 
 namespace Domain\Claims\Models;
 
+use Domain\Shared\Enums\Sex;
+use Domain\Shared\Enums\Race;
 use Domain\Shared\Models\Image;
 use Illuminate\Database\Eloquent\Model;
 use Domain\Claims\Models\ChambersburgClaimBuilding;
@@ -13,6 +15,8 @@ class ChambersburgClaim extends Model
     protected $guarded = [];
 
     protected $hidden = ['created_at', 'updated_at'];
+
+    protected $appends = ['race_label', 'sex_label'];
 
     protected $dates = ['claim_date'];
 
@@ -55,4 +59,16 @@ class ChambersburgClaim extends Model
         'real_property',
         'amount_awarded',
     ];
+
+    protected function getRaceLabelAttribute(): ?string
+    {
+        $enum = Race::tryFrom($this->race);
+        return $enum->label ?? null;
+    }
+
+    protected function getSexLabelAttribute(): ?string
+    {
+        $enum = Sex::tryFrom($this->sex);
+        return $enum->label ?? null;
+    }
 }

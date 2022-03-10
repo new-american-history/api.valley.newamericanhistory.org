@@ -2,6 +2,8 @@
 
 namespace Domain\Censuses\Models;
 
+use Domain\Shared\Enums\Sex;
+use Domain\Shared\Enums\Race;
 use Illuminate\Database\Eloquent\Model;
 
 class PopulationCensus extends Model
@@ -11,6 +13,8 @@ class PopulationCensus extends Model
     protected $guarded = [];
 
     protected $hidden = ['created_at', 'updated_at'];
+
+    protected $appends = ['race_label', 'sex_label'];
 
     protected $dates = ['date_taken'];
 
@@ -69,4 +73,16 @@ class PopulationCensus extends Model
         'family_number',
         'head_number',
     ];
+
+    protected function getRaceLabelAttribute(): ?string
+    {
+        $enum = Race::tryFrom($this->race);
+        return $enum->label ?? null;
+    }
+
+    protected function getSexLabelAttribute(): ?string
+    {
+        $enum = Sex::tryFrom($this->sex);
+        return $enum->label ?? null;
+    }
 }

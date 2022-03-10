@@ -22,7 +22,6 @@ class ImportPopulationCensus extends BaseImportCommand
     protected $columnMap = [
         'age' => 'age',
         'birth_place' => 'birthplace',
-        'color' => 'race',
         'deaf_dumb' => 'disability',
         'district' => 'district',
         'dwelling_num' => 'dwelling_number',
@@ -36,9 +35,16 @@ class ImportPopulationCensus extends BaseImportCommand
         'persest' => 'personal_estate_value',
         'post_office' => 'post_office',
         'realest' => 'real_estate_value',
-        'sex' => 'sex',
         'subdistrict' => 'subdistrict',
         'suffix' => 'suffix',
+    ];
+
+    protected $raceMap = [
+        'b' => 'black',
+        'c' => 'colored',
+        'm' => 'mulatto',
+        'mulat' => 'mulatto',
+        'w' => 'white',
     ];
 
     public function handle()
@@ -72,6 +78,15 @@ class ImportPopulationCensus extends BaseImportCommand
                                         break;
                                     }
                                     $modelData['last_name'] = $value;
+                                    break;
+                                case 'color':
+                                    $value = strtolower($value) ?: null;
+                                    $modelData['race'] = $this->raceMap[$value] ?? null;
+                                    break;
+                                case 'sex':
+                                    if (!empty($value)) {
+                                        $modelData['sex'] = $value === 'f' ? 'female' : 'male';
+                                    }
                                     break;
                                 case 'occcode':
                                     $modelData['occupation_code'] = $value;
