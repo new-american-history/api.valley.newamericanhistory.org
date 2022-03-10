@@ -3,12 +3,15 @@
 namespace Domain\RegimentalMovements\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Domain\RegimentalMovements\Enums\State;
 use Domain\RegimentalMovements\Models\Regiment;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class RegimentalMovement extends Model
 {
     protected $guarded = [];
+
+    protected $appends = ['battle_state_label'];
 
     protected $dates = [
         'battle_start_date',
@@ -52,4 +55,10 @@ class RegimentalMovement extends Model
         'regiment.name',
         'regiment.name_in_dossiers',
     ];
+
+    protected function getBattleStateLabelAttribute(): ?string
+    {
+        $enum = State::tryFrom($this->battle_state);
+        return $enum->label ?? null;
+    }
 }
