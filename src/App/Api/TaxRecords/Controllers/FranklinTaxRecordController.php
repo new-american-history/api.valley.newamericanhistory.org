@@ -11,7 +11,7 @@ class FranklinTaxRecordController
     public function index(Request $request, FranklinTaxRecordIndexQuery $query)
     {
         return FranklinTaxRecordResource::collection(
-            $query->paginate($request->perpage ?? 50)
+            $query->paginate($request->perpage ?? 100)
         );
     }
 }

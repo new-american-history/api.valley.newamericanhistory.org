@@ -11,7 +11,7 @@ class AugustaTaxRecordController
     public function index(Request $request, AugustaTaxRecordIndexQuery $query)
     {
         return AugustaTaxRecordResource::collection(
-            $query->paginate($request->perpage ?? 50)
+            $query->paginate($request->perpage ?? 100)
         );
     }
 }

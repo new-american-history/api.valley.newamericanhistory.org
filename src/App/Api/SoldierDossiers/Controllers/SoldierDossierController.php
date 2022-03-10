@@ -11,7 +11,7 @@ class SoldierDossierController
     public function index(Request $request, SoldierDossierIndexQuery $query)
     {
         return SoldierDossierResource::collection(
-            $query->paginate($request->perpage ?? 50)
+            $query->paginate($request->perpage ?? 100)
         );
     }
 }

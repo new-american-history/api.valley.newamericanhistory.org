@@ -13,7 +13,7 @@ class ManufacturingCensusController
         ManufacturingCensusIndexQuery $query
     ) {
         return ManufacturingCensusResource::collection(
-            $query->paginate($request->perpage ?? 50)
+            $query->paginate($request->perpage ?? 100)
         );
     }
 }

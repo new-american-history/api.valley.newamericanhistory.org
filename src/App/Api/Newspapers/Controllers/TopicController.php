@@ -11,7 +11,7 @@ class TopicController
     public function index(Request $request, TopicIndexQuery $query)
     {
         return TopicResource::collection(
-            $query->paginate($request->perpage ?? 50)
+            $query->paginate($request->perpage ?? 100)
         );
     }
 }
