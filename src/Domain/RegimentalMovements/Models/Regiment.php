@@ -2,8 +2,8 @@
 
 namespace Domain\RegimentalMovements\Models;
 
+use Domain\Shared\Enums\State;
 use Illuminate\Database\Eloquent\Model;
-use Domain\RegimentalMovements\Enums\State;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Domain\RegimentalMovements\Models\RegimentalMovement;
 

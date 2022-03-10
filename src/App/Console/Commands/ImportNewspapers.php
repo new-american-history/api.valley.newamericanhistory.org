@@ -154,7 +154,6 @@ class ImportNewspapers extends BaseImportCommand
         $modelData = [];
         $modelData['name'] = $name;
         $modelData['city'] = self::getFirstElementValueByTagName($headerElement, 'city');
-        $modelData['frequency'] = self::getFirstElementValueByTagName($headerElement, 'frequency');
 
         if (preg_match('/\/va\.au/', $this->fileName)) {
             $modelData['county'] = 'augusta';
@@ -176,7 +175,17 @@ class ImportNewspapers extends BaseImportCommand
         $headerElement = self::getFirstElementByTagName($this->document, 'header');
         $dateElement = self::getFirstElementByTagName($headerElement, 'date');
 
-        $modelData['weekday'] = strtolower(self::getFirstElementValueByTagName($dateElement, 'weekday'));
+        $modelData['weekday'] = strtolower(self::getFirstElementValueByTagName($dateElement, 'weekday')) ?: null;
+
+        $frequency = self::getFirstElementValueByTagName($headerElement, 'frequency');
+
+        if ($frequency === 'bi-weekly') {
+            $modelData['frequency'] = 'biWeekly';
+        } elseif ($frequency === 'semi-weekly') {
+            $modelData['frequency'] = 'semiWeekly';
+        } else {
+            $modelData['frequency'] = strtolower($frequency) ?: null;
+        }
 
         if (!empty($dateElement->getAttribute('n'))) {
             $modelData['date'] = $dateElement->getAttribute('n');

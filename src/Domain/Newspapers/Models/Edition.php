@@ -2,7 +2,9 @@
 
 namespace Domain\Newspapers\Models;
 
+use Domain\Shared\Enums\Weekday;
 use Domain\Newspapers\Models\Page;
+use Domain\Newspapers\Enums\Frequency;
 use Domain\Newspapers\Models\Newspaper;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -15,6 +17,8 @@ class Edition extends Model
     protected $guarded = [];
 
     protected $hidden = ['created_at', 'updated_at', 'newspaper_id'];
+
+    protected $appends = ['frequency_label', 'weekday_label'];
 
     protected $dates = ['date'];
 
@@ -36,6 +40,7 @@ class Edition extends Model
     public static $exactFilters = [
         'newspaper_id',
         'source_file',
+        'frequency',
         'weekday',
 
         'newspaper.county',
@@ -71,4 +76,16 @@ class Edition extends Model
     public static $numericFilters = [
         'date',
     ];
+
+    protected function getFrequencyLabelAttribute(): ?string
+    {
+        $enum = Frequency::tryFrom($this->frequency);
+        return $enum->label ?? null;
+    }
+
+    protected function getWeekdayLabelAttribute(): ?string
+    {
+        $enum = Weekday::tryFrom($this->weekday);
+        return $enum->label ?? null;
+    }
 }

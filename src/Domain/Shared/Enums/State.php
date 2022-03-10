@@ -1,6 +1,6 @@
 <?php
 
-namespace Domain\RegimentalMovements\Enums;
+namespace Domain\Shared\Enums;
 
 use Spatie\Enum\Laravel\Enum;
 

@@ -5,6 +5,7 @@ namespace Domain\Newspapers\Models;
 use Domain\Newspapers\Models\Name;
 use Domain\Newspapers\Models\Page;
 use Domain\Newspapers\Models\Topic;
+use Domain\Newspapers\Enums\StoryType;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -17,6 +18,8 @@ class Story extends Model
     protected $guarded = [];
 
     protected $hidden = ['newspaper_page_id'];
+
+    protected $appends = ['type_label'];
 
     public $timestamps = false;
 
@@ -44,5 +47,11 @@ class Story extends Model
             'newspaper_story_id',
             'newspaper_topic_id'
         );
+    }
+
+    protected function getTypeLabelAttribute(): ?string
+    {
+        $enum = StoryType::tryFrom($this->type);
+        return $enum->label ?? null;
     }
 }

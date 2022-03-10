@@ -2,6 +2,7 @@
 
 namespace Domain\Newspapers\Models;
 
+use Domain\Shared\Enums\Chapter;
 use Domain\Newspapers\Models\Story;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -14,6 +15,8 @@ class Topic extends Model
     protected $guarded = [];
 
     protected $hidden = ['pivot', 'parent_id'];
+
+    protected $appends = ['chapter_label'];
 
     public $timestamps = false;
 
@@ -45,4 +48,10 @@ class Topic extends Model
         'name',
         'parent.name',
     ];
+
+    protected function getChapterLabelAttribute(): ?string
+    {
+        $enum = Chapter::tryFrom($this->chapter);
+        return $enum->label ?? null;
+    }
 }
