@@ -4,7 +4,7 @@ The Valley of the Shadow is a digital archive of primary sources that document t
 
 This codebase is built using [Laravel](https://laravel.com). It migrates the data from previous versions of the Valley project into a database and exposes an API that powers the new Valley of the Shadow. API endpoints are accessible at [api.valley.newamericanhistory.org/api](https://api.valley.newamericanhistory.org/api).
 
---
+---
 
 A version of the database (updated 2022-03-21) can be downloaded [here](https://api.valley.newamericanhistory.org/storage/data/api.valley.newamericanhistory.org.sql).
 
