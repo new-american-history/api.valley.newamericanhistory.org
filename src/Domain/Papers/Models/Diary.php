@@ -5,15 +5,20 @@ namespace Domain\Papers\Models;
 use Domain\Shared\Models\Note;
 use Domain\Shared\Models\Image;
 use Domain\Papers\Models\DiaryEntry;
+use Domain\Shared\Traits\HasCountyEnum;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Diary extends Model
 {
+    use HasCountyEnum;
+
     protected $guarded = [];
 
     protected $hidden = ['created_at', 'updated_at'];
+
+    protected $appends = ['county_label'];
 
     protected $dates = ['start_date', 'end_date'];
 

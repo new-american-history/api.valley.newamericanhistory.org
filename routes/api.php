@@ -32,7 +32,10 @@ Route::get('/battlefield-correspondence/{valley_id}', [BattlefieldCorrespondence
 
 Route::get('/chambersburg-claims', [ChambersburgClaimController::class, 'index']);
 Route::get('/church-records', [ChurchRecordController::class, 'index']);
+
 Route::get('/civil-war-images', [CivilWarImageController::class, 'index']);
+Route::get('/civil-war-images/{id}', [CivilWarImageController::class, 'show']);
+
 Route::get('/cohabitation-records', [CohabitationRecordController::class, 'index']);
 
 Route::get('/diaries', [DiaryController::class, 'index']);
@@ -61,6 +64,6 @@ Route::get('/slaveowning-census', [SlaveowningCensusController::class, 'index'])
 Route::get('/soldier-dossiers', [SoldierDossierController::class, 'index']);
 
 Route::get('/southern-claims-commission', [SouthernClaimsCommissionController::class, 'index']);
-Route::get('/southern-claims-commission/{id}', [SouthernClaimsCommissionController::class, 'show']);
+Route::get('/southern-claims-commission/{valley_id}', [SouthernClaimsCommissionController::class, 'show']);
 
 Route::get('/veteran-census', [VeteranCensusController::class, 'index']);

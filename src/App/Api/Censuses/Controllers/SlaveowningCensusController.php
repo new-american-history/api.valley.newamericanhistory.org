@@ -11,7 +11,7 @@ class SlaveowningCensusController
     public function index(Request $request, SlaveowningCensusIndexQuery $query)
     {
         return CensusResource::collection(
-            $query->paginate($request->perpage ?? 50)
+            $query->paginate($request->perpage ?? 100)
         );
     }
 }

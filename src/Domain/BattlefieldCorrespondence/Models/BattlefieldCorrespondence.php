@@ -3,16 +3,21 @@
 namespace Domain\BattlefieldCorrespondence\Models;
 
 use Domain\Shared\Models\Note;
+use Domain\Shared\Traits\HasCountyEnum;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class BattlefieldCorrespondence extends Model
 {
+    use HasCountyEnum;
+
     protected $table = 'battlefield_correspondence';
 
     protected $guarded = [];
 
     protected $hidden = ['created_at', 'updated_at'];
+
+    protected $appends = ['county_label'];
 
     protected $dates = ['date'];
 

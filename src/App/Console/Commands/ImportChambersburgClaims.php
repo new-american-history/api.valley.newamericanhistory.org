@@ -59,15 +59,19 @@ class ImportChambersburgClaims extends BaseImportCommand
                             $modelData['claim_date'] = self::getFormattedDate($value);
                             break;
                         case 'race':
-                            $modelData['race'] = $value === 'b' ? 'black' : 'white';
+                            if (!empty($value)) {
+                                $modelData['race'] = $value === 'b' ? 'black' : 'white';
+                            }
                             break;
                         case 'sex':
-                            $modelData['sex'] = $value === 'f' ? 'female' : 'male';
+                            if (!empty($value)) {
+                                $modelData['sex'] = $value === 'f' ? 'female' : 'male';
+                            }
                             break;
                         default:
                            $modelAttribute = $this->claimColumnMap[$columnName] ?? null;
                             if (!empty($modelAttribute)) {
-                                $modelData[$modelAttribute] = $value ?: null;
+                                $modelData[$modelAttribute] = $value;
                             }
                             break;
                     }

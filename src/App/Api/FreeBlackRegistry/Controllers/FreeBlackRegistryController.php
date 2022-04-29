@@ -11,7 +11,7 @@ class FreeBlackRegistryController
     public function index(Request $request, FreeBlackRegistryIndexQuery $query)
     {
         return FreeBlackRegistryResource::collection(
-            $query->paginate($request->perpage ?? 50)
+            $query->paginate($request->perpage ?? 100)
         );
     }
 }

@@ -11,7 +11,7 @@ class CohabitationRecordController
     public function index(Request $request, FamilyIndexQuery $query)
     {
         return FamilyResource::collection(
-            $query->paginate($request->perpage ?? 50)
+            $query->paginate($request->perpage ?? 100)
         );
     }
 }

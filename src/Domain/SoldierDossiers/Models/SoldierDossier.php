@@ -3,14 +3,19 @@
 namespace Domain\SoldierDossiers\Models;
 
 use Domain\Shared\Models\Image;
+use Domain\Shared\Traits\HasCountyEnum;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class SoldierDossier extends Model
 {
+    use HasCountyEnum;
+
     protected $guarded = [];
 
     protected $hidden = ['created_at', 'updated_at', 'image_id'];
+
+    protected $appends = ['county_label'];
 
     protected $dates = [
         'birthday',

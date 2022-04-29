@@ -11,7 +11,7 @@ class PopulationCensusController
     public function index(Request $request, PopulationCensusIndexQuery $query)
     {
         return CensusResource::collection(
-            $query->paginate($request->perpage ?? 50)
+            $query->paginate($request->perpage ?? 100)
         );
     }
 }

@@ -38,13 +38,13 @@ class ImportRegimentalMovements extends BaseImportCommand
     protected $stateMap = [
         'D.C.' => 'dc',
         'Md.' => 'maryland',
-        'N.C.' => 'north carolina',
+        'N.C.' => 'northCarolina',
         'PA' => 'pennsylvania',
         'Pa.' => 'pennsylvania',
         'VA' => 'virginia',
         'Va.' => 'virginia',
-        'W.Va. and Va.' => 'west virginia,virginia',
-        'W.Va.' => 'west virginia',
+        'W.Va. and Va.' => 'westVirginiaAndVirginia',
+        'W.Va.' => 'westVirginia',
     ];
 
     public function handle()

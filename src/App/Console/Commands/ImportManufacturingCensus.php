@@ -13,6 +13,8 @@ class ImportManufacturingCensus extends BaseImportCommand
 
     protected $description = 'Import data for the manufacturing census';
 
+    protected $census;
+
     protected $censusFiles = [
         'data/man_aug_60.xml',
         'data/man_aug_70.xml',
@@ -126,7 +128,7 @@ class ImportManufacturingCensus extends BaseImportCommand
                     }
 
                     $modelData['name'] = $modelData['name'] ?? implode(' ', array_filter([$firstName, $middleName, $lastName]));
-                    ManufacturingCensus::create($modelData);
+                    $this->census = ManufacturingCensus::create($modelData);
                 }
             }
 
@@ -157,12 +159,15 @@ class ImportManufacturingCensus extends BaseImportCommand
             foreach ($items as $item) {
                 if (!empty($item)) {
                     $modelData = [];
+                    $modelData['manufacturing_census_id'] = $this->census->id;
+
                     $columns = $item->getElementsByTagName('column');
 
                     foreach ($columns as $column) {
                         $columnName = $column->getAttribute('name');
+                        $value = self::getElementValue($column, ['0', '-']);
+
                         $modelAttribute = $columnMap[$columnName] ?? null;
-                        $value = self::getElementValue($column, [0]);
 
                         if (!empty($modelAttribute)) {
                             $modelData[$modelAttribute] = $value;
@@ -177,7 +182,9 @@ class ImportManufacturingCensus extends BaseImportCommand
                         }
                     }
 
-                    $modelClass::create($modelData);
+                    if (!empty($modelData['type']) || !empty($modelData['value'])) {
+                        $modelClass::create($modelData);
+                    }
                 }
             }
 
