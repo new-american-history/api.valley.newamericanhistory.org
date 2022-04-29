@@ -8,7 +8,7 @@ use App\Api\Newspapers\Controllers\NewspaperController;
 use App\Api\Censuses\Controllers\VeteranCensusController;
 use App\Api\Claims\Controllers\ChambersburgClaimController;
 use App\Api\Censuses\Controllers\PopulationCensusController;
-use App\Api\Censuses\Controllers\SlaveOwningCensusController;
+use App\Api\Censuses\Controllers\SlaveowningCensusController;
 use App\Api\ChurchRecords\Controllers\ChurchRecordController;
 use App\Api\Censuses\Controllers\AgriculturalCensusController;
 use App\Api\TaxRecords\Controllers\AugustaTaxRecordController;
@@ -57,7 +57,7 @@ Route::get('/newspaper-topics', [TopicController::class, 'index']);
 
 Route::get('/population-census', [PopulationCensusController::class, 'index']);
 Route::get('/regimental-movements', [RegimentalMovementController::class, 'index']);
-Route::get('/slaveowning-census', [SlaveOwningCensusController::class, 'index']);
+Route::get('/slaveowning-census', [SlaveowningCensusController::class, 'index']);
 Route::get('/soldier-dossiers', [SoldierDossierController::class, 'index']);
 
 Route::get('/southern-claims-commission', [SouthernClaimsCommissionController::class, 'index']);
