@@ -30,6 +30,8 @@ class NewspaperController
             ->where(['date' => "{$year}-{$month}-{$day}"])
             ->firstOrFail();
         $res = new EditionResource($edition);
-        return $res->toFull($request);
+
+        // Manually wrap to match other resources.
+        return response()->json(['data' => $res->toFull($request)]);
     }
 }

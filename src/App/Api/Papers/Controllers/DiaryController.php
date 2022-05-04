@@ -20,6 +20,8 @@ class DiaryController
     {
         $diary = Diary::where(['valley_id' => $valley_id])->firstOrFail();
         $res = new DiaryResource($diary);
-        return $res->toFull($request);
+
+        // Manually wrap to match other resources.
+        return response()->json(['data' => $res->toFull($request)]);
     }
 }

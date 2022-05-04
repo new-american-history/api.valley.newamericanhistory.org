@@ -22,6 +22,8 @@ class SouthernClaimsCommissionController
     {
         $claim = SouthernClaimsCommissionClaim::where(['valley_id' => $valley_id])->firstOrFail();
         $res = new SouthernClaimsCommissionClaimResource($claim);
-        return $res->toFull($request);
+
+        // Manually wrap to match other resources.
+        return response()->json(['data' => $res->toFull($request)]);
     }
 }
