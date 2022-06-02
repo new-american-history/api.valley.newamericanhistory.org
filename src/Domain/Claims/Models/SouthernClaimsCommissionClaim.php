@@ -40,6 +40,7 @@ class SouthernClaimsCommissionClaim extends Model
 
     public static $exactFilters = [
         'county',
+        'valley_id'
     ];
 
     public static $fuzzyFilters = [
