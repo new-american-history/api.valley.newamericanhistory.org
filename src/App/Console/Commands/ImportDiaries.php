@@ -86,7 +86,10 @@ class ImportDiaries extends BaseImportCommand
 
         foreach ($possibleNoteElements as $possibleNoteElement) {
             if (self::elementHasAttribute($possibleNoteElement, 'type', 'notes')) {
-                $noteIds = self::createNotes($possibleNoteElement->getElementsByTagName('div2'));
+                $possibleNotesElements = $possibleNoteElement->getElementsByTagName('note')
+                    ?? $possibleNoteElement->getElementsByTagName('div2');
+                $noteIds = self::createNotes($possibleNotesElements);
+
                 $this->diary->notes()->sync($noteIds);
                 break;
             }
@@ -151,15 +154,23 @@ class ImportDiaries extends BaseImportCommand
 
         foreach ($nodeList as $node) {
             if (self::elementHasAttribute($node, 'type', 'section')) {
+                $noteTag = 'div2';
+            } elseif (self::elementHasTag($node, 'note')) {
+                $noteTag = 'note';
+            }
+
+            if (!empty($noteTag)) {
                 $modelData = [];
                 $modelData['number'] = $node->getAttribute('n') ?: null;
 
                 $headElement = self::getFirstElementByTagName($node, 'head');
                 $modelData['headline'] = self::getElementValue($headElement);
 
-                self::removeChildElement($node, $headElement);
+                if (!empty($headElement)) {
+                    $node->removeChild($headElement);
+                }
 
-                $modelData['body'] = self::getElementHtml($this->document, $node, ['div2']);
+                $modelData['body'] = self::getElementHtml($this->document, $node, [$noteTag]);
 
                 $note = Note::create($modelData);
                 $noteIds[] = $note->id;

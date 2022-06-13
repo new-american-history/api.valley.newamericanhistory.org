@@ -18,6 +18,11 @@ class BaseImportCommand extends Command
             : !empty($element) && $element->getAttribute($attribute) === $value;
     }
 
+    public function elementHasTag($element, $tag)
+    {
+        return !empty($element) && $element->tagName === $tag;
+    }
+
     public function getBoolean($value)
     {
         $value = trim($value);
