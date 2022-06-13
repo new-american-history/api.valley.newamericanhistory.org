@@ -56,6 +56,7 @@ class Edition extends Model
         'newspaper.name',
         'newspaper.city',
         'newspaper.id',
+        'newspaper.abbreviation',
 
         'pages.description',
 
