@@ -197,7 +197,7 @@ class ImportNewspapers extends BaseImportCommand
         }
 
         $bodyElement = self::getFirstElementByTagName($this->document, 'paperBody');
-        $modelData['headline'] = self::getFirstElementValueByTagName($bodyElement, 'head');
+        $modelData['headline'] = self::getFirstElementValueByTagName($bodyElement, 'head', ['none']);
 
         $this->edition = Edition::updateOrCreate(['source_file' => $modelData['source_file']], $modelData);
     }
@@ -227,7 +227,7 @@ class ImportNewspapers extends BaseImportCommand
             $modelData['newspaper_page_id'] = $pageId;
             $modelData['weight'] = $index;
             $modelData['column'] = ltrim(self::getFirstElementValueByTagName($storyElement, 'column'), '0');
-            $modelData['headline'] = self::getFirstElementValueByTagName($storyElement, 'head');
+            $modelData['headline'] = self::getFirstElementValueByTagName($storyElement, 'head', ['none']);
             $modelData['summary'] = self::getFirstElementValueByTagName($storyElement, 'summary');
             $modelData['origin'] = self::getFirstElementValueByTagName($storyElement, 'origin');
             $modelData['excerpt'] = self::getFirstElementValueByTagName($storyElement, 'excerpt');
@@ -257,12 +257,14 @@ class ImportNewspapers extends BaseImportCommand
                 $modelData = [];
                 $modelData['newspaper_story_id'] = $storyId;
                 $modelData['weight'] = $index;
-                $modelData['prefix'] = self::getFirstElementValueByTagName($storyElement, 'pf');
-                $modelData['first_name'] = self::getFirstElementValueByTagName($storyElement, 'fn');
-                $modelData['last_name'] = self::getFirstElementValueByTagName($storyElement, 'ln');
-                $modelData['suffix'] = self::getFirstElementValueByTagName($storyElement, 'sf');
+                $modelData['prefix'] = self::getFirstElementValueByTagName($nameElement, 'pf');
+                $modelData['first_name'] = self::getFirstElementValueByTagName($nameElement, 'fn');
+                $modelData['last_name'] = self::getFirstElementValueByTagName($nameElement, 'ln');
+                $modelData['suffix'] = self::getFirstElementValueByTagName($nameElement, 'sf');
 
-                Name::create($modelData);
+                if (!empty($modelData['first_name']) || !empty($modelData['last_name'])) {
+                    Name::create($modelData);
+                }
             }
         }
     }

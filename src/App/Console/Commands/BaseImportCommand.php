@@ -99,10 +99,10 @@ class BaseImportCommand extends Command
         return null;
     }
 
-    public function getFirstElementValueByTagName($document, $tagName)
+    public function getFirstElementValueByTagName($document, $tagName, $nullValues = [])
     {
         $element = self::getFirstElementByTagName($document, $tagName);
-        return self::getElementValue($element);
+        return self::getElementValue($element, $nullValues);
     }
 
     public function getFormattedDate($value)
