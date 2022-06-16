@@ -35,6 +35,10 @@ class IndexQueryBuilder extends QueryBuilder
                         $query->where($f, '>=', $value);
                     });
 
+                    $l[] = AllowedFilter::callback($f . ':ne', function ($query, $value) use ($f) {
+                        $query->where($f, '!=', $value);
+                    });
+
                     $l[] = AllowedFilter::callback($f . ':lte', function ($query, $value) use ($f) {
                         $query->where($f, '<=', $value);
                     });

@@ -91,6 +91,12 @@ return [
         'array' => 'The :attribute must have at least :min items.',
     ],
     'multiple_of' => 'The :attribute must be a multiple of :value.',
+    'ne' => [
+        'numeric' => 'The :attribute must be not equal to :value.',
+        'file' => 'The :attribute must be not equal to :value kilobytes.',
+        'string' => 'The :attribute must be not equal to :value characters.',
+        'array' => 'The :attribute must not have :value items.',
+    ],
     'not_in' => 'The selected :attribute is invalid.',
     'not_regex' => 'The :attribute format is invalid.',
     'numeric' => 'The :attribute must be a number.',
