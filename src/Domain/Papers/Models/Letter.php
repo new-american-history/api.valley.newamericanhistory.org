@@ -38,6 +38,7 @@ class Letter extends Model
     public static $exactFilters = [
         'county',
         'valley_id',
+        'collection',
     ];
 
     public static $fuzzyFilters = [

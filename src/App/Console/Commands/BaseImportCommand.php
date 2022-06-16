@@ -60,7 +60,7 @@ class BaseImportCommand extends Command
         return $document ?? null;
     }
 
-    public function getElementHtml($document, $element, $tagsToRemove)
+    public function getElementHtml($document, $element, $tagsToRemove = [])
     {
         $html = $document->saveHTML($element);
         foreach ($tagsToRemove as $tag) {
@@ -68,6 +68,19 @@ class BaseImportCommand extends Command
         }
         $html = self::getNormalizedValue($html);
         return $html;
+    }
+
+    public function getElementsWithAttribute($parentElement, $tag, $attribute, $type)
+    {
+        $possibleElements = $parentElement->getElementsByTagName($tag);
+        $elements = [];
+
+        foreach ($possibleElements as $possibleElement) {
+            if (self::elementHasAttribute($possibleElement, $attribute, $type)) {
+                $elements[] = $possibleElement;
+            }
+        }
+        return $elements;
     }
 
     public function getElementValue($element, $nullValues = [])
@@ -93,7 +106,8 @@ class BaseImportCommand extends Command
         return $document->getElementsByTagName($tagName)->item(0) ?? null;
     }
 
-    public function getFirstElementWithAttribute($parentElement, $tag, $attribute, $type) {
+    public function getFirstElementWithAttribute($parentElement, $tag, $attribute, $type)
+    {
         $possibleElements = $parentElement->getElementsByTagName($tag);
 
         foreach ($possibleElements as $possibleElement) {
@@ -146,6 +160,7 @@ class BaseImportCommand extends Command
         $value = preg_replace('/<!--(.|\n)*-->/', '', $value);
         $value = str_replace("\n", ' ', $value);
         $value = preg_replace('/\s+/', ' ', $value);
+        $value = self::replaceTeiTags($value);
         $value = trim($value);
         return $value ?: null;
     }
@@ -160,5 +175,16 @@ class BaseImportCommand extends Command
     public function removeTags($value, $tag)
     {
         return preg_replace('/<\/?' . $tag . '[^>]*>/', '', $value);
+    }
+
+    public function replaceTeiTags($value)
+    {
+        $value = preg_replace('/<hi[^>]*>/', '<strong>', $value);
+        $value = preg_replace('/<\/hi[^>]*>/', '</strong>', $value);
+
+        $value = preg_replace('/<lb[^>]*\/?>/', '<br>', $value);
+        $value = preg_replace('/<\/lb[^>]*>/', '', $value);
+
+        return $value;
     }
 }

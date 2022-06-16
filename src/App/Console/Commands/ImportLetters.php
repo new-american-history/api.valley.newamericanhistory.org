@@ -48,76 +48,85 @@ class ImportLetters extends BaseImportCommand
     protected function handleLetter()
     {
         $document = $this->document;
-        $modelData = [];
-        $modelData['source_file'] = $this->fileName;
-        $modelData['valley_id'] = str_replace('.xml', '', $this->fileName);
-
-        $modelData['keywords'] = self::getKeywords($document);
-        $modelData['county'] = preg_match('/^FN?(\d+)\.xml$/', $this->fileName) ? 'franklin' : 'augusta';
-        $modelData['title'] = self::getFirstElementValueByTagName($document, 'title');
-        $modelData['author'] = self::getFirstElementValueByTagName($document, 'author');
-        $modelData['valley_notes'] = self::getValleyNotes();
 
         $frontElement = self::getFirstElementByTagName($document, 'front');
         $bodyElement = self::getFirstElementByTagName($document, 'body');
-        $headElement = self::getFirstElementByTagName($bodyElement, 'head');
-        $openerElement = self::getFirstElementByTagName($bodyElement, 'opener');
-        $closerElement = self::getFirstElementByTagName($bodyElement, 'closer');
-        $bodyDivElement = self::getFirstElementWithAttribute(
+        $bodyDivElements = self::getElementsWithAttribute(
             $bodyElement,
             'div1',
             'type',
             ['letter', 'statement', 'contract', 'testimony', 'report', 'section']
         );
 
-        if (!empty($frontElement)) {
-            $summaryElement = self::getFirstElementWithAttribute($frontElement, 'div1', 'type', 'summary');
-            $modelData['summary'] = !empty($summaryElement) ? self::getElementValue($summaryElement) : null;
+        foreach ($bodyDivElements as $index => $bodyDivElement) {
+            $modelData = [];
+            $modelData['source_file'] = $this->fileName;
+            $modelData['valley_id'] = str_replace('.xml', '', $this->fileName) . ($index !== 0 ? '-' . ($index + 1) : '');
+
+            $modelData['keywords'] = self::getKeywords($document);
+            $modelData['county'] = preg_match('/^FN?(\d+)\.xml$/', $this->fileName) ? 'franklin' : 'augusta';
+            $modelData['title'] = self::getFirstElementValueByTagName($document, 'title');
+            $modelData['author'] = self::getFirstElementValueByTagName($document, 'author');
+            $modelData['valley_notes'] = self::getValleyNotes();
+
+            $headElement = self::getFirstElementByTagName($bodyDivElement, 'head');
+            $openerElement = self::getFirstElementByTagName($bodyElement, 'opener');
+            $closerElement = self::getFirstElementByTagName($bodyElement, 'closer');
+
+            if (preg_match('/^freedmen/i', $modelData['title'])) {
+                $modelData['collection'] = 'freedmens-bureau';
+            }
+
+            if (!empty($frontElement)) {
+                $summaryElement = self::getFirstElementWithAttribute($frontElement, 'div1', 'type', 'summary');
+                $modelData['summary'] = !empty($summaryElement) ? self::getElementValue($summaryElement) : null;
+            }
+
+            if (!empty($headElement)) {
+                $modelData['headline'] = self::getElementHtml($document, $headElement, ['head', 'name']);
+
+                $recipientElement = self::getFirstElementWithAttribute($headElement, 'name', 'type', 'recipient');
+                $modelData['recipient'] = !empty($recipientElement) ? self::getElementValue($recipientElement) : null;
+
+                self::removeChildElement($bodyDivElement, $headElement);
+            }
+
+            if (!empty($openerElement)) {
+                $dateElement = self::getFirstElementByTagName($openerElement, 'date');
+                $modelData['date'] = !empty($dateElement)
+                    ? self::getFormattedDate($dateElement->getAttribute('value'))
+                    : null;
+                $modelData['dateline'] = !empty($dateElement)
+                    ? self::getElementValue($dateElement)
+                    : null;
+                $openerSaluteElement = self::getFirstElementByTagName($openerElement, 'salute');
+                $modelData['opening_salutation'] = self::getElementValue($openerSaluteElement);
+
+                $locationElement = self::getFirstElementWithAttribute($openerElement, 'name', 'type', 'place');
+                $modelData['location'] = !empty($locationElement) ? self::getElementHtml($document, $locationElement, ['name']) : null;
+
+                self::removeChildElement($bodyDivElement, $openerElement);
+            }
+
+            if (!empty($closerElement)) {
+                $closerSaluteElement = self::getFirstElementByTagName($closerElement, 'salute');
+                $modelData['closing_salutation'] = !empty($closerSaluteElement) ? self::getElementHtml($document, $closerSaluteElement, ['salute', 'p']) : null;
+
+                $signedElement = self::getFirstElementByTagName($closerElement, 'signed');
+                $modelData['signed'] = self::getElementHtml($document, $signedElement, ['signed']);
+
+                $postscriptElement = self::getFirstElementWithAttribute($closerElement, 'seg', 'type', 'postscript');
+                $modelData['postscript'] = !empty($postscriptElement) ? self::getElementValue($postscriptElement) : null;
+
+                self::removeChildElement($bodyDivElement, $closerElement);
+            }
+
+            $epigraphElement = self::getFirstElementWithAttribute($bodyElement, 'div1', 'type', 'epigraph');
+            $modelData['epigraph'] = !empty($epigraphElement) ? self::getElementHtml($document, $epigraphElement, ['div1', 'p']) : null;
+
+            $modelData['body'] = self::getElementHtml($document, $bodyDivElement, ['div\d']);
+            $this->letter = Letter::create($modelData);
         }
-
-        if (!empty($headElement)) {
-            $modelData['headline'] = self::getElementValue($headElement);
-
-            $recipientElement = self::getFirstElementWithAttribute($headElement, 'name', 'type', 'recipient');
-            $modelData['recipient'] = !empty($recipientElement) ? self::getElementValue($recipientElement) : null;
-
-            self::removeChildElement($bodyDivElement, $headElement);
-        }
-
-        if (!empty($openerElement)) {
-            $dateElement = self::getFirstElementByTagName($openerElement, 'date');
-            $modelData['date'] = !empty($dateElement)
-                ? self::getFormattedDate($dateElement->getAttribute('value'))
-                : null;
-            $modelData['dateline'] = !empty($dateElement)
-                ? self::getElementValue($dateElement)
-                : null;
-            $openerSaluteElement = self::getFirstElementByTagName($openerElement, 'salute');
-            $modelData['opening_salutation'] = self::getElementValue($openerSaluteElement);
-
-            $locationElement = self::getFirstElementWithAttribute($openerElement, 'name', 'type', 'place');
-            $modelData['location'] = !empty($locationElement) ? self::getElementValue($locationElement) : null;
-
-            self::removeChildElement($bodyDivElement, $openerElement);
-        }
-
-        if (!empty($closerElement)) {
-            $closerSaluteElement = self::getFirstElementByTagName($closerElement, 'salute');
-            $modelData['closing_salutation'] = self::getElementValue($closerSaluteElement);
-            $signedElement = self::getFirstElementByTagName($closerElement, 'signed');
-            $modelData['signed'] = self::getElementValue($signedElement);
-
-            $postscriptElement = self::getFirstElementWithAttribute($closerElement, 'seg', 'type', 'postscript');
-            $modelData['postscript'] = !empty($postscriptElement) ? self::getElementValue($postscriptElement) : null;
-
-            self::removeChildElement($bodyDivElement, $closerElement);
-        }
-
-        $epigraphElement = self::getFirstElementWithAttribute($bodyElement, 'div1', 'type', 'epigraph');
-        $modelData['epigraph'] = !empty($epigraphElement) ? self::getElementValue($epigraphElement) : null;
-
-        $modelData['body'] = self::getElementHtml($this->document, $bodyDivElement, ['div\d']);
-        $this->letter = Letter::create($modelData);
     }
 
     protected function handleNotes()

@@ -45,7 +45,7 @@ class ImportMemoryArticles extends BaseImportCommand
 
             $frontElement = self::getFirstElementByTagName($document, 'front');
             $summaryElement = self::getFirstElementWithAttribute($frontElement, 'div1', 'type', 'summary');
-            $modelData['summary'] = self::getElementHtml($document, $summaryElement, ['div1']);
+            $modelData['summary'] = self::getElementHtml($document, $summaryElement, ['div1', 'p']);
 
             MemoryArticle::create($modelData);
             $this->info('Imported memory article data (' . $fileName . ')');
