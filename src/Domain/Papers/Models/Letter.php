@@ -6,11 +6,12 @@ use Domain\Shared\Models\Note;
 use Domain\Shared\Models\Image;
 use Domain\Shared\Traits\HasCountyEnum;
 use Illuminate\Database\Eloquent\Model;
+use Domain\Shared\Traits\HasModernSpelling;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Letter extends Model
 {
-    use HasCountyEnum;
+    use HasCountyEnum, HasModernSpelling;
 
     protected $guarded = [];
 
@@ -22,6 +23,15 @@ class Letter extends Model
 
     protected $casts = [
         'keywords' => 'array',
+    ];
+
+    protected $modernFields = [
+        'body',
+        'closing_salutation',
+        'epigraph',
+        'headline',
+        'location',
+        'signed',
     ];
 
     public function images(): BelongsToMany
