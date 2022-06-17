@@ -34,6 +34,11 @@ class Letter extends Model
         'signed',
     ];
 
+    public function getSourceFileAttribute($value)
+    {
+        return !empty($value) ? url($value) : null;
+    }
+
     public function images(): BelongsToMany
     {
         return $this->belongsToMany(Image::class, 'letter_image')

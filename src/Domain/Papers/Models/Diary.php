@@ -26,6 +26,11 @@ class Diary extends Model
         'keywords' => 'array',
     ];
 
+    public function getSourceFileAttribute($value)
+    {
+        return !empty($value) ? url($value) : null;
+    }
+
     public function entries(): HasMany
     {
         return $this->hasMany(DiaryEntry::class)

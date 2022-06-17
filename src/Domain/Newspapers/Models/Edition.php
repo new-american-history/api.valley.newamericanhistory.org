@@ -26,6 +26,16 @@ class Edition extends Model
         'newspaper_id' => 'integer',
     ];
 
+    public function getPdfAttribute($value)
+    {
+        return !empty($value) ? url($value) : null;
+    }
+
+    public function getSourceFileAttribute($value)
+    {
+        return !empty($value) ? url($value) : null;
+    }
+
     public function newspaper(): BelongsTo
     {
         return $this->belongsTo(Newspaper::class);

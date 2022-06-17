@@ -26,6 +26,11 @@ class SouthernClaimsCommissionClaim extends Model
         'keywords' => 'array',
     ];
 
+    public function getSourceFileAttribute($value)
+    {
+        return !empty($value) ? url($value) : null;
+    }
+
     public function items(): HasMany
     {
         return $this->hasMany(SouthernClaimsCommissionItem::class, 'claim_id')

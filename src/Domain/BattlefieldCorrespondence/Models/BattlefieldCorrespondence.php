@@ -25,6 +25,11 @@ class BattlefieldCorrespondence extends Model
         'keywords' => 'array',
     ];
 
+    public function getSourceFileAttribute($value)
+    {
+        return !empty($value) ? url($value) : null;
+    }
+
     public function notes(): BelongsToMany
     {
         return $this->belongsToMany(Note::class);

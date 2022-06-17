@@ -20,6 +20,11 @@ class MemoryArticle extends Model
         'keywords' => 'array',
     ];
 
+    public function getSourceFileAttribute($value)
+    {
+        return !empty($value) ? url($value) : null;
+    }
+
     public static $exactFilters = [
         'county',
         'valley_id',
