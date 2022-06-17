@@ -6,37 +6,32 @@ trait HasModernSpelling
 {
     public function toArrayWithModernSpelling(): array
     {
-        $fields = array_keys($this->toArray());
-        $res = [];
-        foreach ($fields as $field) {
-            $res += self::getFieldArray($field);
-        }
-        return $res;
-    }
+        $result = [];
+        $modernResult = [];
 
-    protected function getFieldArray($field): array
-    {
-        if (in_array($field, $this->modernFields)) {
-            return [
-                $field => self::getOriginalFieldValue($field),
-                "{$field}_modern" => self::getModernFieldValue($field),
-            ];
-        } else {
-            return [$field => $this->$field];
+        $fields = array_keys($this->toArray());
+        foreach ($fields as $field) {
+            $result += [$field => self::getOriginalFieldValue($field)];
+            if (in_array($field, $this->modernFields)) {
+                $modernResult += [$field => self::getModernFieldValue($field)];
+            }
         }
+
+        $result['modern'] = $modernResult;
+        return $result;
     }
 
     protected function getOriginalFieldValue($field)
     {
         $value = $this->$field;
-        $value = preg_replace('/<orig.*?reg=\"([^\"]+)\".*?>([^<]*)<\/orig>/', '$2', $value);
+        $value = preg_replace('/<orig.*?reg=\"([^\"]*)\".*?>([^<]*)<\/orig>/', '$2', $value);
         return $value;
     }
 
     protected function getModernFieldValue($field)
     {
         $value = $this->$field;
-        $value = preg_replace('/<orig.*?reg=\"([^\"]+)\".*?>([^<]*)<\/orig>/', '$1', $value);
+        $value = preg_replace('/<orig.*?reg=\"([^\"]*)\".*?>([^<]*)<\/orig>/', '$1', $value);
         return $value;
     }
 }
