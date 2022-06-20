@@ -15,6 +15,7 @@ class DiaryIndexQuery extends IndexQueryBuilder
         parent::__construct($query, $request);
 
         $this->allowedFilters($this->mapAllowedFilters(Diary::class));
+        $this->allowedSorts($this->mapAllowedSorts(Diary::class));
         $this->defaultSort('start_date');
     }
 }

@@ -15,6 +15,7 @@ class MemoryArticleIndexQuery extends IndexQueryBuilder
         parent::__construct($query, $request);
 
         $this->allowedFilters($this->mapAllowedFilters(MemoryArticle::class));
+        $this->allowedSorts($this->mapAllowedSorts(MemoryArticle::class));
         $this->defaultSort('date');
     }
 }

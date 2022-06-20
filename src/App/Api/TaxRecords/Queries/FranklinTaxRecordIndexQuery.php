@@ -15,6 +15,7 @@ class FranklinTaxRecordIndexQuery extends IndexQueryBuilder
         parent::__construct($query, $request);
 
         $this->allowedFilters($this->mapAllowedFilters(FranklinTaxRecord::class));
+        $this->allowedSorts($this->mapAllowedSorts(FranklinTaxRecord::class));
         $this->defaultSort('last_name');
     }
 }

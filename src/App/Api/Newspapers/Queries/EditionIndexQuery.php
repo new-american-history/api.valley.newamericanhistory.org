@@ -26,6 +26,7 @@ class EditionIndexQuery extends IndexQueryBuilder
                 ]
             )
         );
+        $this->allowedSorts($this->mapAllowedSorts(Edition::class));
         $this->defaultSort('date');
     }
 }

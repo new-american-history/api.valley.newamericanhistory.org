@@ -15,6 +15,7 @@ class AugustaTaxRecordIndexQuery extends IndexQueryBuilder
         parent::__construct($query, $request);
 
         $this->allowedFilters($this->mapAllowedFilters(AugustaTaxRecord::class));
+        $this->allowedSorts($this->mapAllowedSorts(AugustaTaxRecord::class));
         $this->defaultSort('last_name');
     }
 }

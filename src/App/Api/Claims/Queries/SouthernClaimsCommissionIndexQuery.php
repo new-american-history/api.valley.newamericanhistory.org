@@ -15,6 +15,7 @@ class SouthernClaimsCommissionIndexQuery extends IndexQueryBuilder
         parent::__construct($query, $request);
 
         $this->allowedFilters($this->mapAllowedFilters(SouthernClaimsCommissionClaim::class));
+        $this->allowedSorts($this->mapAllowedSorts(SouthernClaimsCommissionClaim::class));
         $this->defaultSort('date');
     }
 }

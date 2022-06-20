@@ -16,5 +16,6 @@ class ManufacturingCensusIndexQuery extends IndexQueryBuilder
         parent::__construct($query, $request);
 
         $this->allowedFilters($this->mapAllowedFilters(ManufacturingCensus::class));
+        $this->allowedSorts($this->mapAllowedSorts(ManufacturingCensus::class));
     }
 }

@@ -15,6 +15,7 @@ class AgriculturalCensusIndexQuery extends IndexQueryBuilder
         parent::__construct($query, $request);
 
         $this->allowedFilters($this->mapAllowedFilters(AgriculturalCensus::class));
+        $this->allowedSorts($this->mapAllowedSorts(AgriculturalCensus::class));
         $this->defaultSort('last_name');
     }
 }

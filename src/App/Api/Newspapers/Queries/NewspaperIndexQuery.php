@@ -15,6 +15,7 @@ class NewspaperIndexQuery extends IndexQueryBuilder
         parent::__construct($query, $request);
 
         $this->allowedFilters($this->mapAllowedFilters(Newspaper::class));
+        $this->allowedSorts($this->mapAllowedSorts(Newspaper::class));
         $this->defaultSort('name');
     }
 }

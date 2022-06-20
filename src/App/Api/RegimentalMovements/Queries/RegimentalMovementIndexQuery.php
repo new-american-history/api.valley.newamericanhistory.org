@@ -15,6 +15,7 @@ class RegimentalMovementIndexQuery extends IndexQueryBuilder
         parent::__construct($query, $request);
 
         $this->allowedFilters($this->mapAllowedFilters(RegimentalMovement::class));
+        $this->allowedSorts($this->mapAllowedSorts(RegimentalMovement::class));
         $this->defaultSort('battle_start_date');
     }
 }

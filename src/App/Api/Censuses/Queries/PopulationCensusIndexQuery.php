@@ -15,5 +15,6 @@ class PopulationCensusIndexQuery extends IndexQueryBuilder
         parent::__construct($query, $request);
 
         $this->allowedFilters($this->mapAllowedFilters(PopulationCensus::class));
+        $this->allowedSorts($this->mapAllowedSorts(PopulationCensus::class));
     }
 }

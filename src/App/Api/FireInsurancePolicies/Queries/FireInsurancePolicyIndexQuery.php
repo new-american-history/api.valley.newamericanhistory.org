@@ -15,6 +15,7 @@ class FireInsurancePolicyIndexQuery extends IndexQueryBuilder
         parent::__construct($query, $request);
 
         $this->allowedFilters($this->mapAllowedFilters(FireInsurancePolicy::class));
+        $this->allowedSorts($this->mapAllowedSorts(FireInsurancePolicy::class));
         $this->defaultSort('id');
     }
 }

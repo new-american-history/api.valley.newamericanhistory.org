@@ -15,5 +15,6 @@ class SlaveowningCensusIndexQuery extends IndexQueryBuilder
         parent::__construct($query, $request);
 
         $this->allowedFilters($this->mapAllowedFilters(SlaveowningCensus::class));
+        $this->allowedSorts($this->mapAllowedSorts(SlaveowningCensus::class));
     }
 }

@@ -15,6 +15,7 @@ class ChambersburgClaimIndexQuery extends IndexQueryBuilder
         parent::__construct($query, $request);
 
         $this->allowedFilters($this->mapAllowedFilters(ChambersburgClaim::class));
+        $this->allowedSorts($this->mapAllowedSorts(ChambersburgClaim::class));
         $this->defaultSort('last_name');
     }
 }

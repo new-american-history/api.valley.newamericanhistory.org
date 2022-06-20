@@ -15,6 +15,7 @@ class ImageIndexQuery extends IndexQueryBuilder
         parent::__construct($query, $request);
 
         $this->allowedFilters($this->mapAllowedFilters(Image::class));
+        $this->allowedSorts($this->mapAllowedSorts(Image::class));
         $this->defaultSort('title');
     }
 }

@@ -15,6 +15,7 @@ class ChurchRecordIndexQuery extends IndexQueryBuilder
         parent::__construct($query, $request);
 
         $this->allowedFilters($this->mapAllowedFilters(ChurchRecord::class));
+        $this->allowedSorts($this->mapAllowedSorts(ChurchRecord::class));
         $this->defaultSort('date');
     }
 }

@@ -15,6 +15,7 @@ class FamilyIndexQuery extends IndexQueryBuilder
         parent::__construct($query, $request);
 
         $this->allowedFilters($this->mapAllowedFilters(Family::class));
+        $this->allowedSorts($this->mapAllowedSorts(Family::class));
         $this->defaultSort('husband_last_name');
     }
 }

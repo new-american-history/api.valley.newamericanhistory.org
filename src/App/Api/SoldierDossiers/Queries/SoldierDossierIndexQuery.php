@@ -15,6 +15,7 @@ class SoldierDossierIndexQuery extends IndexQueryBuilder
         parent::__construct($query, $request);
 
         $this->allowedFilters($this->mapAllowedFilters(SoldierDossier::class));
+        $this->allowedSorts($this->mapAllowedSorts(SoldierDossier::class));
         $this->defaultSort('last_name');
     }
 }

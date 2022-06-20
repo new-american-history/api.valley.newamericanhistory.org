@@ -15,6 +15,7 @@ class BattlefieldCorrespondenceIndexQuery extends IndexQueryBuilder
         parent::__construct($query, $request);
 
         $this->allowedFilters($this->mapAllowedFilters(BattlefieldCorrespondence::class));
+        $this->allowedSorts($this->mapAllowedSorts(BattlefieldCorrespondence::class));
         $this->defaultSort('date');
     }
 }

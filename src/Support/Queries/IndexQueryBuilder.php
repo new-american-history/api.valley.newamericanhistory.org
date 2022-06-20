@@ -3,6 +3,7 @@
 namespace Support\Queries;
 
 use Illuminate\Http\Request;
+use Spatie\QueryBuilder\AllowedSort;
 use Spatie\QueryBuilder\QueryBuilder;
 use Spatie\QueryBuilder\AllowedFilter;
 
@@ -50,5 +51,17 @@ class IndexQueryBuilder extends QueryBuilder
                 }, [])
                 : [],
         );
+    }
+
+    public function mapAllowedSorts($model)
+    {
+        $fields = \Schema::getColumnListing((new $model)->getTable());
+        $excludedSorts = $model::$excludedSorts ?? [];
+
+        return array_map(function ($field) use ($excludedSorts) {
+            if (!in_array($field, $excludedSorts)) {
+                return AllowedSort::field($field);
+            }
+        }, $fields);
     }
 }

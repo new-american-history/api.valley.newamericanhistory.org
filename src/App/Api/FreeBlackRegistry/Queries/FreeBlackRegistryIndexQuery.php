@@ -15,6 +15,7 @@ class FreeBlackRegistryIndexQuery extends IndexQueryBuilder
         parent::__construct($query, $request);
 
         $this->allowedFilters($this->mapAllowedFilters(FreeBlackRegistry::class));
+        $this->allowedSorts($this->mapAllowedSorts(FreeBlackRegistry::class));
         $this->defaultSort('id');
     }
 }

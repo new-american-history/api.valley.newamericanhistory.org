@@ -15,6 +15,7 @@ class LetterIndexQuery extends IndexQueryBuilder
         parent::__construct($query, $request);
 
         $this->allowedFilters($this->mapAllowedFilters(Letter::class));
+        $this->allowedSorts($this->mapAllowedSorts(Letter::class));
         $this->defaultSort('date');
     }
 }

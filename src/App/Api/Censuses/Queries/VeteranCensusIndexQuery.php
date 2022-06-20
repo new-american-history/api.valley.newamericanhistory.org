@@ -15,5 +15,6 @@ class VeteranCensusIndexQuery extends IndexQueryBuilder
         parent::__construct($query, $request);
 
         $this->allowedFilters($this->mapAllowedFilters(VeteranCensus::class));
+        $this->allowedSorts($this->mapAllowedSorts(VeteranCensus::class));
     }
 }

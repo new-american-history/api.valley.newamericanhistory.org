@@ -15,6 +15,7 @@ class TopicIndexQuery extends IndexQueryBuilder
         parent::__construct($query, $request);
 
         $this->allowedFilters($this->mapAllowedFilters(Topic::class));
+        $this->allowedSorts($this->mapAllowedSorts(Topic::class));
         $this->defaultSort('name');
     }
 }
