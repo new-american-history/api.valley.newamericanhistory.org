@@ -61,6 +61,7 @@ class ImportCivilWarImages extends BaseImportCommand
                             break;
                         case 'orig_location':
                             $value = self::getNormalizedString($value);
+                            $value = str_replace('\'', '', $value);
                             $originalSourceEnum = OriginalSource::tryFrom($value);
                             $modelData['original_source'] = $originalSourceEnum->value ?? null;
                             break;
