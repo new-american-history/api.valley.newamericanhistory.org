@@ -4,6 +4,7 @@ use App\Api\Papers\Controllers\DiaryController;
 use App\Api\Papers\Controllers\LetterController;
 use App\Api\Newspapers\Controllers\TopicController;
 use App\Api\Newspapers\Controllers\EditionController;
+use App\Api\Shared\Controllers\AutocompleteController;
 use App\Api\Newspapers\Controllers\NewspaperController;
 use App\Api\Censuses\Controllers\VeteranCensusController;
 use App\Api\Claims\Controllers\ChambersburgClaimController;
@@ -23,6 +24,12 @@ use App\Api\FreeBlackRegistry\Controllers\FreeBlackRegistryController;
 use App\Api\CohabitationRecords\Controllers\CohabitationRecordController;
 use App\Api\RegimentalMovements\Controllers\RegimentalMovementController;
 use App\Api\FireInsurancePolicies\Controllers\FireInsurancePolicyController;
+
+// Shared
+
+Route::get('autocomplete', [AutocompleteController::class, 'index']);
+
+// Models
 
 Route::get('/agricultural-census', [AgriculturalCensusController::class, 'index']);
 Route::get('/augusta-tax-records', [AugustaTaxRecordController::class, 'index']);
