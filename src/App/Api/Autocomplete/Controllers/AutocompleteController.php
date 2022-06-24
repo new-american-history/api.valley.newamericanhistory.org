@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Api\Shared\Controllers;
+namespace App\Api\Autocomplete\Controllers;
 
 use Illuminate\Http\Request;
 use Domain\Papers\Models\Diary;
