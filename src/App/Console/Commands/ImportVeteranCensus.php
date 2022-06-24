@@ -68,7 +68,7 @@ class ImportVeteranCensus extends BaseImportCommand
                                 $modelData['discharge_date'] = self::getFormattedDate($value);
                                 break;
                             default:
-                                $value = self::getElementValue($column);
+                                $value = self::getElementValue($column, ['[]']);
                                 $modelAttribute = $this->columnMap[$columnName] ?? null;
 
                                 if (!empty($modelAttribute)) {
