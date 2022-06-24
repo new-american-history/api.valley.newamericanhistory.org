@@ -119,7 +119,7 @@ Route::group(['prefix' => 'option-lists'], function () {
     Route::get('/soldier-dossier-enlistment-occupations', [SoldierDossierEnlistmentOccupationController::class, 'index']);
     Route::get('/soldier-dossier-enlistment-ranks', [SoldierDossierEnlistmentRankController::class, 'index']);
     Route::get('/soldier-dossier-regiments', [SoldierDossierRegimentController::class, 'index']);
-    Route::get('/states', [StateController::class, 'index']);]
+    Route::get('/states', [StateController::class, 'index']);
     Route::get('/veteran-census-locations', [VeteranCensusLocationController::class, 'index']);
     Route::get('/veteran-census-ranks', [VeteranCensusRankController::class, 'index']);
     Route::get('/veteran-census-regiments', [VeteranCensusRegimentController::class, 'index']);
