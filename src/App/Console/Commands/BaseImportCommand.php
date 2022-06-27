@@ -160,7 +160,6 @@ class BaseImportCommand extends Command
         $value = preg_replace('/<!--(.|\n)*-->/', '', $value);
         $value = str_replace("\n", ' ', $value);
         $value = preg_replace('/\s+/', ' ', $value);
-        $value = self::replaceTeiTags($value);
         $value = trim($value);
         return $value ?: null;
     }
@@ -175,16 +174,5 @@ class BaseImportCommand extends Command
     public function removeTags($value, $tag)
     {
         return preg_replace('/<\/?' . $tag . '[^>]*>/', '', $value);
-    }
-
-    public function replaceTeiTags($value)
-    {
-        $value = preg_replace('/<hi[^>]*>/', '<strong>', $value);
-        $value = preg_replace('/<\/hi[^>]*>/', '</strong>', $value);
-
-        $value = preg_replace('/<lb[^>]*\/?>/', '<br>', $value);
-        $value = preg_replace('/<\/lb[^>]*>/', '', $value);
-
-        return $value;
     }
 }

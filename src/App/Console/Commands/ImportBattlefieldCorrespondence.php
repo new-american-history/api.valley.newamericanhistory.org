@@ -70,10 +70,10 @@ class ImportBattlefieldCorrespondence extends BaseImportCommand
         }
 
         if (!empty($headElement)) {
-            $modelData['headline'] = self::getElementValue($headElement);
+            $modelData['headline'] = self::getElementHtml($document, $headElement, ['head', 'name']);
 
             $recipientElement = self::getFirstElementWithAttribute($headElement, 'name', 'type', 'recipient');
-            $modelData['recipient'] = !empty($recipientElement) ? self::getElementValue($recipientElement) : null;
+            $modelData['recipient'] = !empty($recipientElement) ? self::getElementHtml($document, $recipientElement, ['name']) : null;
 
             self::removeChildElement($bodyDivElement, $headElement);
         }
@@ -90,7 +90,7 @@ class ImportBattlefieldCorrespondence extends BaseImportCommand
             $modelData['opening_salutation'] = self::getElementValue($openerSaluteElement);
 
             $locationElement = self::getFirstElementWithAttribute($openerElement, 'name', 'type', 'place');
-            $modelData['location'] = !empty($locationElement) ? self::getElementValue($locationElement) : null;
+            $modelData['location'] = !empty($locationElement) ? self::getElementHtml($document, $locationElement, ['name']) : null;
 
             self::removeChildElement($bodyDivElement, $openerElement);
         }
@@ -98,11 +98,12 @@ class ImportBattlefieldCorrespondence extends BaseImportCommand
         if (!empty($closerElement)) {
             $closerSaluteElement = self::getFirstElementByTagName($closerElement, 'salute');
             $modelData['closing_salutation'] = self::getElementValue($closerSaluteElement);
+
             $signedElement = self::getFirstElementByTagName($closerElement, 'signed');
-            $modelData['signed'] = self::getElementValue($signedElement);
+            $modelData['signed'] = self::getElementHtml($document, $signedElement, ['signed']);
 
             $postscriptElement = self::getFirstElementWithAttribute($closerElement, 'seg', 'type', 'postscript');
-            $modelData['postscript'] = !empty($postscriptElement) ? self::getElementValue($postscriptElement) : null;
+            $modelData['postscript'] = !empty($postscriptElement) ? self::getElementHtml($document, $postscriptElement, ['seg']) : null;
 
             self::removeChildElement($bodyDivElement, $closerElement);
         }
