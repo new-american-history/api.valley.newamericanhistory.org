@@ -38,7 +38,7 @@ class MemoryArticle extends Model
         'keywords',
     ];
 
-    public static $numericFilters = [
+    public static $dateFilters = [
         'date',
     ];
 }

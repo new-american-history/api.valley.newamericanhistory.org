@@ -17,8 +17,6 @@ class AgriculturalCensus extends Model
 
     protected $appends = ['county_label'];
 
-    protected $dates = ['date_taken'];
-
     protected $casts = [
         'year' => 'integer',
         'number_on_page' => 'integer',

@@ -85,7 +85,7 @@ class Edition extends Model
         'pages.stories.topics.name',
     ];
 
-    public static $numericFilters = [
+    public static $dateFilters = [
         'date',
     ];
 

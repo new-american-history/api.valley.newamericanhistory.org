@@ -68,9 +68,12 @@ class SoldierDossier extends Model
     ];
 
     public static $numericFilters = [
+        'enlisted_age',
+    ];
+
+    public static $dateFilters = [
         'birthday',
         'enlisted_date',
-        'enlisted_age',
         'death_date',
         'awol_date',
         'captured_date',

@@ -52,11 +52,14 @@ class Family extends Model
     ];
 
     public static $numericFilters = [
-        'report_date',
         'husband_age',
         'wife_age',
         'number_of_children',
 
         'children.age',
+    ];
+
+    public static $dateFilters = [
+        'report_date',
     ];
 }

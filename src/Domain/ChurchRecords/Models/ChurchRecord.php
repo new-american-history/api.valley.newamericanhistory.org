@@ -36,7 +36,7 @@ class ChurchRecord extends Model
         'race',
     ];
 
-    public static $numericFilters = [
+    public static $dateFilters = [
         'date',
         'dob',
     ];

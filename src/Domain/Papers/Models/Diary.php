@@ -65,7 +65,7 @@ class Diary extends Model
         'entries.body',
     ];
 
-    public static $numericFilters = [
+    public static $dateFilters = [
         'start_date',
         'end_date',
     ];

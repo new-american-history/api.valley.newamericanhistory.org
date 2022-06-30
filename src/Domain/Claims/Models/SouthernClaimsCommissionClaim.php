@@ -62,10 +62,12 @@ class SouthernClaimsCommissionClaim extends Model
     ];
 
     public static $numericFilters = [
-        'date',
-
         'items.amount_claimed',
         'items.amount_allowed',
         'items.amount_disallowed',
+    ];
+
+    public static $dateFilters = [
+        'date',
     ];
 }
