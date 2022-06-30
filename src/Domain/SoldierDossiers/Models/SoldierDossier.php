@@ -49,6 +49,7 @@ class SoldierDossier extends Model
 
     public static $exactFilters = [
         'county',
+        'valley_id',
         'company',
         'transfer_company',
     ];
