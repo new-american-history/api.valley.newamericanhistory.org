@@ -38,6 +38,7 @@ class ImportSoldierDossiers extends BaseImportCommand
         'family_1860' => '1860_census_family_number',
         'first' => 'first_name',
         'hospital_record' => 'hospital_record',
+        'id_num' => 'valley_id',
         'kia_info' => 'kia_summary',
         'kia_place' => 'kia_location',
         'last' => 'last_name',
