@@ -64,6 +64,11 @@ class SoldierDossier extends Model
         'postwar_life',
         'enlisted_location',
         'enlisted_occupation',
+        'conscript_or_substitute',
+        'promotions',
+        'transfers',
+        'muster_record',
+        'hospital_record',
         'death_location',
         'burial_location',
     ];
