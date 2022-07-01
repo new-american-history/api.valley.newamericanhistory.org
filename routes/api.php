@@ -81,12 +81,12 @@ Route::get('/newspaper-editions', [EditionController::class, 'index']);
 Route::get('/newspaper-topics', [TopicController::class, 'index']);
 Route::get('/population-census', [PopulationCensusController::class, 'index']);
 Route::get('/regimental-movements', [RegimentalMovementController::class, 'index']);
-Route::get('/slaveowning-census', [SlaveowningCensusController::class, 'index']);
-Route::get('/soldier-dossiers', [SoldierDossierController::class, 'index']);
-Route::get('/soldier-dossiers/{valley_id}', [SoldierDossierController::class, 'show']);
+Route::get('/slaveowners-census', [SlaveowningCensusController::class, 'index']);
+Route::get('/soldiers-dossiers', [SoldierDossierController::class, 'index']);
+Route::get('/soldiers-dossiers/{valley_id}', [SoldierDossierController::class, 'show']);
 Route::get('/southern-claims-commission', [SouthernClaimsCommissionController::class, 'index']);
 Route::get('/southern-claims-commission/{valley_id}', [SouthernClaimsCommissionController::class, 'show']);
-Route::get('/veteran-census', [VeteranCensusController::class, 'index']);
+Route::get('/veterans-census', [VeteranCensusController::class, 'index']);
 
 // Autocomplete
 
@@ -114,14 +114,14 @@ Route::group(['prefix' => 'option-lists'], function () {
     Route::get('/regimental-movement-corps', [RegimentalMovementCorpsController::class, 'index']);
     Route::get('/regimental-movement-divisions', [RegimentalMovementDivisionController::class, 'index']);
     Route::get('/regimental-movement-regiments', [RegimentalMovementRegimentController::class, 'index']);
-    Route::get('/slaveowning-census-employer-locations', [SlaveowningCensusEmployerLocationController::class, 'index']);
-    Route::get('/soldier-dossier-companies', [SoldierDossierCompanyController::class, 'index']);
-    Route::get('/soldier-dossier-enlistment-locations', [SoldierDossierEnlistmentLocationController::class, 'index']);
-    Route::get('/soldier-dossier-enlistment-occupations', [SoldierDossierEnlistmentOccupationController::class, 'index']);
-    Route::get('/soldier-dossier-enlistment-ranks', [SoldierDossierEnlistmentRankController::class, 'index']);
-    Route::get('/soldier-dossier-regiments', [SoldierDossierRegimentController::class, 'index']);
+    Route::get('/slaveowners-census-employer-locations', [SlaveowningCensusEmployerLocationController::class, 'index']);
+    Route::get('/soldiers-dossier-companies', [SoldierDossierCompanyController::class, 'index']);
+    Route::get('/soldiers-dossier-enlistment-locations', [SoldierDossierEnlistmentLocationController::class, 'index']);
+    Route::get('/soldiers-dossier-enlistment-occupations', [SoldierDossierEnlistmentOccupationController::class, 'index']);
+    Route::get('/soldiers-dossier-enlistment-ranks', [SoldierDossierEnlistmentRankController::class, 'index']);
+    Route::get('/soldiers-dossier-regiments', [SoldierDossierRegimentController::class, 'index']);
     Route::get('/states', [StateController::class, 'index']);
-    Route::get('/veteran-census-locations', [VeteranCensusLocationController::class, 'index']);
-    Route::get('/veteran-census-ranks', [VeteranCensusRankController::class, 'index']);
-    Route::get('/veteran-census-regiments', [VeteranCensusRegimentController::class, 'index']);
+    Route::get('/veterans-census-locations', [VeteranCensusLocationController::class, 'index']);
+    Route::get('/veterans-census-ranks', [VeteranCensusRankController::class, 'index']);
+    Route::get('/veterans-census-regiments', [VeteranCensusRegimentController::class, 'index']);
 });
