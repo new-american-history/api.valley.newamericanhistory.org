@@ -3,13 +3,14 @@
 namespace Domain\BattlefieldCorrespondence\Models;
 
 use Domain\Shared\Models\Note;
+use Domain\Shared\Traits\HasTeiTags;
 use Domain\Shared\Traits\HasCountyEnum;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class BattlefieldCorrespondence extends Model
 {
-    use HasCountyEnum;
+    use HasCountyEnum, HasTeiTags;
 
     protected $table = 'battlefield_correspondence';
 
@@ -23,6 +24,15 @@ class BattlefieldCorrespondence extends Model
 
     protected $casts = [
         'keywords' => 'array',
+    ];
+
+    protected $teiFields = [
+        'body',
+        'headline',
+        'location',
+        'postscript',
+        'recipient',
+        'signed',
     ];
 
     public function getSourceFileAttribute($value)

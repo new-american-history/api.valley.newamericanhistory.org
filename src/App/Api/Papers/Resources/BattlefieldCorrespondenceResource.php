@@ -9,7 +9,7 @@ class BattlefieldCorrespondenceResource extends JsonResource
 {
     public function toArray($request)
     {
-        $res = parent::toArray($request);
+        $res = $this->resource->toArrayWithModernSpelling();
 
         $res += [
             'notes' => $this->notes && $this->notes->count() > 0
