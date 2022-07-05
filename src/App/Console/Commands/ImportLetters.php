@@ -179,14 +179,6 @@ class ImportLetters extends BaseImportCommand
         foreach ($nodeList as $node) {
             $modelData = [];
             $modelData['number'] = $node->getAttribute('n') ?: null;
-
-            $headElement = self::getFirstElementByTagName($node, 'head');
-            $modelData['headline'] = self::getElementValue($headElement);
-
-            if (!empty($headElement)) {
-                $node->removeChild($headElement);
-            }
-
             $modelData['body'] = self::getElementHtml($this->document, $node, ['note']);
 
             $note = Note::create($modelData);

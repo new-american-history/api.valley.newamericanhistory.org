@@ -162,14 +162,6 @@ class ImportDiaries extends BaseImportCommand
             if (!empty($noteTag)) {
                 $modelData = [];
                 $modelData['number'] = $node->getAttribute('n') ?: null;
-
-                $headElement = self::getFirstElementByTagName($node, 'head');
-                $modelData['headline'] = self::getElementValue($headElement);
-
-                if (!empty($headElement)) {
-                    $node->removeChild($headElement);
-                }
-
                 $modelData['body'] = self::getElementHtml($this->document, $node, [$noteTag]);
 
                 $note = Note::create($modelData);
