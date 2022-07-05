@@ -4,14 +4,14 @@ namespace Domain\Papers\Models;
 
 use Domain\Shared\Models\Note;
 use Domain\Shared\Models\Image;
+use Domain\Shared\Traits\HasTeiTags;
 use Domain\Shared\Traits\HasCountyEnum;
 use Illuminate\Database\Eloquent\Model;
-use Domain\Shared\Traits\HasModernSpelling;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Letter extends Model
 {
-    use HasCountyEnum, HasModernSpelling;
+    use HasCountyEnum, HasTeiTags;
 
     protected $guarded = [];
 
@@ -25,7 +25,7 @@ class Letter extends Model
         'keywords' => 'array',
     ];
 
-    protected $modernFields = [
+    protected $teiFields = [
         'body',
         'closing_salutation',
         'epigraph',

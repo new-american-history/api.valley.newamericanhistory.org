@@ -2,10 +2,13 @@
 
 namespace Domain\Shared\Models;
 
+use Domain\Shared\Traits\HasTeiTags;
 use Illuminate\Database\Eloquent\Model;
 
 class Note extends Model
 {
+    use HasTeiTags;
+
     protected $guarded = [];
 
     protected $hidden = ['created_at', 'updated_at', 'pivot'];
@@ -13,4 +16,6 @@ class Note extends Model
     protected $casts = [
         'number' => 'integer',
     ];
+
+    protected $teiFields = ['body'];
 }
