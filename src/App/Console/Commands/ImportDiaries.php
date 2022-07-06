@@ -112,7 +112,7 @@ class ImportDiaries extends BaseImportCommand
                 $modelData['date'] = self::getFormattedDate($node->getAttribute('n')) ?: null;
 
                 $headElement = self::getFirstElementByTagName($node, 'head');
-                $modelData['headline'] = self::getElementValue($headElement);
+                $modelData['headline'] = self::getElementHtml($this->document, $headElement, ['head']);
 
                 self::removeChildElement($node, $headElement);
 

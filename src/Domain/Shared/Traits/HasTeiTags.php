@@ -53,6 +53,8 @@ trait HasTeiTags
         }
 
         $value = self::removeTags($value, 'add');
+        $value = self::removeTags($value, 'dateRange');
+        $value = self::removeTags($value, 'name');
         $value = self::removeTags($value, 'note');
         $value = self::removeTags($value, 'pb');
         $value = self::removeTags($value, 'ref');

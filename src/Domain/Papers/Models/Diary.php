@@ -5,6 +5,7 @@ namespace Domain\Papers\Models;
 use Domain\Shared\Models\Note;
 use Domain\Shared\Models\Image;
 use Domain\Papers\Models\DiaryEntry;
+use Domain\Shared\Traits\HasTeiTags;
 use Domain\Shared\Traits\HasCountyEnum;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -12,7 +13,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Diary extends Model
 {
-    use HasCountyEnum;
+    use HasCountyEnum, HasTeiTags;
 
     protected $guarded = [];
 
@@ -22,6 +23,10 @@ class Diary extends Model
 
     protected $casts = [
         'keywords' => 'array',
+    ];
+
+    protected $teiFields = [
+        'bio',
     ];
 
     public function getSourceFileAttribute($value)
