@@ -80,6 +80,16 @@ trait HasManipulatedHtml
         return $element;
     }
 
+    public function handleRefTags($document, $element)
+    {
+        $referenceElements = $element->getElementsByTagName('ref');
+        foreach ($referenceElements as $referenceElement) {
+            $newElement = self::replaceTags($document, $referenceElement, 'ref', 'sup');
+            $referenceElement->parentNode->replaceChild($document->importNode($newElement, true), $referenceElement);
+        }
+        return $element;
+    }
+
     public function handleUnclearTags($document, $element)
     {
         $unclearElements = $element->getElementsByTagName('unclear');

@@ -33,6 +33,11 @@ class BattlefieldCorrespondence extends Model
         'signed',
     ];
 
+    protected $inlineTeiFields = [
+        'recipient',
+        'signed',
+    ];
+
     public function getSourceFileAttribute($value)
     {
         return !empty($value) ? url($value) : null;

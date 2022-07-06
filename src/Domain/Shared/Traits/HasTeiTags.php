@@ -30,7 +30,7 @@ trait HasTeiTags
     {
         $value = $this->$field;
         if (self::isTeiField($field)) {
-            $value = self::getCleanTeiValue($value);
+            $value = self::getCleanTeiValue($value, self::isInlineField($field));
         }
         $value = preg_replace('/<orig.*?reg=\"([^\"]*)\".*?>([^<]*)<\/orig>/', '$2', $value);
         return $value ?: null;
@@ -40,13 +40,13 @@ trait HasTeiTags
     {
         $value = $this->$field;
         if (self::isTeiField($field)) {
-            $value = self::getCleanTeiValue($value);
+            $value = self::getCleanTeiValue($value, self::isInlineField($field));
         }
         $value = preg_replace('/<orig.*?reg=\"([^\"]*)\".*?>([^<]*)<\/orig>/', '$1', $value);
         return $value ?: null;
     }
 
-    protected function getCleanTeiValue($value)
+    protected function getCleanTeiValue($value, $isInlineField)
     {
         if (empty($value)) {
             return null;
@@ -57,7 +57,6 @@ trait HasTeiTags
         $value = self::removeTags($value, 'name');
         $value = self::removeTags($value, 'note');
         $value = self::removeTags($value, 'pb');
-        $value = self::removeTags($value, 'ref');
         $value = self::removeTags($value, 'seg');
 
         $value = preg_replace('/<lb[^>]*\/?>/', '<br>', $value);
@@ -67,11 +66,21 @@ trait HasTeiTags
         $document = $element->ownerDocument;
 
         $element = self::removeTagsAndContents($element, 'figure');
-        $element = self::handleHiTags($document, $element);
         $element = self::handleEmphTags($document, $element);
+        $element = self::handleHiTags($document, $element);
+        $element = self::handleRefTags($document, $element);
         $element = self::handleUnclearTags($document, $element);
 
-        return self::getElementHtml($document, $element, ['body']);
+        if ($isInlineField) {
+            return self::getElementHtml($document, $element, ['body', 'p']);
+        } else {
+            return self::getElementHtml($document, $element, ['body']);
+        }
+    }
+
+    protected function isInlineField($field)
+    {
+        return !empty($this->inlineTeiFields) && in_array($field, $this->inlineTeiFields);
     }
 
     protected function isTeiField($field)
