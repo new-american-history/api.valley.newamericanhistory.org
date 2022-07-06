@@ -35,6 +35,9 @@ class SoldierDossier extends Model
         'valley_id',
         'company',
         'transfer_company',
+        'enlisted_location',
+        'enlisted_occupation',
+        'enlisted_rank',
     ];
 
     public static $fuzzyFilters = [
@@ -45,8 +48,6 @@ class SoldierDossier extends Model
         'personal_info',
         'prewar_life',
         'postwar_life',
-        'enlisted_location',
-        'enlisted_occupation',
         'conscript_or_substitute',
         'promotions',
         'transfers',

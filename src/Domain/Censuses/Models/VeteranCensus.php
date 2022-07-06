@@ -28,9 +28,9 @@ class VeteranCensus extends Model
     public static $exactFilters = [
         'county',
         'year',
+        'location',
         'family_number',
         'house_number',
-
         'company',
         'rank',
         'regiment',
@@ -39,9 +39,7 @@ class VeteranCensus extends Model
     public static $fuzzyFilters = [
         'first_name',
         'last_name',
-        'location',
         'post_office',
-
         'widow_name',
         'disability',
     ];

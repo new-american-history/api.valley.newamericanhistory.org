@@ -49,13 +49,13 @@ class Diary extends Model
     public static $exactFilters = [
         'county',
         'valley_id',
+        'author',
+        'keywords',
     ];
 
     public static $fuzzyFilters = [
         'title',
-        'author',
         'bio',
-        'keywords',
 
         'entries.headline',
         'entries.body',

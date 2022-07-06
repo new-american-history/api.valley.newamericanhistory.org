@@ -26,12 +26,15 @@ class SlaveowningCensus extends Model
         'male_slaves' => 'integer',
     ];
 
+    public static $exactFilters = [
+        'employer_location',
+    ];
+
     public static $fuzzyFilters = [
         'first_name',
         'last_name',
         'location',
         'employer_name',
-        'employer_location',
     ];
 
     public static $numericFilters = [

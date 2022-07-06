@@ -35,21 +35,21 @@ class FranklinTaxRecord extends Model
 
     public static $exactFilters = [
         'county',
+        'occupation',
+        'ward',
         'year',
-        'estate',
     ];
 
     public static $fuzzyFilters = [
         'first_name',
         'last_name',
         'other_name',
-        'residence',
     ];
 
     public static $numericFilters = [
         'county_tax_amount',
-        'state_tax_amount',
         'state_personal_tax_amount',
+        'state_tax_amount',
         'seated_acres',
         'value_per_seated_acre',
         'seated_land_value',

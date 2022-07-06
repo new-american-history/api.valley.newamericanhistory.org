@@ -39,13 +39,13 @@ class ManufacturingCensus extends Model
     public static $exactFilters = [
         'county',
         'year',
+        'business',
         'business_class',
+        'location',
     ];
 
     public static $fuzzyFilters = [
         'name',
-        'business',
-        'location',
         'machines',
 
         'materials.type',

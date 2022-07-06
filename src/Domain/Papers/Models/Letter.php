@@ -52,16 +52,16 @@ class Letter extends Model
         'county',
         'valley_id',
         'collection',
+        'author',
+        'keywords',
     ];
 
     public static $fuzzyFilters = [
         'title',
-        'author',
         'headline',
         'summary',
         'recipient',
         'location',
-        'keywords',
     ];
 
     public static $dateFilters = [

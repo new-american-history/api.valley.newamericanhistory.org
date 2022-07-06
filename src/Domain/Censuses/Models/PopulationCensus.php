@@ -43,7 +43,9 @@ class PopulationCensus extends Model
     public static $exactFilters = [
         'county',
         'year',
+        'birthplace',
         'sex',
+        'occupation',
         'race',
         'attended_school',
         'cannot_read',
@@ -57,8 +59,7 @@ class PopulationCensus extends Model
     public static $fuzzyFilters = [
         'first_name',
         'last_name',
-        'birthplace',
-        'occupation',
+
         'disability',
         'district',
         'subdistrict',
