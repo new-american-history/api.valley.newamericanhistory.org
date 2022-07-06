@@ -21,7 +21,7 @@ class AgriculturalCensus extends Model
         'year' => 'integer',
         'number_on_page' => 'integer',
         'page_number' => 'integer',
-        // 'wages_paid' => 'integer', // @todo ONCE WE MIGRATE TO `INT`
+        'wages_paid' => 'integer',
         'farm_value' => 'integer',
         'farm_implements_value' => 'integer',
         'forest_products_value' => 'integer',
@@ -91,7 +91,7 @@ class AgriculturalCensus extends Model
     ];
 
     public static $numericFilters = [
-        // 'wages_paid', // @todo ONCE WE MIGRATE TO `INT`
+        'wages_paid',
         'farm_value',
         'farm_implements_value',
         'forest_products_value',

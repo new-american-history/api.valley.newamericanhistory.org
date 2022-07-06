@@ -107,6 +107,10 @@ class ImportAgriculturalCensus extends BaseImportCommand
 
                         if (!empty($modelAttribute)) {
                             $value = self::getElementValue($column);
+
+                            if ($modelAttribute == 'wages_paid') {
+                                $value = is_numeric($value) ? $value : null;
+                            }
                             $modelData[$modelAttribute] = !empty($value) || $value === 0 ? $value : null;
                         }
                     }
