@@ -52,6 +52,7 @@ trait HasTeiTags
             return null;
         }
 
+        $value = self::removeTags($value, 'add');
         $value = self::removeTags($value, 'note');
         $value = self::removeTags($value, 'pb');
         $value = self::removeTags($value, 'ref');
@@ -65,6 +66,7 @@ trait HasTeiTags
 
         $element = self::removeTagsAndContents($element, 'figure');
         $element = self::handleHiTags($document, $element);
+        $element = self::handleEmphTags($document, $element);
         $element = self::handleUnclearTags($document, $element);
 
         return self::getElementHtml($document, $element, ['body']);

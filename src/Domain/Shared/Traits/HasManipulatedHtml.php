@@ -15,17 +15,11 @@ trait HasManipulatedHtml
 
     public function getDomDocumentWithHtml($html)
     {
-        $errorsToSkip = [
-            'Tag figure invalid',
-            'Tag hi invalid',
-            'Tag orig invalid',
-            'Tag unclear invalid',
-            'Unexpected end tag : p',
-        ];
+        $errorsToSkip = ['Unexpected end tag : p'];
         return self::getDomDocument($html, 'loadHTML', $errorsToSkip);
     }
 
-    public function getDomDocument($data, $function, $errorsToSkip = [])
+    public function getDomDocument($data, $function, $errorsToSkip = [], $skipInvalidTagErrors = true)
     {
         libxml_use_internal_errors(true);
 
@@ -33,7 +27,12 @@ trait HasManipulatedHtml
         $document->$function($data, LIBXML_HTML_NODEFDTD);
 
         foreach (libxml_get_errors() as $error) {
-            if (!in_array(trim($error->message), $errorsToSkip)) {
+            $isInvalidTagError = preg_match('/Tag \w+ invalid/', trim($error->message));
+
+            if (
+                !in_array(trim($error->message), $errorsToSkip) &&
+                !($skipInvalidTagErrors && $isInvalidTagError)
+            ) {
                 echo $error->message;
             }
         }
@@ -64,6 +63,19 @@ trait HasManipulatedHtml
         $value = preg_replace('/\s+/', ' ', $value);
         $value = trim($value);
         return $value ?: null;
+    }
+
+    public function handleEmphTags($document, $element)
+    {
+        $emphasizedElements = $element->getElementsByTagName('emph');
+        foreach ($emphasizedElements as $emphasizedElement) {
+            $rend = $emphasizedElement->getAttribute('rend');
+            $newTag = self::$hiTagElementMap[$rend] ?? 'i';
+
+            $newElement = self::replaceTags($document, $emphasizedElement, 'emph', $newTag);
+            $emphasizedElement->parentNode->replaceChild($document->importNode($newElement, true), $emphasizedElement);
+        }
+        return $element;
     }
 
     public function handleHiTags($document, $element)
