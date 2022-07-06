@@ -15,27 +15,16 @@ trait HasManipulatedHtml
 
     public function getDomDocumentWithHtml($html)
     {
-        $errorsToSkip = ['Unexpected end tag : p'];
-        return self::getDomDocument($html, 'loadHTML', $errorsToSkip);
+        return self::getDomDocument($html, 'loadHTML');
     }
 
-    public function getDomDocument($data, $function, $errorsToSkip = [], $skipInvalidTagErrors = true)
+    public function getDomDocument($data, $function)
     {
         libxml_use_internal_errors(true);
 
         $document = new DOMDocument();
         $document->$function($data, LIBXML_HTML_NODEFDTD);
 
-        foreach (libxml_get_errors() as $error) {
-            $isInvalidTagError = preg_match('/Tag \w+ invalid/', trim($error->message));
-
-            if (
-                !in_array(trim($error->message), $errorsToSkip) &&
-                !($skipInvalidTagErrors && $isInvalidTagError)
-            ) {
-                echo $error->message;
-            }
-        }
         libxml_use_internal_errors(false);
 
         return $document ?? null;
