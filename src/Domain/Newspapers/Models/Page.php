@@ -18,8 +18,6 @@ class Page extends Model
 
     public $timestamps = false;
 
-    protected $dates = ['date'];
-
     protected $casts = [
         'newspaper_edition_id' => 'integer',
         'number' => 'integer',

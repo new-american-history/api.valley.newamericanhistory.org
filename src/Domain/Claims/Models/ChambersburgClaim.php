@@ -53,7 +53,7 @@ class ChambersburgClaim extends Model
         'last_name',
     ];
 
-    public static $numbericFilters = [
+    public static $numericFilters = [
         'claim_number',
         'claim_date',
 
@@ -61,6 +61,10 @@ class ChambersburgClaim extends Model
         'personal_property',
         'real_property',
         'amount_awarded',
+    ];
+
+    public static $dateFilters = [
+        'claim_date',
     ];
 
     protected function getRaceLabelAttribute(): ?string

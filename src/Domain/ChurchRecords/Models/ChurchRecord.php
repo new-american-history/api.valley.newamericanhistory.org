@@ -17,7 +17,7 @@ class ChurchRecord extends Model
 
     protected $appends = ['county_label', 'sex_label', 'record_type_label'];
 
-    protected $dates = ['date'];
+    protected $dates = ['date', 'dob'];
 
     public static $exactFilters = [
         'county',

@@ -30,8 +30,6 @@ class RegimentalMovement extends Model
     public static $exactFilters = [
         'battle_state',
         'state',
-        'battle_start_date',
-        'battle_end_date',
         'regiment_id',
         'killed',
         'wounded',
@@ -54,6 +52,11 @@ class RegimentalMovement extends Model
 
         'regiment.name',
         'regiment.name_in_dossiers',
+    ];
+
+    public static $dateFilters = [
+        'battle_start_date',
+        'battle_end_date',
     ];
 
     protected function getBattleStateLabelAttribute(): ?string

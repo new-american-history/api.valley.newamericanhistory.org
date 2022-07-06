@@ -36,9 +36,6 @@ class VeteranCensus extends Model
         'family_number',
         'house_number',
 
-        'enlistment_date',
-        'discharge_date',
-
         'company',
         'rank',
         'regiment',
@@ -52,5 +49,10 @@ class VeteranCensus extends Model
 
         'widow_name',
         'disability',
+    ];
+
+    public static $dateFilters = [
+        'enlistment_date',
+        'discharge_date',
     ];
 }

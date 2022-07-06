@@ -51,8 +51,6 @@ class Diary extends Model
     public static $exactFilters = [
         'county',
         'valley_id',
-
-        'entries.date',
     ];
 
     public static $fuzzyFilters = [
@@ -68,5 +66,7 @@ class Diary extends Model
     public static $dateFilters = [
         'start_date',
         'end_date',
+
+        'entries.date',
     ];
 }

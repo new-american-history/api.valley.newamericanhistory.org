@@ -54,7 +54,6 @@ class PopulationCensus extends Model
         'mother_foreign_born',
         'marriage_month',
         'birth_month',
-        'date_taken'
     ];
 
     public static $fuzzyFilters = [
@@ -75,6 +74,10 @@ class PopulationCensus extends Model
         'dwelling_number',
         'family_number',
         'head_number',
+    ];
+
+    public static $dateFilters = [
+        'date_taken'
     ];
 
     protected function getRaceLabelAttribute(): ?string
