@@ -56,6 +56,9 @@ class IndexQueryBuilder extends QueryBuilder
                         if (strlen($value) === 4) {
                             $query->where($f, '>=', $value . '-01-01');
                             $query->where($f, '<=', $value . '-12-31');
+                        } elseif (strlen($value) === 7) {
+                            $query->where($f, '>=', $value . '-01');
+                            $query->where($f, '<=', $value . '-31');
                         } else {
                             $value = strtotime($value) ? date('Y-m-d', strtotime($value)) : $value;
                             $query->where($f, '=', $value);
@@ -65,6 +68,8 @@ class IndexQueryBuilder extends QueryBuilder
                     $l[] = AllowedFilter::callback($f . ':gt', function ($query, $value) use ($f) {
                         if (strlen($value) === 4) {
                             $query->where($f, '>', $value . '-12-31');
+                        } elseif (strlen($value) === 7) {
+                            $query->where($f, '>', $value . '-31');
                         } else {
                             $value = strtotime($value) ? date('Y-m-d', strtotime($value)) : $value;
                             $query->where($f, '>', $value);
@@ -73,6 +78,8 @@ class IndexQueryBuilder extends QueryBuilder
                     $l[] = AllowedFilter::callback($f . ':gte', function ($query, $value) use ($f) {
                         if (strlen($value) === 4) {
                             $query->where($f, '>=', $value . '-01-01');
+                        } elseif (strlen($value) === 7) {
+                            $query->where($f, '>=', $value . '-01');
                         } else {
                             $value = strtotime($value) ? date('Y-m-d', strtotime($value)) : $value;
                             $query->where($f, '>=', $value);
@@ -85,6 +92,11 @@ class IndexQueryBuilder extends QueryBuilder
                                 $query->where($f, '<=', $value . '-01-01')
                                     ->orWhere($f, '>=', $value . '-12-31');
                             });
+                        } elseif (strlen($value) === 7) {
+                            $query->where(function ($query) use ($f, $value) {
+                                $query->where($f, '<=', $value . '-01')
+                                    ->orWhere($f, '>=', $value . '-31');
+                            });
                         } else {
                             $value = strtotime($value) ? date('Y-m-d', strtotime($value)) : $value;
                             $query->where($f, '!=', $value);
@@ -94,6 +106,8 @@ class IndexQueryBuilder extends QueryBuilder
                     $l[] = AllowedFilter::callback($f . ':lte', function ($query, $value) use ($f) {
                         if (strlen($value) === 4) {
                             $query->where($f, '<=', $value . '-12-31');
+                        } elseif (strlen($value) === 7) {
+                            $query->where($f, '<=', $value . '-31');
                         } else {
                             $value = strtotime($value) ? date('Y-m-d', strtotime($value)) : $value;
                             $query->where($f, '<=', $value);
@@ -102,6 +116,8 @@ class IndexQueryBuilder extends QueryBuilder
                     $l[] = AllowedFilter::callback($f . ':lt', function ($query, $value) use ($f) {
                         if (strlen($value) === 4) {
                             $query->where($f, '<', $value . '-01-01');
+                        } elseif (strlen($value) === 7) {
+                            $query->where($f, '<', $value . '-01');
                         } else {
                             $value = strtotime($value) ? date('Y-m-d', strtotime($value)) : $value;
                             $query->where($f, '<', $value);
