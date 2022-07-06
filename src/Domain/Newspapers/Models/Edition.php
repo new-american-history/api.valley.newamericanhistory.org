@@ -20,8 +20,6 @@ class Edition extends Model
 
     protected $appends = ['frequency_label', 'weekday_label'];
 
-    protected $dates = ['date'];
-
     protected $casts = [
         'newspaper_id' => 'integer',
     ];

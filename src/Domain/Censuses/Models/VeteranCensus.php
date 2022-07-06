@@ -17,11 +17,6 @@ class VeteranCensus extends Model
 
     protected $appends = ['county_label'];
 
-    protected $dates = [
-        'enlistment_date',
-        'discharge_date',
-    ];
-
     protected $casts = [
         'year' => 'integer',
         'house_number' => 'integer',

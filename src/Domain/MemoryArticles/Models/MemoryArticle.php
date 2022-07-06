@@ -15,8 +15,6 @@ class MemoryArticle extends Model
 
     protected $appends = ['county_label'];
 
-    protected $dates = ['date'];
-
     protected $casts = [
         'year' => 'integer',
         'keywords' => 'array',

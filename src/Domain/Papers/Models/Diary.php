@@ -20,8 +20,6 @@ class Diary extends Model
 
     protected $appends = ['county_label'];
 
-    protected $dates = ['start_date', 'end_date'];
-
     protected $casts = [
         'keywords' => 'array',
     ];

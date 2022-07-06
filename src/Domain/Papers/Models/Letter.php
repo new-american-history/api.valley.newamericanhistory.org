@@ -19,8 +19,6 @@ class Letter extends Model
 
     protected $appends = ['county_label'];
 
-    protected $dates = ['date'];
-
     protected $casts = [
         'keywords' => 'array',
     ];

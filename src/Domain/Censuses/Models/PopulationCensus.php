@@ -19,8 +19,6 @@ class PopulationCensus extends Model
 
     protected $appends = ['county_label', 'race_label', 'sex_label'];
 
-    protected $dates = ['date_taken'];
-
     protected $casts = [
         'year' => 'integer',
         'age' => 'float',

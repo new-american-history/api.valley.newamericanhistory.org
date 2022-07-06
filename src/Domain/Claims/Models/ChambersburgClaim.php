@@ -21,8 +21,6 @@ class ChambersburgClaim extends Model
 
     protected $appends = ['county_label', 'race_label', 'sex_label'];
 
-    protected $dates = ['claim_date'];
-
     protected $casts = [
         'claim_number' => 'integer',
         'claim_total' => 'float',

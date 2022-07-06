@@ -19,8 +19,6 @@ class Family extends Model
 
     protected $appends = ['county_label'];
 
-    protected $dates = ['report_date'];
-
     protected $casts = [
         'family_id' => 'integer',
         'husband_age' => 'integer',

@@ -13,11 +13,6 @@ class RegimentalMovement extends Model
 
     protected $appends = ['battle_state_label'];
 
-    protected $dates = [
-        'battle_start_date',
-        'battle_end_date',
-    ];
-
     protected $casts = [
         'regiment_id' => 'integer',
     ];
