@@ -49,19 +49,19 @@ class Letter extends Model
     }
 
     public static $exactFilters = [
-        'county',
-        'valley_id',
-        'collection',
         'author',
+        'collection',
+        'county',
         'keywords',
+        'valley_id',
     ];
 
     public static $fuzzyFilters = [
-        'title',
         'headline',
-        'summary',
-        'recipient',
         'location',
+        'recipient',
+        'summary',
+        'title',
     ];
 
     public static $dateFilters = [

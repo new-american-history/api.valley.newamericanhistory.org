@@ -32,7 +32,7 @@ class FireInsurancePolicy extends Model
     ];
 
     public static $fuzzyFilters = [
-        'name',
         'description',
+        'name',
     ];
 }

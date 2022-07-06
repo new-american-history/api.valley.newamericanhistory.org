@@ -37,30 +37,30 @@ class ManufacturingCensus extends Model
     ];
 
     public static $exactFilters = [
-        'county',
-        'year',
         'business',
         'business_class',
+        'county',
         'location',
+        'year',
     ];
 
     public static $fuzzyFilters = [
-        'name',
         'machines',
+        'name',
 
         'materials.type',
         'products.type',
     ];
 
     public static $numericFilters = [
-        'months_active',
         'capital_invested',
-        'number_of_machines',
-        'female_hands',
-        'male_hands',
         'child_hands',
+        'female_hands',
         'female_wages',
+        'male_hands',
         'male_wages',
+        'months_active',
+        'number_of_machines',
         'total_wages',
 
         'materials.value',

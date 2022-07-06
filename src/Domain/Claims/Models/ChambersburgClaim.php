@@ -52,13 +52,12 @@ class ChambersburgClaim extends Model
     ];
 
     public static $numericFilters = [
-        'claim_number',
+        'amount_awarded',
         'claim_date',
-
+        'claim_number',
         'claim_total',
         'personal_property',
         'real_property',
-        'amount_awarded',
     ];
 
     public static $dateFilters = [

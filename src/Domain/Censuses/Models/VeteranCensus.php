@@ -26,26 +26,26 @@ class VeteranCensus extends Model
     ];
 
     public static $exactFilters = [
+        'company',
         'county',
-        'year',
-        'location',
         'family_number',
         'house_number',
-        'company',
+        'location',
         'rank',
         'regiment',
+        'year',
     ];
 
     public static $fuzzyFilters = [
+        'disability',
         'first_name',
         'last_name',
         'post_office',
         'widow_name',
-        'disability',
     ];
 
     public static $dateFilters = [
-        'enlistment_date',
         'discharge_date',
+        'enlistment_date',
     ];
 }

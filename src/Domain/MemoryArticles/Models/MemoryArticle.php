@@ -31,11 +31,11 @@ class MemoryArticle extends Model
     ];
 
     public static $fuzzyFilters = [
-        'title',
         'author',
-        'summary',
         'body',
         'keywords',
+        'summary',
+        'title',
     ];
 
     public static $dateFilters = [

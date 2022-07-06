@@ -25,33 +25,33 @@ class RegimentalMovement extends Model
     public static $exactFilters = [
         'battle_name',
         'battle_state',
-        'state',
+        'brigade',
         'corps',
         'division',
-        'brigade',
-        'regiment_id',
         'killed',
-        'wounded',
         'missing',
+        'regiment_id',
+        'state',
+        'wounded',
 
         'regiment.county',
-        'regiment.state',
         'regiment.name',
+        'regiment.state',
     ];
 
     public static $fuzzyFilters = [
-        'summary',
         'commander',
-        'regiment_strength',
-        'local_weather',
         'georgetown_weather',
+        'local_weather',
+        'regiment_strength',
+        'summary',
 
         'regiment.name_in_dossiers',
     ];
 
     public static $dateFilters = [
-        'battle_start_date',
         'battle_end_date',
+        'battle_start_date',
     ];
 
     protected function getBattleStateLabelAttribute(): ?string

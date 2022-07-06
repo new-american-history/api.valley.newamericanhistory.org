@@ -47,23 +47,23 @@ class Diary extends Model
     }
 
     public static $exactFilters = [
-        'county',
-        'valley_id',
         'author',
+        'county',
         'keywords',
+        'valley_id',
     ];
 
     public static $fuzzyFilters = [
-        'title',
         'bio',
+        'title',
 
-        'entries.headline',
         'entries.body',
+        'entries.headline',
     ];
 
     public static $dateFilters = [
-        'start_date',
         'end_date',
+        'start_date',
 
         'entries.date',
     ];

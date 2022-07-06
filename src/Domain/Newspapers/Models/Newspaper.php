@@ -30,8 +30,8 @@ class Newspaper extends Model
     ];
 
     public static $fuzzyFilters = [
-        'name',
         'city',
+        'name',
     ];
 
     protected function getStateLabelAttribute(): ?string

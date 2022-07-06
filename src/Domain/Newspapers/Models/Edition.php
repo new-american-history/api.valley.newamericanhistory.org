@@ -46,38 +46,38 @@ class Edition extends Model
     }
 
     public static $exactFilters = [
+        'frequency',
         'newspaper_id',
         'source_file',
-        'frequency',
         'weekday',
 
         'newspaper.county',
         'newspaper.state',
 
-        'pages.stories.type',
         'pages.stories.topics.id',
+        'pages.stories.type',
     ];
 
     public static $fuzzyFilters = [
         'headline',
 
-        'newspaper.name',
+        'newspaper.abbreviation',
         'newspaper.city',
         'newspaper.id',
-        'newspaper.abbreviation',
+        'newspaper.name',
 
         'pages.description',
 
-        'pages.stories.headline',
-        'pages.stories.summary',
         'pages.stories.body',
-        'pages.stories.origin',
         'pages.stories.excerpt',
+        'pages.stories.headline',
+        'pages.stories.origin',
+        'pages.stories.summary',
         'pages.stories.trailer',
 
-        'pages.stories.names.prefix',
         'pages.stories.names.first_name',
         'pages.stories.names.last_name',
+        'pages.stories.names.prefix',
         'pages.stories.names.suffix',
 
         'pages.stories.topics.name',

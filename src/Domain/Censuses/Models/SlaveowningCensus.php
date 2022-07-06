@@ -31,17 +31,17 @@ class SlaveowningCensus extends Model
     ];
 
     public static $fuzzyFilters = [
+        'employer_name',
         'first_name',
         'last_name',
         'location',
-        'employer_name',
     ];
 
     public static $numericFilters = [
-        'total_slaves',
         'black_slaves',
-        'mulatto_slaves',
         'female_slaves',
         'male_slaves',
+        'mulatto_slaves',
+        'total_slaves',
     ];
 }

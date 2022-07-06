@@ -30,8 +30,8 @@ class AugustaTaxRecord extends Model
 
     public static $exactFilters = [
         'county',
-        'year',
         'estate',
+        'year',
     ];
 
     public static $fuzzyFilters = [
@@ -43,11 +43,11 @@ class AugustaTaxRecord extends Model
 
     public static $numericFilters = [
         'acres',
-        'rods',
-        'poles',
         'building_value',
-        'lot_building_value',
-        'tax_amount',
         'city_tax_amount',
+        'lot_building_value',
+        'poles',
+        'rods',
+        'tax_amount',
     ];
 }

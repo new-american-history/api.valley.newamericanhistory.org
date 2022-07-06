@@ -37,22 +37,22 @@ class Family extends Model
     ];
 
     public static $fuzzyFilters = [
-        'residence',
+        'husband_birthplace',
         'husband_first_name',
         'husband_last_name',
+        'husband_occupation',
+        'residence',
+        'wife_birthplace',
         'wife_first_name',
         'wife_last_name',
-        'husband_birthplace',
-        'wife_birthplace',
-        'husband_occupation',
 
         'children.name',
     ];
 
     public static $numericFilters = [
         'husband_age',
-        'wife_age',
         'number_of_children',
+        'wife_age',
 
         'children.age',
     ];

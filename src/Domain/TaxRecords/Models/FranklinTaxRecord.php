@@ -48,16 +48,16 @@ class FranklinTaxRecord extends Model
 
     public static $numericFilters = [
         'county_tax_amount',
+        'number_seated_lots',
+        'number_unseated_lots',
+        'seated_acres',
+        'seated_land_value',
+        'seated_lot_value',
         'state_personal_tax_amount',
         'state_tax_amount',
-        'seated_acres',
-        'value_per_seated_acre',
-        'seated_land_value',
         'unseated_acres',
         'unseated_land_value',
-        'number_seated_lots',
-        'seated_lot_value',
-        'number_unseated_lots',
         'unseated_lot_value',
+        'value_per_seated_acre',
     ];
 }

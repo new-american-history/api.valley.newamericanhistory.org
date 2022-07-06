@@ -35,21 +35,21 @@ class Image extends Model
     }
 
     public static $exactFilters = [
-        'date',
         'artist',
-        'image_type',
-        'person_name',
-        'location',
-        'regiment',
-        'original_source',
         'contributing_source',
+        'date',
+        'image_type',
+        'location',
+        'original_source',
+        'person_name',
+        'regiment',
 
         'subject.name',
     ];
 
     public static $fuzzyFilters = [
-        'title',
         'description',
+        'title',
     ];
 
     protected function getImageTypeLabelAttribute(): ?string

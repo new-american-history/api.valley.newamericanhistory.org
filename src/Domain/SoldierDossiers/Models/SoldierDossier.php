@@ -31,30 +31,30 @@ class SoldierDossier extends Model
     }
 
     public static $exactFilters = [
-        'county',
-        'valley_id',
         'company',
-        'transfer_company',
+        'county',
         'enlisted_location',
         'enlisted_occupation',
         'enlisted_rank',
+        'transfer_company',
+        'valley_id',
     ];
 
     public static $fuzzyFilters = [
-        'first_name',
-        'last_name',
-        'regiment',
         'birthplace',
-        'personal_info',
-        'prewar_life',
-        'postwar_life',
-        'conscript_or_substitute',
-        'promotions',
-        'transfers',
-        'muster_record',
-        'hospital_record',
-        'death_location',
         'burial_location',
+        'conscript_or_substitute',
+        'death_location',
+        'first_name',
+        'hospital_record',
+        'last_name',
+        'muster_record',
+        'personal_info',
+        'postwar_life',
+        'prewar_life',
+        'promotions',
+        'regiment',
+        'transfers',
     ];
 
     public static $numericFilters = [
@@ -62,15 +62,15 @@ class SoldierDossier extends Model
     ];
 
     public static $dateFilters = [
-        'birthday',
-        'enlisted_date',
-        'death_date',
         'awol_date',
+        'birthday',
         'captured_date',
+        'death_date',
         'deserted_date',
         'died_of_disease_date',
         'died_of_wounds_date',
         'discharged_date',
+        'enlisted_date',
         'kia_date',
         'mia_date',
         'paroled_date',

@@ -18,12 +18,12 @@ class FreeBlackRegistry extends Model
     protected $appends = ['county_label'];
 
     public static $exactFilters = [
-        'county',
         'city',
+        'county',
     ];
 
     public static $fuzzyFilters = [
-        'name',
         'description',
+        'name',
     ];
 }

@@ -41,19 +41,19 @@ class PopulationCensus extends Model
     ];
 
     public static $exactFilters = [
-        'county',
-        'year',
-        'birthplace',
-        'sex',
-        'occupation',
-        'race',
         'attended_school',
+        'birth_month',
+        'birthplace',
         'cannot_read',
         'cannot_write',
+        'county',
         'father_foreign_born',
-        'mother_foreign_born',
         'marriage_month',
-        'birth_month',
+        'mother_foreign_born',
+        'occupation',
+        'race',
+        'sex',
+        'year',
     ];
 
     public static $fuzzyFilters = [

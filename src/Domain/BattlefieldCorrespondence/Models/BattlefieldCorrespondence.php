@@ -49,14 +49,14 @@ class BattlefieldCorrespondence extends Model
     ];
 
     public static $fuzzyFilters = [
-        'title',
         'author',
-        'summary',
         'headline',
-        'recipient',
+        'keywords',
         'location',
         'postscript',
-        'keywords',
+        'recipient',
+        'summary',
+        'title',
     ];
 
     public static $dateFilters = [

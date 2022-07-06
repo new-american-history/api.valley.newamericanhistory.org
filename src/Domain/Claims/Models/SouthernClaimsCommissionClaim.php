@@ -47,11 +47,11 @@ class SouthernClaimsCommissionClaim extends Model
     ];
 
     public static $fuzzyFilters = [
-        'title',
         'author',
-        'summary',
         'commission_summary',
         'keywords',
+        'summary',
+        'title',
 
         'items.item',
 
@@ -60,8 +60,8 @@ class SouthernClaimsCommissionClaim extends Model
     ];
 
     public static $numericFilters = [
-        'items.amount_claimed',
         'items.amount_allowed',
+        'items.amount_claimed',
         'items.amount_disallowed',
     ];
 
