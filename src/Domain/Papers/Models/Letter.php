@@ -32,11 +32,6 @@ class Letter extends Model
         'signed',
     ];
 
-    protected $inlineTeiFields = [
-        'closing_salutation',
-        'signed',
-    ];
-
     public function getSourceFileAttribute($value)
     {
         return !empty($value) ? url($value) : null;

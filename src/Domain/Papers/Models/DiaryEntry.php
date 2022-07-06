@@ -25,10 +25,6 @@ class DiaryEntry extends Model
         'headline',
     ];
 
-    protected $inlineTeiFields = [
-        'headline',
-    ];
-
     public function diary(): BelongsTo
     {
         return $this->belongsTo(Diary::class);

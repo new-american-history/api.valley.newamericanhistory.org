@@ -30,7 +30,7 @@ trait HasTeiTags
     {
         $value = $this->$field;
         if (self::isTeiField($field)) {
-            $value = self::getCleanTeiValue($value, self::isInlineField($field));
+            $value = self::getCleanTeiValue($value);
         }
         $value = preg_replace('/<orig.*?reg=\"([^\"]*)\".*?>([^<]*)<\/orig>/', '$2', $value);
         return $value ?: null;
@@ -40,13 +40,13 @@ trait HasTeiTags
     {
         $value = $this->$field;
         if (self::isTeiField($field)) {
-            $value = self::getCleanTeiValue($value, self::isInlineField($field));
+            $value = self::getCleanTeiValue($value);
         }
         $value = preg_replace('/<orig.*?reg=\"([^\"]*)\".*?>([^<]*)<\/orig>/', '$1', $value);
         return $value ?: null;
     }
 
-    protected function getCleanTeiValue($value, $isInlineField)
+    protected function getCleanTeiValue($value)
     {
         if (empty($value)) {
             return null;
@@ -71,16 +71,7 @@ trait HasTeiTags
         $element = self::handleRefTags($document, $element);
         $element = self::handleUnclearTags($document, $element);
 
-        if ($isInlineField) {
-            return self::getElementHtml($document, $element, ['body', 'p']);
-        } else {
-            return self::getElementHtml($document, $element, ['body']);
-        }
-    }
-
-    protected function isInlineField($field)
-    {
-        return !empty($this->inlineTeiFields) && in_array($field, $this->inlineTeiFields);
+        return self::getElementHtml($document, $element, ['body']);
     }
 
     protected function isTeiField($field)
