@@ -115,7 +115,9 @@ class ImportAgriculturalCensus extends BaseImportCommand
                         }
                     }
 
-                    AgriculturalCensus::create($modelData);
+                    if (!empty($modelData['first_name']) || !empty($modelData['last_name'])) {
+                        AgriculturalCensus::create($modelData);
+                    }
                 }
             }
 
