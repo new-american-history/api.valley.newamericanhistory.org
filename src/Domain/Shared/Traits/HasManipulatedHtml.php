@@ -57,11 +57,14 @@ trait HasManipulatedHtml
     public function handleEmphTags($document, $element)
     {
         $emphasizedElements = $element->getElementsByTagName('emph');
-        foreach ($emphasizedElements as $emphasizedElement) {
+
+        while (!empty($emphasizedElements) && !empty($emphasizedElements->item(0))) {
+            $emphasizedElement = $emphasizedElements->item(0);
+
             $rend = $emphasizedElement->getAttribute('rend');
             $newTag = self::$hiTagElementMap[$rend] ?? 'i';
 
-            $newElement = self::replaceTags($document, $emphasizedElement, 'emph', $newTag);
+            $newElement = self::replaceElementTags($document, $emphasizedElement, 'emph', $newTag);
             $emphasizedElement->parentNode->replaceChild($document->importNode($newElement, true), $emphasizedElement);
         }
         return $element;
@@ -70,22 +73,15 @@ trait HasManipulatedHtml
     public function handleHiTags($document, $element)
     {
         $highlightedElements = $element->getElementsByTagName('hi');
-        foreach ($highlightedElements as $highlightedElement) {
+
+        while (!empty($highlightedElements) && !empty($highlightedElements->item(0))) {
+            $highlightedElement = $highlightedElements->item(0);
+
             $rend = $highlightedElement->getAttribute('rend');
-            $newTag = self::$hiTagElementMap[$rend] ?? 'b';
+            $newTag = self::$hiTagElementMap[$rend] ?? 'u';
 
-            $newElement = self::replaceTags($document, $highlightedElement, 'hi', $newTag);
+            $newElement = self::replaceElementTags($document, $highlightedElement, 'hi', $newTag);
             $highlightedElement->parentNode->replaceChild($document->importNode($newElement, true), $highlightedElement);
-        }
-        return $element;
-    }
-
-    public function handleRefTags($document, $element)
-    {
-        $referenceElements = $element->getElementsByTagName('ref');
-        foreach ($referenceElements as $referenceElement) {
-            $newElement = self::replaceTags($document, $referenceElement, 'ref', 'sup');
-            $referenceElement->parentNode->replaceChild($document->importNode($newElement, true), $referenceElement);
         }
         return $element;
     }
@@ -94,14 +90,15 @@ trait HasManipulatedHtml
     {
         $unclearElements = $element->getElementsByTagName('unclear');
 
-        foreach ($unclearElements as $unclearElement) {
+        while (!empty($unclearElements) && !empty($unclearElements->item(0))) {
+            $unclearElement = $unclearElements->item(0);
+
             $value = $unclearElement->nodeValue;
-            $newValue = '<i>[Unclear: ' . $value . ']</i>';
+            $newValue = '<i>[Unclear' . (!empty($value) ? (': ' . $value) : '') . ']</i>';
 
             $newElement = self::makeElementFromValue($newValue);
             $unclearElement->parentNode->replaceChild($document->importNode($newElement, true), $unclearElement);
         }
-
         return $element;
     }
 
@@ -132,7 +129,14 @@ trait HasManipulatedHtml
         return $element;
     }
 
-    public function replaceTags($document, $element, $originalTag, $newTag)
+    public function replaceTags($value, $originalTag, $newTag)
+    {
+        $value = preg_replace('/<' . $originalTag . '[^>]*>/', '<' . $newTag . '>', $value);
+        $value = preg_replace('/<\/' . $originalTag . '[^>]*>/', '</' . $newTag . '>', $value);
+        return $value;
+    }
+
+    public function replaceElementTags($document, $element, $originalTag, $newTag)
     {
         $value = self::getElementHtml($document, $element);
         $value = preg_replace('/<' . $originalTag . '[^>]*>/', '<' . $newTag . '>', $value);

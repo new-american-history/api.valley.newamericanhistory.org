@@ -59,8 +59,9 @@ trait HasTeiTags
         $value = self::removeTags($value, 'pb');
         $value = self::removeTags($value, 'seg');
 
-        $value = preg_replace('/<lb[^>]*\/?>/', '<br>', $value);
-        $value = preg_replace('/<\/lb[^>]*>/', '', $value);
+        $value = self::replaceTags($value, 'lb', 'br');
+        $value = self::replaceTags($value, 'ref', 'sup');
+        $value = str_replace('</br>', '', $value);
 
         $element = self::makeElementFromValue($value);
         $document = $element->ownerDocument;
@@ -68,7 +69,6 @@ trait HasTeiTags
         $element = self::removeTagsAndContents($element, 'figure');
         $element = self::handleEmphTags($document, $element);
         $element = self::handleHiTags($document, $element);
-        $element = self::handleRefTags($document, $element);
         $element = self::handleUnclearTags($document, $element);
 
         return self::getElementHtml($document, $element, ['body']);
