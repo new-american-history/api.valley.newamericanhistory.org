@@ -50,6 +50,7 @@ use App\Api\OptionLists\Controllers\ManufacturingCensusBusinessController;
 use App\Api\OptionLists\Controllers\ManufacturingCensusLocationController;
 use App\Api\OptionLists\Controllers\SoldierDossierEnlistmentRankController;
 use App\Api\FireInsurancePolicies\Controllers\FireInsurancePolicyController;
+use App\Api\OptionLists\Controllers\ManufacturingCensusProductTypeController;
 use App\Api\OptionLists\Controllers\SoldierDossierEnlistmentLocationController;
 use App\Api\OptionLists\Controllers\SlaveowningCensusEmployerLocationController;
 use App\Api\OptionLists\Controllers\SoldierDossierEnlistmentOccupationController;
@@ -107,6 +108,7 @@ Route::group(['prefix' => 'option-lists'], function () {
     Route::get('/letter-keywords', [LetterKeywordController::class, 'index']);
     Route::get('/manufacturing-census-businesses', [ManufacturingCensusBusinessController::class, 'index']);
     Route::get('/manufacturing-census-locations', [ManufacturingCensusLocationController::class, 'index']);
+    Route::get('/manufacturing-census-product-types', [ManufacturingCensusProductTypeController::class, 'index']);
     Route::get('/population-census-birthplaces', [PopulationCensusBirthplaceController::class, 'index']);
     Route::get('/population-census-occupations', [PopulationCensusOccupationController::class, 'index']);
     Route::get('/regimental-movement-battles', [RegimentalMovementBattleController::class, 'index']);
