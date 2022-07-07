@@ -9,7 +9,7 @@ class StoryResource extends JsonResource
 {
     public function toArray($request)
     {
-        $res = parent::toArray($request);
+        $res = $this->resource->toArrayWithModernSpelling();
 
         $res += [
             'names' => !empty($this->names)

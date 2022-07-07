@@ -25,9 +25,7 @@ class Diary extends Model
         'keywords' => 'array',
     ];
 
-    protected $teiFields = [
-        'bio',
-    ];
+    protected $teiFields = ['bio'];
 
     public function getSourceFileAttribute($value)
     {

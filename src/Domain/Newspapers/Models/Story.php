@@ -5,6 +5,7 @@ namespace Domain\Newspapers\Models;
 use Domain\Newspapers\Models\Name;
 use Domain\Newspapers\Models\Page;
 use Domain\Newspapers\Models\Topic;
+use Domain\Shared\Traits\HasTeiTags;
 use Domain\Newspapers\Enums\StoryType;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -13,6 +14,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Story extends Model
 {
+    use HasTeiTags;
+
     protected $table = 'newspaper_stories';
 
     protected $guarded = [];
@@ -27,6 +30,8 @@ class Story extends Model
         'newspaper_page_id' => 'integer',
         'weight' => 'integer',
     ];
+
+    protected $teiFields = ['body'];
 
     public function names(): HasMany
     {
