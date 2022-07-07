@@ -10,12 +10,12 @@ class SouthernClaimsCommissionClaimResource extends JsonResource
 {
     public function toArray($request)
     {
-        return parent::toArray($request);
+        return $this->resource->toArrayWithModernSpelling();
     }
 
     public function toFull($request)
     {
-        $res = parent::toArray($request);
+        $res = $this->resource->toArrayWithModernSpelling();
 
         $res += [
             'items' => $this->items && $this->items->count() >0
