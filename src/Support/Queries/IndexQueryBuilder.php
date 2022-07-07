@@ -52,77 +52,19 @@ class IndexQueryBuilder extends QueryBuilder
                 : [],
             !empty($model::$dateFilters)
                 ? array_reduce($model::$dateFilters, function ($l, $f) {
-                    $l[] = AllowedFilter::callback($f, function ($query, $value) use ($f) {
-                        if (strlen($value) === 4) {
-                            $query->where($f, '>=', $value . '-01-01');
-                            $query->where($f, '<=', $value . '-12-31');
-                        } elseif (strlen($value) === 7) {
-                            $query->where($f, '>=', $value . '-01');
-                            $query->where($f, '<=', $value . '-31');
-                        } else {
-                            $value = strtotime($value) ? date('Y-m-d', strtotime($value)) : $value;
-                            $query->where($f, '=', $value);
-                        }
-                    });
+                    $l[] = $this->getDateAllowedFilter($f, '', [
+                        ['>=', 'start'], ['<=', 'end']
+                    ], true);
 
-                    $l[] = AllowedFilter::callback($f . ':gt', function ($query, $value) use ($f) {
-                        if (strlen($value) === 4) {
-                            $query->where($f, '>', $value . '-12-31');
-                        } elseif (strlen($value) === 7) {
-                            $query->where($f, '>', $value . '-31');
-                        } else {
-                            $value = strtotime($value) ? date('Y-m-d', strtotime($value)) : $value;
-                            $query->where($f, '>', $value);
-                        }
-                    });
-                    $l[] = AllowedFilter::callback($f . ':gte', function ($query, $value) use ($f) {
-                        if (strlen($value) === 4) {
-                            $query->where($f, '>=', $value . '-01-01');
-                        } elseif (strlen($value) === 7) {
-                            $query->where($f, '>=', $value . '-01');
-                        } else {
-                            $value = strtotime($value) ? date('Y-m-d', strtotime($value)) : $value;
-                            $query->where($f, '>=', $value);
-                        }
-                    });
+                    $l[] = $this->getDateAllowedFilter($f, ':gt', [['>', 'end']]);
+                    $l[] = $this->getDateAllowedFilter($f, ':gte', [['>=', 'start']]);
 
-                    $l[] = AllowedFilter::callback($f . ':ne', function ($query, $value) use ($f) {
-                        if (strlen($value) === 4) {
-                            $query->where(function ($query) use ($f, $value) {
-                                $query->where($f, '<=', $value . '-01-01')
-                                    ->orWhere($f, '>=', $value . '-12-31');
-                            });
-                        } elseif (strlen($value) === 7) {
-                            $query->where(function ($query) use ($f, $value) {
-                                $query->where($f, '<=', $value . '-01')
-                                    ->orWhere($f, '>=', $value . '-31');
-                            });
-                        } else {
-                            $value = strtotime($value) ? date('Y-m-d', strtotime($value)) : $value;
-                            $query->where($f, '!=', $value);
-                        }
-                    });
+                    $l[] = $this->getDateAllowedFilter($f, ':ne', [
+                        ['<', 'start'], ['>', 'end']
+                    ], false);
 
-                    $l[] = AllowedFilter::callback($f . ':lte', function ($query, $value) use ($f) {
-                        if (strlen($value) === 4) {
-                            $query->where($f, '<=', $value . '-12-31');
-                        } elseif (strlen($value) === 7) {
-                            $query->where($f, '<=', $value . '-31');
-                        } else {
-                            $value = strtotime($value) ? date('Y-m-d', strtotime($value)) : $value;
-                            $query->where($f, '<=', $value);
-                        }
-                    });
-                    $l[] = AllowedFilter::callback($f . ':lt', function ($query, $value) use ($f) {
-                        if (strlen($value) === 4) {
-                            $query->where($f, '<', $value . '-01-01');
-                        } elseif (strlen($value) === 7) {
-                            $query->where($f, '<', $value . '-01');
-                        } else {
-                            $value = strtotime($value) ? date('Y-m-d', strtotime($value)) : $value;
-                            $query->where($f, '<', $value);
-                        }
-                    });
+                    $l[] = $this->getDateAllowedFilter($f, ':lte', [['<=', 'end']]);
+                    $l[] = $this->getDateAllowedFilter($f, ':lt', [['<', 'start']]);
 
                     return $l;
                 }, [])
@@ -140,5 +82,45 @@ class IndexQueryBuilder extends QueryBuilder
                 return AllowedSort::field($field);
             }
         }, $fields);
+    }
+
+    protected function getDateAllowedFilter($f, $modifier, $conditions, $requireAllConditions = true)
+    {
+        return AllowedFilter::callback($f . $modifier, function ($query, $value) use ($f, $requireAllConditions, $conditions) {
+            if ($requireAllConditions) {
+                foreach ($conditions as $condition) {
+                    $dateValue = $condition[1] === 'end' ? $this->getEndOfDate($value) : $this->getStartOfDate($value);
+                    $query->where($f, $condition[0], $dateValue);
+                }
+            } else {
+                $query->where(function ($query) use ($f, $value, $conditions) {
+                    foreach ($conditions as $index => $condition) {
+                        $dateValue = $condition[1] === 'end' ? $this->getEndOfDate($value) : $this->getStartOfDate($value);
+                        $queryFunction = $index === 0 ? 'where' : 'orWhere';
+                        $query->$queryFunction($f, $condition[0], $dateValue);
+                    }
+                });
+            }
+        });
+    }
+
+    protected function getStartOfDate($value)
+    {
+        if (strlen($value) === 4) {
+            return $value . '-01-01';
+        } elseif (strlen($value) === 7) {
+            return $value . '-01';
+        }
+        return strtotime($value) ? date('Y-m-d', strtotime($value)) : $value;
+    }
+
+    protected function getEndOfDate($value)
+    {
+        if (strlen($value) === 4) {
+            return $value . '-12-31';
+        } elseif (strlen($value) === 7) {
+            return $value . '-31';
+        }
+        return strtotime($value) ? date('Y-m-d', strtotime($value)) : $value;
     }
 }
