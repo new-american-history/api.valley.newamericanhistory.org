@@ -2,12 +2,13 @@
 
 namespace Domain\MemoryArticles\Models;
 
+use Domain\Shared\Traits\HasTeiTags;
 use Domain\Shared\Traits\HasCountyEnum;
 use Illuminate\Database\Eloquent\Model;
 
 class MemoryArticle extends Model
 {
-    use HasCountyEnum;
+    use HasCountyEnum, HasTeiTags;
 
     protected $guarded = [];
 
@@ -19,6 +20,8 @@ class MemoryArticle extends Model
         'year' => 'integer',
         'keywords' => 'array',
     ];
+
+    protected $teiFields = ['body'];
 
     public function getSourceFileAttribute($value)
     {
