@@ -13,11 +13,12 @@ class ChurchRecordChurchNameController
             ->whereNotNull('church_name')
             ->orderBy('church_name')
             ->get()
-            ->pluck('church_name')
-            ->map(function ($churchName) {
+            ->map(function ($churchRecord) {
                 return [
-                    'value' => $churchName,
-                    'label' => $churchName,
+                    'value' => $churchRecord->church_name,
+                    'label' => $churchRecord->church_name,
+                    'county' => $churchRecord->county,
+                    'county_label' => $churchRecord->county_label,
                 ];
             })
             ->toArray();
