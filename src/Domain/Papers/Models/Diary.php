@@ -52,12 +52,12 @@ class Diary extends Model
     public static $exactFilters = [
         'author',
         'county',
-        'keywords',
         'valley_id',
     ];
 
     public static $fuzzyFilters = [
         'bio',
+        'keywords',
         'title',
 
         'entries.body',

@@ -20,17 +20,17 @@ class ChurchRecord extends Model
     public static $exactFilters = [
         'church_name',
         'county',
-        'date_written',
-        'location',
         'record_type',
         'sex',
     ];
 
     public static $fuzzyFilters = [
         'clergy',
+        'date_written',
         'family',
         'first_name',
         'last_name',
+        'location',
         'race',
     ];
 

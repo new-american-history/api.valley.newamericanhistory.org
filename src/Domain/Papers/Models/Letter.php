@@ -52,12 +52,12 @@ class Letter extends Model
         'author',
         'collection',
         'county',
-        'keywords',
         'valley_id',
     ];
 
     public static $fuzzyFilters = [
         'headline',
+        'keywords',
         'location',
         'recipient',
         'summary',

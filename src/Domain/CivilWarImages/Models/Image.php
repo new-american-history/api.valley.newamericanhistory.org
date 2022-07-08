@@ -35,20 +35,20 @@ class Image extends Model
     }
 
     public static $exactFilters = [
-        'artist',
-        'contributing_source',
-        'date',
         'image_type',
         'location',
         'original_source',
         'person_name',
-        'regiment',
 
         'subject.name',
     ];
 
     public static $fuzzyFilters = [
+        'artist',
+        'contributing_source',
+        'date',
         'description',
+        'regiment',
         'title',
     ];
 

@@ -36,6 +36,7 @@ class SoldierDossier extends Model
         'enlisted_location',
         'enlisted_occupation',
         'enlisted_rank',
+        'regiment',
         'transfer_company',
         'valley_id',
     ];
@@ -53,7 +54,6 @@ class SoldierDossier extends Model
         'postwar_life',
         'prewar_life',
         'promotions',
-        'regiment',
         'transfers',
     ];
 
