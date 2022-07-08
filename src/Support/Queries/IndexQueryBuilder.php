@@ -5,6 +5,7 @@ namespace Support\Queries;
 use Illuminate\Http\Request;
 use Spatie\QueryBuilder\AllowedSort;
 use Spatie\QueryBuilder\QueryBuilder;
+use Support\Filters\TextSearchFilter;
 use Spatie\QueryBuilder\AllowedFilter;
 
 class IndexQueryBuilder extends QueryBuilder
@@ -68,6 +69,16 @@ class IndexQueryBuilder extends QueryBuilder
 
                     return $l;
                 }, [])
+                : [],
+            !empty($model::$fuzzyFilters) || !empty($model($exactFilters))
+                ? [
+                    AllowedFilter::custom('q', new TextSearchFilter(
+                        array_merge(
+                            !empty($model::$fuzzyFilters) ? $model::$fuzzyFilters : [],
+                            !empty($model::$exactFilters) ? $model::$exactFilters : []
+                        )
+                    ))
+                ]
                 : [],
         );
     }
