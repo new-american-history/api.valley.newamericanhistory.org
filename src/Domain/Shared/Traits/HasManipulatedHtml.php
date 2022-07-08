@@ -146,9 +146,11 @@ trait HasManipulatedHtml
 
     public function removeTagsAndContents($element, $tag)
     {
-        $figures = $element->getElementsByTagName('figure');
-        foreach ($figures as $figure) {
-            self::removeChildElement($element, $figure);
+        $figureElements = $element->getElementsByTagName('figure');
+
+        while (!empty($figureElements) && !empty($figureElements->item(0))) {
+            $figureElement = $figureElements->item(0);
+            self::removeChildElement($figureElement->parentNode, $figureElement);
         }
         return $element;
     }
