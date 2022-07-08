@@ -54,6 +54,48 @@ class Story extends Model
         );
     }
 
+    public static $exactFilters = [
+        'topics.id',
+        'type',
+
+        'page.edition.frequency',
+        'page.edition.newspaper_id',
+        'page.edition.source_file',
+        'page.edition.weekday',
+
+        'page.edition.newspaper.county',
+        'page.edition.newspaper.state',
+    ];
+
+    public static $fuzzyFilters = [
+        'body',
+        'excerpt',
+        'headline',
+        'origin',
+        'summary',
+        'trailer',
+
+        'names.first_name',
+        'names.last_name',
+        'names.prefix',
+        'names.suffix',
+
+        'page.description',
+
+        'topics.name',
+
+        'page.edition.headline',
+
+        'page.edition.newspaper.abbreviation',
+        'page.edition.newspaper.city',
+        'page.edition.newspaper.id',
+        'page.edition.newspaper.name',
+    ];
+
+    public static $dateFilters = [
+        'page.edition.date',
+    ];
+
     protected function getTypeLabelAttribute(): ?string
     {
         $enum = StoryType::tryFrom($this->type);

@@ -2,6 +2,7 @@
 
 use App\Api\Papers\Controllers\DiaryController;
 use App\Api\Papers\Controllers\LetterController;
+use App\Api\Newspapers\Controllers\StoryController;
 use App\Api\Newspapers\Controllers\TopicController;
 use App\Api\OptionLists\Controllers\StateController;
 use App\Api\Newspapers\Controllers\EditionController;
@@ -79,6 +80,7 @@ Route::get('/memory-articles/{valley_id}', [MemoryArticleController::class, 'sho
 Route::get('/newspapers', [NewspaperController::class, 'index']);
 Route::get('/newspapers/{slug}/editions/{year}/{month}/{day}', [NewspaperController::class, 'showEdition']);
 Route::get('/newspaper-editions', [EditionController::class, 'index']);
+Route::get('/newspaper-stories', [StoryController::class, 'index']);
 Route::get('/newspaper-topics', [TopicController::class, 'index']);
 Route::get('/population-census', [PopulationCensusController::class, 'index']);
 Route::get('/regimental-movements', [RegimentalMovementController::class, 'index']);
