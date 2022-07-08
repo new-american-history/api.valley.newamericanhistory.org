@@ -17,7 +17,7 @@ class Letter extends Model
 
     protected $hidden = ['created_at', 'updated_at'];
 
-    protected $appends = ['county_label'];
+    protected $appends = ['county_label', 'clean_title'];
 
     protected $casts = [
         'keywords' => 'array',
@@ -67,4 +67,12 @@ class Letter extends Model
     public static $dateFilters = [
         'date',
     ];
+
+    protected function getCleanTitleAttribute(): ?string
+    {
+        $title = $this->title;
+        $title = preg_replace('/^\w+ County: /', '', $title);
+        $title = preg_replace('/, \w+ \d+, \d+$/', '', $title);
+        return $title;
+    }
 }
