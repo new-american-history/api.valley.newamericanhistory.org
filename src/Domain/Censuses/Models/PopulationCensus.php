@@ -56,7 +56,7 @@ class PopulationCensus extends Model
         'year',
     ];
 
-    public static $fuzzyFilters = [=
+    public static $fuzzyFilters = [
         'disability',
         'district',
         'first_name',
