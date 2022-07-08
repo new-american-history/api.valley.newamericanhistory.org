@@ -56,23 +56,22 @@ class PopulationCensus extends Model
         'year',
     ];
 
-    public static $fuzzyFilters = [
-        'first_name',
-        'last_name',
-
+    public static $fuzzyFilters = [=
         'disability',
         'district',
+        'first_name',
+        'last_name',
         'subdistrict',
     ];
 
     public static $numericFilters = [
         'age',
-        'personal_estate_value',
-        'real_estate_value',
-
         'dwelling_number',
         'family_number',
         'head_number',
+        'page_number',
+        'personal_estate_value',
+        'real_estate_value',
     ];
 
     public static $dateFilters = [

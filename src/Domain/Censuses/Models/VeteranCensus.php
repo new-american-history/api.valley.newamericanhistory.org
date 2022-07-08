@@ -44,6 +44,10 @@ class VeteranCensus extends Model
         'widow_name',
     ];
 
+    public static $numericFilters = [
+        'page_number',
+    ];
+
     public static $dateFilters = [
         'discharge_date',
         'enlistment_date',

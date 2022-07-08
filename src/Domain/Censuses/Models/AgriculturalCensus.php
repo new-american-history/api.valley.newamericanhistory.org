@@ -126,6 +126,7 @@ class AgriculturalCensus extends Model
         'other_cattle',
         'other_unimproved_land_acres',
         'oxen',
+        'page_number',
         'peas_and_beans_bushels',
         'rice_pounds',
         'rye_bushels',

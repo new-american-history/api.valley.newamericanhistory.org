@@ -58,6 +58,9 @@ class SoldierDossier extends Model
     ];
 
     public static $numericFilters = [
+        '1860_census_dwelling_number' => 'integer',
+        '1860_census_family_number' => 'integer',
+        '1860_census_page_number' => 'integer',
         'enlisted_age',
     ];
 

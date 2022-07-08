@@ -55,12 +55,14 @@ class ManufacturingCensus extends Model
     public static $numericFilters = [
         'capital_invested',
         'child_hands',
+        'data_id',
         'female_hands',
         'female_wages',
         'male_hands',
         'male_wages',
         'months_active',
         'number_of_machines',
+        'page_number',
         'total_wages',
 
         'materials.value',
