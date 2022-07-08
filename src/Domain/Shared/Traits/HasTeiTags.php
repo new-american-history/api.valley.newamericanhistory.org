@@ -32,21 +32,17 @@ trait HasTeiTags
         if (self::isTeiField($field)) {
             $value = self::getCleanTeiValue($value);
         }
-        $value = preg_replace('/<orig.*?reg=\"([^\"]*)\".*?>([^<]*)<\/orig>/', '$2', $value);
         return $value ?: null;
     }
 
     protected function getModernFieldValue($field)
     {
         $value = $this->$field;
-        if (self::isTeiField($field)) {
-            $value = self::getCleanTeiValue($value);
-        }
-        $value = preg_replace('/<orig.*?reg=\"([^\"]*)\".*?>([^<]*)<\/orig>/', '$1', $value);
+        $value = self::getCleanTeiValue($value, true);
         return $value ?: null;
     }
 
-    protected function getCleanTeiValue($value)
+    protected function getCleanTeiValue($value, $getModernSpelling = false)
     {
         if (empty($value)) {
             return null;
@@ -58,6 +54,9 @@ trait HasTeiTags
         $value = self::removeTags($value, 'note');
         $value = self::removeTags($value, 'pb');
         $value = self::removeTags($value, 'seg');
+        if (!$getModernSpelling) {
+            $value = self::removeTags($value, 'orig');
+        }
 
         $value = self::replaceTags($value, 'lb', 'br');
         $value = self::replaceTags($value, 'ref', 'sup');
@@ -70,6 +69,9 @@ trait HasTeiTags
         $element = self::handleEmphTags($document, $element);
         $element = self::handleHiTags($document, $element);
         $element = self::handleUnclearTags($document, $element);
+        if ($getModernSpelling) {
+            $element = self::getWithModernSpellings($document, $element);
+        }
 
         return self::getElementHtml($document, $element, ['body']);
     }

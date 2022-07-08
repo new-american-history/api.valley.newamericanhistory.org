@@ -54,6 +54,23 @@ trait HasManipulatedHtml
         return $value ?: null;
     }
 
+    public function getWithModernSpellings($document, $element)
+    {
+        $originalElements = $element->getElementsByTagName('orig');
+
+        while (!empty($originalElements) && !empty($originalElements->item(0))) {
+            $originalElement = $originalElements->item(0);
+
+            $value = $originalElement->nodeValue;
+            $newValue = $originalElement->getAttribute('reg') ?: self::removeTags($value, 'orig');
+
+            $newElement = self::makeElementFromValue($newValue);
+            $newElement = self::removeElementTags($newElement->ownerDocument, $newElement, 'p');
+            $originalElement->parentNode->replaceChild($document->importNode($newElement, true), $originalElement);
+        }
+        return $element;
+    }
+
     public function handleEmphTags($document, $element)
     {
         $emphasizedElements = $element->getElementsByTagName('emph');
@@ -115,6 +132,13 @@ trait HasManipulatedHtml
         }
     }
 
+    public function removeElementTags($document, $element, $tag)
+    {
+        $value = self::getElementHtml($document, $element);
+        $value = self::removeTags($value, $tag);
+        return self::makeElementFromValue($value);
+    }
+
     public function removeTags($value, $tag)
     {
         return preg_replace('/<\/?' . $tag . '[^>]*>/', '', $value);
@@ -129,18 +153,17 @@ trait HasManipulatedHtml
         return $element;
     }
 
+    public function replaceElementTags($document, $element, $originalTag, $newTag)
+    {
+        $value = self::getElementHtml($document, $element);
+        $value = self::replaceTags($value, $originalTag, $newTag);
+        return self::makeElementFromValue($value);
+    }
+
     public function replaceTags($value, $originalTag, $newTag)
     {
         $value = preg_replace('/<' . $originalTag . '[^>]*>/', '<' . $newTag . '>', $value);
         $value = preg_replace('/<\/' . $originalTag . '[^>]*>/', '</' . $newTag . '>', $value);
         return $value;
-    }
-
-    public function replaceElementTags($document, $element, $originalTag, $newTag)
-    {
-        $value = self::getElementHtml($document, $element);
-        $value = preg_replace('/<' . $originalTag . '[^>]*>/', '<' . $newTag . '>', $value);
-        $value = preg_replace('/<\/' . $originalTag . '[^>]*>/', '</' . $newTag . '>', $value);
-        return self::makeElementFromValue($value);
     }
 }
