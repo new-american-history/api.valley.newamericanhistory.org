@@ -76,7 +76,8 @@ class IndexQueryBuilder extends QueryBuilder
                         array_merge(
                             !empty($model::$fuzzyFilters) ? $model::$fuzzyFilters : [],
                             !empty($model::$exactFilters) ? $model::$exactFilters : []
-                        )
+                        ),
+                        $model
                     ))
                 ]
                 : [],
