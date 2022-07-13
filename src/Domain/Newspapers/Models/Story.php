@@ -55,8 +55,9 @@ class Story extends Model
     }
 
     public static $exactFilters = [
-        'topics.id',
         'type',
+
+        'topics.id',
 
         'page.edition.frequency',
         'page.edition.newspaper_id',
