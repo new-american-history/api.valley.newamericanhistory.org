@@ -238,8 +238,10 @@ class ImportNewspapers extends BaseImportCommand
             $modelData['type'] = $this->storyTypeMap[$typeValue] ?? null;
 
             $bodyElement = self::getFirstElementByTagName($storyElement, 'transcript');
-            $body = self::getElementHtml($this->document, $bodyElement, ['transcript']);
-            $modelData['body'] = trim(str_replace('<p></p>', '', $body)) ?: null;
+            if (!empty($bodyElement)) {
+                $body = self::getElementHtml($this->document, $bodyElement, ['transcript']);
+                $modelData['body'] = trim(str_replace('<p></p>', '', $body)) ?: null;
+            }
 
             $story = Story::create($modelData);
             self::handleNames($storyElement, $story->id);
