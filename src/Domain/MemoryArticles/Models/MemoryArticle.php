@@ -58,7 +58,7 @@ class MemoryArticle extends Model
         $title = $this->title;
         $author = $this->author;
         $matches = [];
-        preg_match('/^(Augusta|Franklin)( County)?: \"(.*),\" by (.*)/', $title, $matches);
-        return $matches[4] ?? $author;
+        preg_match('/.*,\" by (.*)$/', $title, $matches);
+        return !empty($matches[1]) ? trim($matches[1], ' ,') : $author;
     }
 }
