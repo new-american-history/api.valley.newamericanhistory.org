@@ -14,7 +14,7 @@ class MemoryArticle extends Model
 
     protected $hidden = ['created_at', 'updated_at'];
 
-    protected $appends = ['county_label'];
+    protected $appends = ['county_label', 'clean_title'];
 
     protected $casts = [
         'year' => 'integer',
@@ -44,4 +44,12 @@ class MemoryArticle extends Model
     public static $dateFilters = [
         'date',
     ];
+
+    protected function getCleanTitleAttribute(): ?string
+    {
+        $title = $this->title;
+        $matches = [];
+        preg_match('/^(Augusta|Franklin)( County)?: \"(.*),\"/', $title, $matches);
+        return $matches[3] ?? $title;
+    }
 }
