@@ -145,7 +145,7 @@ class BaseImportCommand extends Command
             }
         }
 
-        return !empty($keywords) ? json_encode(collect($keywords)->flatten()->toArray()) : null;
+        return !empty($keywords) ? collect($keywords)->flatten()->toArray() : null;
     }
 
     public function getMonthAsInteger($value)
