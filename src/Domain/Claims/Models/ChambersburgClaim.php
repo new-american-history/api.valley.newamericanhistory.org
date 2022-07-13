@@ -53,6 +53,7 @@ class ChambersburgClaim extends Model
 
     public static $numericFilters = [
         'amount_awarded',
+        'amount_received',
         'claim_date',
         'claim_number',
         'claim_total',
