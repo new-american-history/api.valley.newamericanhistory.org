@@ -14,7 +14,7 @@ class MemoryArticle extends Model
 
     protected $hidden = ['created_at', 'updated_at'];
 
-    protected $appends = ['county_label', 'clean_title'];
+    protected $appends = ['county_label', 'clean_title', 'byline'];
 
     protected $casts = [
         'year' => 'integer',
@@ -51,5 +51,14 @@ class MemoryArticle extends Model
         $matches = [];
         preg_match('/^(Augusta|Franklin)( County)?: \"(.*),\"/', $title, $matches);
         return $matches[3] ?? $title;
+    }
+
+    protected function getBylineAttribute(): ?string
+    {
+        $title = $this->title;
+        $author = $this->author;
+        $matches = [];
+        preg_match('/^(Augusta|Franklin)( County)?: \"(.*),\" by (.*)/', $title, $matches);
+        return $matches[4] ?? $author;
     }
 }
