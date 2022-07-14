@@ -68,6 +68,20 @@ trait HasManipulatedHtml
             $newElement = self::removeElementTags($newElement->ownerDocument, $newElement, 'p');
             $originalElement->parentNode->replaceChild($document->importNode($newElement, true), $originalElement);
         }
+
+        $abbreviatedElements = $element->getElementsByTagName('abbr');
+
+        while (!empty($abbreviatedElements) && !empty($abbreviatedElements->item(0))) {
+            $abbreviatedElement = $abbreviatedElements->item(0);
+
+            $value = $abbreviatedElement->nodeValue;
+            $newValue = $abbreviatedElement->getAttribute('expan') ?: self::removeTags($value, 'abbr');
+
+            $newElement = self::makeElementFromValue($newValue);
+            $newElement = self::removeElementTags($newElement->ownerDocument, $newElement, 'p');
+            $abbreviatedElement->parentNode->replaceChild($document->importNode($newElement, true), $abbreviatedElement);
+        }
+
         return $element;
     }
 
