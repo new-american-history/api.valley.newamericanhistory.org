@@ -113,12 +113,7 @@ trait HasManipulatedHtml
             $type = $segmentElement->getAttribute('type');
 
             if ($type === 'note-symbol') {
-                $value = $segmentElement->nodeValue;
-                $newValue = trim($value, '[]{}');
-
-                $newElement = self::makeElementFromValue($newValue);
-                $newElement = self::replaceElementTags($newElement->ownerDocument, $newElement, 'p', 'sup');
-                $segmentElement->parentNode->replaceChild($document->importNode($newElement, true), $segmentElement);
+                self::removeChildElement($element, $segmentElement);
             } else {
                 $newElement = self::removeElementTags($document, $segmentElement, 'seg');
                 $segmentElement->parentNode->replaceChild($document->importNode($newElement, true), $segmentElement);
