@@ -53,7 +53,6 @@ trait HasTeiTags
         $value = self::removeTags($value, 'name');
         $value = self::removeTags($value, 'note');
         $value = self::removeTags($value, 'pb');
-        $value = self::removeTags($value, 'seg');
         if (!$getModernSpelling) {
             $value = self::removeTags($value, 'orig');
         }
@@ -65,9 +64,10 @@ trait HasTeiTags
         $element = self::makeElementFromValue($value);
         $document = $element->ownerDocument;
 
-        $element = self::removeTagsAndContents($element, 'figure');
+        $element = self::removeElementTagsAndContents($element, 'figure');
         $element = self::handleEmphTags($document, $element);
         $element = self::handleHiTags($document, $element);
+        $element = self::handleSegTags($document, $element);
         $element = self::handleUnclearTags($document, $element);
         if ($getModernSpelling) {
             $element = self::getWithModernSpellings($document, $element);

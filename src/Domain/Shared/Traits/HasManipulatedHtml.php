@@ -103,6 +103,30 @@ trait HasManipulatedHtml
         return $element;
     }
 
+    public function handleSegTags($document, $element)
+    {
+        $segmentElements = $element->getElementsByTagName('seg');
+
+        while (!empty($segmentElements) && !empty($segmentElements->item(0))) {
+            $segmentElement = $segmentElements->item(0);
+
+            $type = $segmentElement->getAttribute('type');
+
+            if ($type === 'note-symbol') {
+                $value = $segmentElement->nodeValue;
+                $newValue = trim($value, '[]{}');
+
+                $newElement = self::makeElementFromValue($newValue);
+                $newElement = self::replaceElementTags($newElement->ownerDocument, $newElement, 'p', 'sup');
+                $segmentElement->parentNode->replaceChild($document->importNode($newElement, true), $segmentElement);
+            } else {
+                $newElement = self::removeElementTags($document, $segmentElement, 'seg');
+                $segmentElement->parentNode->replaceChild($document->importNode($newElement, true), $segmentElement);
+            }
+        }
+        return $element;
+    }
+
     public function handleUnclearTags($document, $element)
     {
         $unclearElements = $element->getElementsByTagName('unclear');
@@ -139,12 +163,7 @@ trait HasManipulatedHtml
         return self::makeElementFromValue($value);
     }
 
-    public function removeTags($value, $tag)
-    {
-        return preg_replace('/<\/?' . $tag . '[^>]*>/', '', $value);
-    }
-
-    public function removeTagsAndContents($element, $tag)
+    public function removeElementTagsAndContents($element, $tag)
     {
         $figureElements = $element->getElementsByTagName('figure');
 
@@ -153,6 +172,11 @@ trait HasManipulatedHtml
             self::removeChildElement($figureElement->parentNode, $figureElement);
         }
         return $element;
+    }
+
+    public function removeTags($value, $tag)
+    {
+        return preg_replace('/<\/?' . $tag . '[^>]*>/', '', $value);
     }
 
     public function replaceElementTags($document, $element, $originalTag, $newTag)
