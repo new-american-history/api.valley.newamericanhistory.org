@@ -52,7 +52,7 @@ class ImportDiaries extends BaseImportCommand
     {
         $document = $this->document;
         $modelData = [];
-        $modelData['source_file'] = $this->fileName;
+        $modelData['source_file'] = '/papers/' . $this->fileName;
         $modelData['valley_id'] = str_replace('.xml', '', $this->fileName);
 
         $modelData['keywords'] = self::getKeywords($document);

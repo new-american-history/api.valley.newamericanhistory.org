@@ -26,12 +26,12 @@ class Edition extends Model
 
     public function getPdfAttribute($value)
     {
-        return !empty($value) ? url($value) : null;
+        return !empty($value) ? url('/storage/data' . $value) : null;
     }
 
     public function getSourceFileAttribute($value)
     {
-        return !empty($value) ? url($value) : null;
+        return !empty($value) ? url('/storage/data' . $value) : null;
     }
 
     public function newspaper(): BelongsTo

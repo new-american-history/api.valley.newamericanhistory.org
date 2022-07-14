@@ -35,7 +35,7 @@ class BattlefieldCorrespondence extends Model
 
     public function getSourceFileAttribute($value)
     {
-        return !empty($value) ? url($value) : null;
+        return !empty($value) ? url('/storage/data' . $value) : null;
     }
 
     public function notes(): BelongsToMany

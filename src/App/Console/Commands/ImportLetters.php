@@ -60,7 +60,7 @@ class ImportLetters extends BaseImportCommand
 
         foreach ($bodyDivElements as $index => $bodyDivElement) {
             $modelData = [];
-            $modelData['source_file'] = $this->fileName;
+            $modelData['source_file'] = '/papers/' . $this->fileName;
             $modelData['valley_id'] = str_replace('.xml', '', $this->fileName) . ($index !== 0 ? '-' . ($index + 1) : '');
 
             $modelData['keywords'] = self::getKeywords($document);

@@ -87,11 +87,11 @@ class ImportNewspapers extends BaseImportCommand
                 foreach ($pdfElements as $pdfElement) {
                     $fileName = $pdfElement->getAttribute('id');
                     $file = $directory . '/' . $fileName;
-                    $editionSourceFile = str_replace('pdf', 'xml', $file);
+                    $editionSourceFile = '/newspapers/' . str_replace('pdf', 'xml', $file);
                     $edition = Edition::where('source_file', $editionSourceFile)->first();
 
                     if (!empty($edition)) {
-                        $edition->pdf = $file;
+                        $edition->pdf = '/newspapers_pdfs/' . $file;
                         $edition->save();
                     }
                 }
@@ -170,7 +170,7 @@ class ImportNewspapers extends BaseImportCommand
     {
         $modelData = [];
         $modelData['newspaper_id'] = $this->newspaper->id;
-        $modelData['source_file'] = $this->fileName;
+        $modelData['source_file'] = '/newspapers/' . $this->fileName;
 
         $headerElement = self::getFirstElementByTagName($this->document, 'header');
         $dateElement = self::getFirstElementByTagName($headerElement, 'date');

@@ -25,7 +25,7 @@ class ImportMemoryArticles extends BaseImportCommand
             $document = self::getDomDocumentWithXml($data);
 
             $modelData = [];
-            $modelData['source_file'] = $fileName;
+            $modelData['source_file'] = '/mem/' . $this->fileName;
             $modelData['valley_id'] = str_replace('.xml', '', $fileName);
 
             $modelData['keywords'] = self::getKeywords($document);
