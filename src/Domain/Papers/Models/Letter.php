@@ -17,7 +17,7 @@ class Letter extends Model
 
     protected $hidden = ['created_at', 'updated_at'];
 
-    protected $appends = ['county_label', 'clean_title'];
+    protected $appends = ['county_label', 'clean_title', 'date_from_title'];
 
     protected $casts = [
         'keywords' => 'array',
@@ -30,6 +30,17 @@ class Letter extends Model
         'headline',
         'location',
         'signed',
+    ];
+
+    protected $cleanRegExpList = [
+        'dateMonthDayYearWithQuotemark' =>
+            '/," ([0-9]{0,2} ?\[?(January|February|March|April|May|June|July|August|September|October|November|December).*)$/i',
+        'dateMonthDayYear' =>
+            '/, ([0-9]{0,2} ?\[?(January|February|March|April|May|June|July|August|September|October|November|December).*)$/i',
+        'day' => '/, ((Sunday|Monday|Tuesday|Wednesday|Thursday|Friday|Saturday).*)$/i',
+        'dateBraces' => '/, (\[.+\].*)$/i',
+        'dateCirca' => '/, ((c.|ca.|circa).+)$/i',
+        'dateYear' => '/, ([0-9X?]{4})$/i',
     ];
 
     public function getSourceFileAttribute($value)
@@ -72,7 +83,34 @@ class Letter extends Model
     {
         $title = $this->title;
         $title = preg_replace('/^\w+ County: /', '', $title);
-        $title = preg_replace('/, \w+ \d+, \d+$/', '', $title);
+
+        // Remove various date formats.
+        $title = preg_replace($this->cleanRegExpList['dateMonthDayYearWithQuotemark'], '"', $title);
+        $title = preg_replace($this->cleanRegExpList['dateMonthDayYear'], '', $title);
+        $title = preg_replace($this->cleanRegExpList['day'], '', $title);
+        $title = preg_replace($this->cleanRegExpList['dateBraces'], '', $title);
+        $title = preg_replace($this->cleanRegExpList['dateCirca'], '', $title);
+        $title = preg_replace($this->cleanRegExpList['dateYear'], '', $title);
+
         return $title;
+    }
+
+    protected function getDateFromTitleAttribute(): ?string
+    {
+        $title = $this->title;
+        if (preg_match($this->cleanRegExpList['dateMonthDayYearWithQuotemark'], $title, $matches)) {
+            return $matches[1] ?? null;
+        } elseif (preg_match($this->cleanRegExpList['dateMonthDayYear'], $title, $matches)) {
+            return $matches[1] ?? null;
+        } elseif (preg_match($this->cleanRegExpList['day'], $title, $matches)) {
+            return $matches[1] ?? null;
+        } elseif (preg_match($this->cleanRegExpList['dateBraces'], $title, $matches)) {
+            return $matches[1] ?? null;
+        } elseif (preg_match($this->cleanRegExpList['dateCirca'], $title, $matches)) {
+            return $matches[1] ?? null;
+        } elseif (preg_match($this->cleanRegExpList['dateYear'], $title, $matches)) {
+            return $matches[1] ?? null;
+        }
+        return null;
     }
 }
