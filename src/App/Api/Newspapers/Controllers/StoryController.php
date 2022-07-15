@@ -10,9 +10,9 @@ class StoryController
 {
     public function index(Request $request, StoryIndexQuery $query)
     {
-        $query->with('page')
-            ->with('page.edition')
-            ->with('page.edition.newspaper');
+        $query->with(['page:number', 'page.edition', 'page.edition.newspaper'])
+            ->whereNotNull('headline')
+            ->whereNotNull('summary');
         $request->merge(['withRelationships' => 'true']);
 
         return StoryResource::collection(
