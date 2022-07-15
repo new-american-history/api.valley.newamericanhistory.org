@@ -16,7 +16,7 @@ class RegimentalMovementBattleController
             ->pluck('battle_name')
             ->map(function ($battleName) {
                 return [
-                    'value' => $battleName,
+                    'value' => preg_replace('/, (Va\.|DC)/', '', $battleName),
                     'label' => $battleName,
                 ];
             })

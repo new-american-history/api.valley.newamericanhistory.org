@@ -36,7 +36,6 @@ class Image extends Model
 
     public static $exactFilters = [
         'image_type',
-        'location',
         'original_source',
         'person_name',
 
@@ -48,6 +47,7 @@ class Image extends Model
         'contributing_source',
         'date',
         'description',
+        'location',
         'regiment',
         'title',
     ];

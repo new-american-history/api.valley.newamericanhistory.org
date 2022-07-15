@@ -18,13 +18,13 @@ class ChurchRecord extends Model
     protected $appends = ['county_label', 'sex_label', 'record_type_label'];
 
     public static $exactFilters = [
-        'church_name',
         'county',
         'record_type',
         'sex',
     ];
 
     public static $fuzzyFilters = [
+        'church_name',
         'clergy',
         'date_written',
         'family',

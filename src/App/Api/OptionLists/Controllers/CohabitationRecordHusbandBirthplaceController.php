@@ -16,7 +16,7 @@ class CohabitationRecordHusbandBirthplaceController
             ->pluck('husband_birthplace')
             ->map(function ($birthplace) {
                 return [
-                    'value' => $birthplace,
+                    'value' => preg_replace('/, .+/', '', $birthplace),
                     'label' => $birthplace,
                 ];
             })

@@ -16,7 +16,7 @@ class ManufacturingCensusProductTypeController
             ->pluck('type')
             ->map(function ($type) {
                 return [
-                    'value' => $type,
+                    'value' => preg_replace('/, (et|&)c\.?$/i', '', $type),
                     'label' => $type,
                 ];
             })

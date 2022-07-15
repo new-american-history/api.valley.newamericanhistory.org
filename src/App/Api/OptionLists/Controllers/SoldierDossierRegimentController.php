@@ -17,6 +17,7 @@ class SoldierDossierRegimentController
             ->map(function ($regiment) {
                 return [
                     'value' => $regiment,
+                    'value' => preg_replace('/, C\.S\.A\./', '', $regiment),
                     'label' => $regiment,
                 ];
             })
