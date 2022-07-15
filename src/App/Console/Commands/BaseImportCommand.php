@@ -62,6 +62,10 @@ class BaseImportCommand extends Command
 
     public function getElementHtml($document, $element, $tagsToRemove = [])
     {
+        if (empty($element)) {
+            return null;
+        }
+
         $html = $document->saveHTML($element);
         foreach ($tagsToRemove as $tag) {
             $html = self::removeTags($html, $tag);
@@ -85,6 +89,10 @@ class BaseImportCommand extends Command
 
     public function getElementValue($element, $nullValues = [])
     {
+        if (empty($element)) {
+            return null;
+        }
+
         $value = $element ? $element->nodeValue : null;
         $value = self::getNormalizedValue($value);
 
@@ -157,7 +165,7 @@ class BaseImportCommand extends Command
 
     public function getNormalizedValue($value)
     {
-        $value = preg_replace('/<!--(.|\n)*-->/', '', $value);
+        $value = preg_replace('/<!--.*-->/', '', $value);
         $value = str_replace("\n", ' ', $value);
         $value = preg_replace('/\s+/', ' ', $value);
         $value = trim($value);

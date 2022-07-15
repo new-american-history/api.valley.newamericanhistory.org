@@ -56,32 +56,8 @@ trait HasManipulatedHtml
 
     public function getWithModernSpellings($document, $element)
     {
-        $originalElements = $element->getElementsByTagName('orig');
-
-        while (!empty($originalElements) && !empty($originalElements->item(0))) {
-            $originalElement = $originalElements->item(0);
-
-            $value = $originalElement->nodeValue;
-            $newValue = $originalElement->getAttribute('reg') ?: self::removeTags($value, 'orig');
-
-            $newElement = self::makeElementFromValue($newValue);
-            $newElement = self::removeElementTags($newElement->ownerDocument, $newElement, 'p');
-            $originalElement->parentNode->replaceChild($document->importNode($newElement, true), $originalElement);
-        }
-
-        $abbreviatedElements = $element->getElementsByTagName('abbr');
-
-        while (!empty($abbreviatedElements) && !empty($abbreviatedElements->item(0))) {
-            $abbreviatedElement = $abbreviatedElements->item(0);
-
-            $value = $abbreviatedElement->nodeValue;
-            $newValue = $abbreviatedElement->getAttribute('expan') ?: self::removeTags($value, 'abbr');
-
-            $newElement = self::makeElementFromValue($newValue);
-            $newElement = self::removeElementTags($newElement->ownerDocument, $newElement, 'p');
-            $abbreviatedElement->parentNode->replaceChild($document->importNode($newElement, true), $abbreviatedElement);
-        }
-
+        $element = self::replaceOriginalElements($document, $element);
+        $element = self::replaceAbbreviatedElements($document, $element);
         return $element;
     }
 
@@ -144,7 +120,7 @@ trait HasManipulatedHtml
             $unclearElement = $unclearElements->item(0);
 
             $value = $unclearElement->nodeValue;
-            $newValue = '<i>[Unclear' . (!empty($value) ? (': ' . $value) : '') . ']</i>';
+            $newValue = '<i>[unclear' . (!empty($value) ? (': ' . $value) : '') . ']</i>';
 
             $newElement = self::makeElementFromValue($newValue);
             $unclearElement->parentNode->replaceChild($document->importNode($newElement, true), $unclearElement);
@@ -188,11 +164,47 @@ trait HasManipulatedHtml
         return preg_replace('/<\/?' . $tag . '[^>]*>/', '', $value);
     }
 
+    public function replaceAbbreviatedElements($document, $element)
+    {
+        $abbreviatedElements = $element->getElementsByTagName('abbr');
+
+        while (!empty($abbreviatedElements) && !empty($abbreviatedElements->item(0))) {
+            $abbreviatedElement = $abbreviatedElements->item(0);
+
+            $value = $abbreviatedElement->nodeValue;
+            $newValue = $abbreviatedElement->getAttribute('expan') ?: self::removeTags($value, 'abbr');
+
+            $newElement = self::makeElementFromValue($newValue);
+            $newElement = self::removeElementTags($newElement->ownerDocument, $newElement, 'p');
+            $abbreviatedElement->parentNode->replaceChild($document->importNode($newElement, true), $abbreviatedElement);
+        }
+
+        return $element;
+    }
+
     public function replaceElementTags($document, $element, $originalTag, $newTag)
     {
         $value = self::getElementHtml($document, $element);
         $value = self::replaceTags($value, $originalTag, $newTag);
         return self::makeElementFromValue($value);
+    }
+
+    public function replaceOriginalElements($document, $element)
+    {
+        $originalElements = $element->getElementsByTagName('orig');
+
+        while (!empty($originalElements) && !empty($originalElements->item(0))) {
+            $originalElement = $originalElements->item(0);
+
+            $value = $originalElement->nodeValue;
+            $newValue = $originalElement->getAttribute('reg') ?: self::removeTags($value, 'orig');
+
+            $newElement = self::makeElementFromValue($newValue);
+            $newElement = self::removeElementTags($newElement->ownerDocument, $newElement, 'p');
+            $originalElement->parentNode->replaceChild($document->importNode($newElement, true), $originalElement);
+        }
+
+        return $element;
     }
 
     public function replaceTags($value, $originalTag, $newTag)

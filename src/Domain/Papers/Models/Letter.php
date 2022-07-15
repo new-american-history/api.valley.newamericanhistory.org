@@ -26,9 +26,13 @@ class Letter extends Model
     protected $teiFields = [
         'body',
         'closing_salutation',
+        'dateline',
         'epigraph',
         'headline',
         'location',
+        'opening_salutation',
+        'postscript',
+        'recipient',
         'signed',
     ];
 

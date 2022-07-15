@@ -48,7 +48,6 @@ trait HasTeiTags
             return null;
         }
 
-        $value = self::removeTags($value, 'add');
         $value = self::removeTags($value, 'dateRange');
         $value = self::removeTags($value, 'name');
         $value = self::removeTags($value, 'note');
@@ -57,6 +56,7 @@ trait HasTeiTags
             $value = self::removeTags($value, 'orig');
         }
 
+        $value = self::replaceTags($value, 'add', 'ins');
         $value = self::replaceTags($value, 'lb', 'br');
         $value = self::replaceTags($value, 'ref', 'sup');
         $value = str_replace('</br>', '', $value);

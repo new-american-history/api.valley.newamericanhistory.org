@@ -79,14 +79,14 @@ class ImportLetters extends BaseImportCommand
 
             if (!empty($frontElement)) {
                 $summaryElement = self::getFirstElementWithAttribute($frontElement, 'div1', 'type', 'summary');
-                $modelData['summary'] = !empty($summaryElement) ? self::getElementValue($summaryElement) : null;
+                $modelData['summary'] = self::getElementValue($summaryElement);
             }
 
             if (!empty($headElement)) {
                 $modelData['headline'] = self::getElementHtml($document, $headElement, ['head', 'name']);
 
                 $recipientElement = self::getFirstElementWithAttribute($headElement, 'name', 'type', 'recipient');
-                $modelData['recipient'] = !empty($recipientElement) ? self::getElementValue($recipientElement) : null;
+                $modelData['recipient'] = self::getElementHtml($document, $recipientElement, ['name', 'p']);
 
                 self::removeChildElement($bodyDivElement, $headElement);
             }
@@ -96,33 +96,32 @@ class ImportLetters extends BaseImportCommand
                 $modelData['date'] = !empty($dateElement)
                     ? self::getFormattedDate($dateElement->getAttribute('value'))
                     : null;
-                $modelData['dateline'] = !empty($dateElement)
-                    ? self::getElementValue($dateElement)
-                    : null;
+                $modelData['dateline'] = self::getElementHtml($document, $dateElement, ['date', 'p']);
+
                 $openerSaluteElement = self::getFirstElementByTagName($openerElement, 'salute');
-                $modelData['opening_salutation'] = self::getElementValue($openerSaluteElement);
+                $modelData['opening_salutation'] = self::getElementHtml($document, $openerSaluteElement, ['salute', 'p']);
 
                 $locationElement = self::getFirstElementWithAttribute($openerElement, 'name', 'type', 'place');
-                $modelData['location'] = !empty($locationElement) ? self::getElementHtml($document, $locationElement, ['name']) : null;
+                $modelData['location'] = self::getElementHtml($document, $locationElement, ['name', 'p']);
 
                 self::removeChildElement($bodyDivElement, $openerElement);
             }
 
             if (!empty($closerElement)) {
                 $closerSaluteElement = self::getFirstElementByTagName($closerElement, 'salute');
-                $modelData['closing_salutation'] = !empty($closerSaluteElement) ? self::getElementHtml($document, $closerSaluteElement, ['salute', 'p']) : null;
+                $modelData['closing_salutation'] = self::getElementHtml($document, $closerSaluteElement, ['salute', 'p']);
 
                 $signedElement = self::getFirstElementByTagName($closerElement, 'signed');
                 $modelData['signed'] = self::getElementHtml($document, $signedElement, ['signed']);
 
                 $postscriptElement = self::getFirstElementWithAttribute($closerElement, 'seg', 'type', 'postscript');
-                $modelData['postscript'] = !empty($postscriptElement) ? self::getElementValue($postscriptElement) : null;
+                $modelData['postscript'] = self::getElementHtml($document, $postscriptElement, ['postscript']);
 
                 self::removeChildElement($bodyDivElement, $closerElement);
             }
 
             $epigraphElement = self::getFirstElementWithAttribute($bodyElement, 'div1', 'type', 'epigraph');
-            $modelData['epigraph'] = !empty($epigraphElement) ? self::getElementHtml($document, $epigraphElement, ['div1', 'p']) : null;
+            $modelData['epigraph'] = self::getElementHtml($document, $epigraphElement, ['div1', 'p']);
 
             $modelData['body'] = self::getElementHtml($document, $bodyDivElement, ['div\d']);
             $this->letter = Letter::create($modelData);
@@ -192,9 +191,7 @@ class ImportLetters extends BaseImportCommand
 
         foreach ($notesStmtElements as $notesStmtElement) {
             $notesElement = self::getFirstElementByTagName($notesStmtElement, 'note');
-            if (!empty($notesElement)) {
-                return self::getElementValue($notesElement);
-            }
+            return self::getElementValue($notesElement);
         }
         return null;
     }
