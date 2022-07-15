@@ -224,8 +224,6 @@ class ImportNewspapers extends BaseImportCommand
 
         foreach ($storyElements as $index => $storyElement) {
             $modelData = [];
-            $modelData['newspaper_page_id'] = $pageId;
-            $modelData['weight'] = $index;
             $modelData['column'] = ltrim(self::getFirstElementValueByTagName($storyElement, 'column'), '0');
             $modelData['headline'] = self::getFirstElementValueByTagName($storyElement, 'head', ['none']);
             $modelData['summary'] = self::getFirstElementValueByTagName($storyElement, 'summary');
@@ -243,8 +241,12 @@ class ImportNewspapers extends BaseImportCommand
                 $modelData['body'] = trim(str_replace('<p></p>', '', $body)) ?: null;
             }
 
-            $story = Story::create($modelData);
-            self::handleNames($storyElement, $story->id);
+            if (!empty(array_filter($modelData))) {
+                $modelData['weight'] = $index;
+                $modelData['newspaper_page_id'] = $pageId;
+                $story = Story::create($modelData);
+                self::handleNames($storyElement, $story->id);
+            }
         }
     }
 
