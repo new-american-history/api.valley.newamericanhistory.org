@@ -29,6 +29,7 @@ use App\Api\OptionLists\Controllers\CivilWarImagePersonController;
 use App\Api\Claims\Controllers\SouthernClaimsCommissionController;
 use App\Api\OptionLists\Controllers\CivilWarImageSubjectController;
 use App\Api\Papers\Controllers\BattlefieldCorrespondenceController;
+use App\Api\OptionLists\Controllers\VeteranCensusCompanyController;
 use App\Api\OptionLists\Controllers\CivilWarImageLocationController;
 use App\Api\OptionLists\Controllers\SoldierDossierCompanyController;
 use App\Api\OptionLists\Controllers\VeteranCensusLocationController;
@@ -49,12 +50,17 @@ use App\Api\OptionLists\Controllers\CivilWarImageOriginalSourceController;
 use App\Api\OptionLists\Controllers\FranklinTaxRecordOccupationController;
 use App\Api\OptionLists\Controllers\ManufacturingCensusBusinessController;
 use App\Api\OptionLists\Controllers\ManufacturingCensusLocationController;
+use App\Api\OptionLists\Controllers\CohabitationRecordResidenceController;
+use App\Api\OptionLists\Controllers\RegimentalMovementCommanderController;
 use App\Api\OptionLists\Controllers\SoldierDossierEnlistmentRankController;
 use App\Api\FireInsurancePolicies\Controllers\FireInsurancePolicyController;
 use App\Api\OptionLists\Controllers\ManufacturingCensusProductTypeController;
 use App\Api\OptionLists\Controllers\SoldierDossierEnlistmentLocationController;
+use App\Api\OptionLists\Controllers\CohabitationRecordWifeBirthplaceController;
 use App\Api\OptionLists\Controllers\SlaveowningCensusEmployerLocationController;
 use App\Api\OptionLists\Controllers\SoldierDossierEnlistmentOccupationController;
+use App\Api\OptionLists\Controllers\CohabitationRecordHusbandBirthplaceController;
+use App\Api\OptionLists\Controllers\CohabitationRecordHusbandOccupationController;
 
 // Models
 
@@ -103,6 +109,10 @@ Route::group(['prefix' => 'option-lists'], function () {
     Route::get('/civil-war-image-original-sources', [CivilWarImageOriginalSourceController::class, 'index']);
     Route::get('/civil-war-image-people', [CivilWarImagePersonController::class, 'index']);
     Route::get('/civil-war-image-subjects', [CivilWarImageSubjectController::class, 'index']);
+    Route::get('/cohabitation-record-husband-birthplaces', [CohabitationRecordHusbandBirthplaceController::class, 'index']);
+    Route::get('/cohabitation-record-husband-occupations', [CohabitationRecordHusbandOccupationController::class, 'index']);
+    Route::get('/cohabitation-record-residences', [CohabitationRecordResidenceController::class, 'index']);
+    Route::get('/cohabitation-record-wife-birthplaces', [CohabitationRecordWifeBirthplaceController::class, 'index']);
     Route::get('/diary-authors', [DiaryAuthorController::class, 'index']);
     Route::get('/diary-keywords', [DiaryKeywordController::class, 'index']);
     Route::get('/franklin-tax-record-occupations', [FranklinTaxRecordOccupationController::class, 'index']);
@@ -115,6 +125,7 @@ Route::group(['prefix' => 'option-lists'], function () {
     Route::get('/population-census-occupations', [PopulationCensusOccupationController::class, 'index']);
     Route::get('/regimental-movement-battles', [RegimentalMovementBattleController::class, 'index']);
     Route::get('/regimental-movement-brigades', [RegimentalMovementBrigadeController::class, 'index']);
+    Route::get('/regimental-movement-commanders', [RegimentalMovementCommanderController::class, 'index']);
     Route::get('/regimental-movement-corps', [RegimentalMovementCorpsController::class, 'index']);
     Route::get('/regimental-movement-divisions', [RegimentalMovementDivisionController::class, 'index']);
     Route::get('/regimental-movement-regiments', [RegimentalMovementRegimentController::class, 'index']);
@@ -125,6 +136,7 @@ Route::group(['prefix' => 'option-lists'], function () {
     Route::get('/soldiers-dossier-enlistment-ranks', [SoldierDossierEnlistmentRankController::class, 'index']);
     Route::get('/soldiers-dossier-regiments', [SoldierDossierRegimentController::class, 'index']);
     Route::get('/states', [StateController::class, 'index']);
+    Route::get('/veterans-census-companies', [VeteranCensusCompanyController::class, 'index']);
     Route::get('/veterans-census-locations', [VeteranCensusLocationController::class, 'index']);
     Route::get('/veterans-census-ranks', [VeteranCensusRankController::class, 'index']);
     Route::get('/veterans-census-regiments', [VeteranCensusRegimentController::class, 'index']);
