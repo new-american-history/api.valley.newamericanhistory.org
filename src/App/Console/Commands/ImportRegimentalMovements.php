@@ -100,7 +100,9 @@ class ImportRegimentalMovements extends BaseImportCommand
                     $modelData['regiment_id'] = $regiment->id;
                 }
 
-                RegimentalMovement::create($modelData);
+                if (!empty($modelData['battle_name'])) {
+                    RegimentalMovement::create($modelData);
+                }
             }
         }
 
