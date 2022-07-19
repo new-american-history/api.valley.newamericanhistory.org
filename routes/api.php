@@ -92,7 +92,7 @@ Route::get('/population-census', [PopulationCensusController::class, 'index']);
 Route::get('/regimental-movements', [RegimentalMovementController::class, 'index']);
 Route::get('/slaveowners-census', [SlaveowningCensusController::class, 'index']);
 Route::get('/soldiers-dossiers', [SoldierDossierController::class, 'index']);
-Route::get('/soldiers-dossiers/{valley_id}', [SoldierDossierController::class, 'show']);
+Route::get('/soldiers-dossiers/{county}/{valley_id}', [SoldierDossierController::class, 'show']);
 Route::get('/southern-claims-commission', [SouthernClaimsCommissionController::class, 'index']);
 Route::get('/southern-claims-commission/{valley_id}', [SouthernClaimsCommissionController::class, 'show']);
 Route::get('/veterans-census', [VeteranCensusController::class, 'index']);

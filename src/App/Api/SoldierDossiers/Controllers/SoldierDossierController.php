@@ -16,9 +16,12 @@ class SoldierDossierController
         );
     }
 
-    public function show(string $valley_id)
+    public function show(string $county, string $valley_id)
     {
-        $soldierDossier = SoldierDossier::where(['valley_id' => $valley_id])->firstOrFail();
+        $soldierDossier = SoldierDossier::where([
+            'valley_id' => $valley_id,
+            'county' => $county
+        ])->firstOrFail();
         return new SoldierDossierResource($soldierDossier);
     }
 }
