@@ -19,10 +19,22 @@ class Diary extends Model
 
     protected $hidden = ['created_at', 'updated_at'];
 
-    protected $appends = ['county_label'];
+    protected $appends = ['county_label', 'clean_title', 'date_from_title'];
 
     protected $casts = [
         'keywords' => 'array',
+    ];
+
+    protected $cleanRegExpList = [
+        'dateMonthDayYearWithQuotemark' =>
+            '/," ([0-9]{0,2} ?\[?(January|February|March|April|May|June|July|August|September|October|November|December).*)$/i',
+        'dateMonthDayYear' =>
+            '/, ([0-9]{0,2} ?\[?(January|February|March|April|May|June|July|August|September|October|November|December).*)$/i',
+        'day' => '/, ((Sunday|Monday|Tuesday|Wednesday|Thursday|Friday|Saturday).*)$/i',
+        'dateBraces' => '/, (\[.+\].*)$/i',
+        'dateParens' => '/,? \(([0-9\-; ]+.*)\)$/i',
+        'dateCirca' => '/, ((c.|ca.|circa).+)$/i',
+        'dateYear' => '/, ([0-9X?]{4})$/i',
     ];
 
     protected $teiFields = ['bio'];
@@ -70,4 +82,42 @@ class Diary extends Model
 
         'entries.date',
     ];
+
+    protected function getCleanTitleAttribute(): ?string
+    {
+        $title = $this->title;
+        $title = preg_replace('/^(Augusta|Franklin)( County)?: /', '', $title);
+
+        // Remove various date formats.
+        $title = preg_replace($this->cleanRegExpList['dateMonthDayYearWithQuotemark'], '"', $title);
+        $title = preg_replace($this->cleanRegExpList['dateMonthDayYear'], '', $title);
+        $title = preg_replace($this->cleanRegExpList['day'], '', $title);
+        $title = preg_replace($this->cleanRegExpList['dateBraces'], '', $title);
+        $title = preg_replace($this->cleanRegExpList['dateParens'], '', $title);
+        $title = preg_replace($this->cleanRegExpList['dateCirca'], '', $title);
+        $title = preg_replace($this->cleanRegExpList['dateYear'], '', $title);
+
+        return $title;
+    }
+
+    protected function getDateFromTitleAttribute(): ?string
+    {
+        $title = $this->title;
+        if (preg_match($this->cleanRegExpList['dateMonthDayYearWithQuotemark'], $title, $matches)) {
+            return $matches[1] ?? null;
+        } elseif (preg_match($this->cleanRegExpList['dateMonthDayYear'], $title, $matches)) {
+            return $matches[1] ?? null;
+        } elseif (preg_match($this->cleanRegExpList['day'], $title, $matches)) {
+            return $matches[1] ?? null;
+        } elseif (preg_match($this->cleanRegExpList['dateBraces'], $title, $matches)) {
+            return $matches[1] ?? null;
+        } elseif (preg_match($this->cleanRegExpList['dateParens'], $title, $matches)) {
+            return $matches[1] ?? null;
+        } elseif (preg_match($this->cleanRegExpList['dateCirca'], $title, $matches)) {
+            return $matches[1] ?? null;
+        } elseif (preg_match($this->cleanRegExpList['dateYear'], $title, $matches)) {
+            return $matches[1] ?? null;
+        }
+        return null;
+    }
 }
