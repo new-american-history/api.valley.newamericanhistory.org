@@ -36,6 +36,14 @@ class DiaryResource extends JsonResource
                 ? $this->entries->map(function ($note) {
                     return new DiaryEntryResource($note);
                 }) : null,
+            'images' => $this->images && $this->images->count() > 0
+                ? $this->images->map(function ($image) {
+                    return new ImageResource($image);
+                }) : null,
+            'notes' => $this->notes && $this->notes->count() > 0
+                ? $this->notes->map(function ($note) {
+                    return new NoteResource($note);
+                }) : null,
         ];
 
         return $res;
