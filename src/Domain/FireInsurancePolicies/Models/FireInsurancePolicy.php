@@ -28,11 +28,14 @@ class FireInsurancePolicy extends Model
 
     public static $exactFilters = [
         'county',
-        'policy_number',
     ];
 
     public static $fuzzyFilters = [
         'description',
         'name',
+    ];
+
+    public static $numericFilters = [
+        'policy_number',
     ];
 }
