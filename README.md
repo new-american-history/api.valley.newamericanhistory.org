@@ -6,6 +6,6 @@ This codebase is built using [Laravel](https://laravel.com). It migrates the dat
 
 ---
 
-[Download the database](https://api.valley.newamericanhistory.org/storage/data/api.valley.newamericanhistory.org.sql) (202 MB).
+[Download the database](https://api.valley.newamericanhistory.org/storage/data/api.valley.newamericanhistory.org.sql) (123 MB).
 
 [Download the original data files](https://api.valley.newamericanhistory.org/storage/data/import-data.zip) (4.22 GB), including complete TEI files for several data types.
