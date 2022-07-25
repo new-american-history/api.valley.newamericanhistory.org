@@ -137,6 +137,9 @@ class BaseImportCommand extends Command
         $value = str_replace('?', '1', $value);
         $value = str_replace('xx', '01', $value);
         $dateTime = strtotime($value);
+        if (date('Y', $dateTime) >= date('Y')) {
+            return null;
+        }
         return !empty($dateTime) ? date('Y-m-d', $dateTime) : null;
     }
 
