@@ -25,18 +25,18 @@ class StoryResource extends JsonResource
                     ? $this->page->number
                     : null,
             ];
+        } else {
+            $res += [
+                'names' => !empty($this->names)
+                    ? $this->names->map(function ($name) {
+                        return new NameResource($name);
+                    }) : null,
+                'topics' => !empty($this->topics)
+                    ? $this->topics->map(function ($topic) {
+                        return new TopicResource($topic);
+                    }) : null,
+            ];
         }
-
-        $res += [
-            'names' => !empty($this->names)
-                ? $this->names->map(function ($name) {
-                    return new NameResource($name);
-                }) : null,
-            'topics' => !empty($this->topics)
-                ? $this->topics->map(function ($topic) {
-                    return new TopicResource($topic);
-                }) : null,
-        ];
 
         return $res;
     }
