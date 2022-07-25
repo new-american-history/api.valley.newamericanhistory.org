@@ -5,7 +5,7 @@ namespace Domain\SoldierDossiers\Models;
 use Domain\Shared\Models\Image;
 use Domain\Shared\Traits\HasCountyEnum;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class SoldierDossier extends Model
 {
@@ -13,21 +13,21 @@ class SoldierDossier extends Model
 
     protected $guarded = [];
 
-    protected $hidden = ['created_at', 'updated_at', 'image_id'];
+    protected $hidden = ['created_at', 'updated_at'];
 
     protected $appends = ['county_label'];
 
     protected $casts = [
-        'image_id' => 'integer',
         'enlisted_age' => 'integer',
         '1860_census_dwelling_number' => 'integer',
         '1860_census_family_number' => 'integer',
         '1860_census_page_number' => 'integer',
     ];
 
-    public function image(): BelongsTo
+    public function images(): BelongsToMany
     {
-        return $this->belongsTo(Image::class);
+        return $this->belongsToMany(Image::class, 'soldier_dossier_image')
+            ->orderBy('weight');
     }
 
     public static $exactFilters = [

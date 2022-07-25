@@ -12,9 +12,10 @@ class SoldierDossierResource extends JsonResource
         $res = parent::toArray($request);
 
         $res += [
-            'image' => !empty($this->image)
-                ? new ImageResource($this->image)
-                : null,
+            'images' => $this->images && $this->images->count() > 0
+                ? $this->images->map(function ($image) {
+                    return new ImageResource($image);
+                }) : null,
         ];
 
         return $res;

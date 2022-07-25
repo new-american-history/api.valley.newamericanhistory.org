@@ -144,10 +144,19 @@ class ImportSoldierDossiers extends BaseImportCommand
                                 $modelData[$modelAttribute][$part] = $value;
                             }
                         } elseif ($columnName === 'photos') {
-                            if (!empty($value)) {
-                                $value = str_ireplace('gif', 'jpg', $value);
-                                $image = Image::firstOrCreate(['path' => $value]);
-                                $modelData['image_id'] = $image->id;
+                            $imageNames = !empty($value) ? explode(';', $value) : [];
+                            $imageIds = [];
+
+                            if (!empty($imageNames)) {
+                                $weight = 0;
+
+                                foreach ($imageNames as $imageName) {
+                                    $path = str_ireplace('gif', 'jpg', $imageName);
+                                    $image = Image::firstOrCreate(['path' => $path]);
+
+                                    $imageIds[$image->id] = ['weight' => $weight];
+                                    $weight ++;
+                                }
                             }
                             break;
                         } else {
@@ -160,7 +169,8 @@ class ImportSoldierDossiers extends BaseImportCommand
                     }
 
                     $modelData = self::combineAndFilterDates($modelData);
-                    SoldierDossier::create($modelData);
+                    $soldierDossier = SoldierDossier::create($modelData);
+                    $soldierDossier->images()->sync($imageIds);
                 }
             }
 
