@@ -36,13 +36,16 @@ class Family extends Model
         'county',
     ];
 
-    public static $fuzzyFilters = [
+    public static $exactFiltersWithCommas = [
         'husband_birthplace',
+        'residence',
+        'wife_birthplace',
+    ];
+
+    public static $fuzzyFilters = [
         'husband_first_name',
         'husband_last_name',
         'husband_occupation',
-        'residence',
-        'wife_birthplace',
         'wife_first_name',
         'wife_last_name',
 

@@ -37,9 +37,13 @@ class Image extends Model
     public static $exactFilters = [
         'image_type',
         'original_source',
-        'person_name',
 
         'subject.name',
+    ];
+
+    public static $exactFiltersWithCommas = [
+        'location',
+        'person_name',
     ];
 
     public static $fuzzyFilters = [
@@ -47,7 +51,6 @@ class Image extends Model
         'contributing_source',
         'date',
         'description',
-        'location',
         'regiment',
         'title',
     ];

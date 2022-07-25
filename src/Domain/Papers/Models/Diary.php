@@ -62,9 +62,12 @@ class Diary extends Model
     }
 
     public static $exactFilters = [
-        'author',
         'county',
         'valley_id',
+    ];
+
+    public static $exactFiltersWithCommas = [
+        'author',
     ];
 
     public static $fuzzyFilters = [

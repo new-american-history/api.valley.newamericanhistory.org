@@ -16,7 +16,7 @@ class SoldierDossierEnlistmentOccupationController
             ->pluck('enlisted_occupation')
             ->map(function ($enlistedOccupation) {
                 return [
-                    'value' => preg_replace('/, (Staunton|(.+ Co\.)|Strausburg Pa\.)/', '', $enlistedOccupation),
+                    'value' => $enlistedOccupation,
                     'label' => $enlistedOccupation,
                 ];
             })

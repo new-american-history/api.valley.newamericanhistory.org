@@ -16,7 +16,7 @@ class CivilWarImageLocationController
             ->pluck('location')
             ->map(function ($location) {
                 return [
-                    'value' => preg_replace('/, .+/', '', $location),
+                    'value' => $location,
                     'label' => $location,
                 ];
             })

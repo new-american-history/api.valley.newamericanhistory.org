@@ -23,7 +23,6 @@ class RegimentalMovement extends Model
     }
 
     public static $exactFilters = [
-        'battle_name',
         'battle_state',
         'brigade',
         'corps',
@@ -37,6 +36,10 @@ class RegimentalMovement extends Model
         'regiment.county',
         'regiment.name',
         'regiment.state',
+    ];
+
+    public static $exactFiltersWithCommas = [
+        'battle_name',
     ];
 
     public static $fuzzyFilters = [

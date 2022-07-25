@@ -33,12 +33,15 @@ class SoldierDossier extends Model
     public static $exactFilters = [
         'company',
         'county',
-        'enlisted_location',
-        'enlisted_occupation',
         'enlisted_rank',
-        'regiment',
         'transfer_company',
         'valley_id',
+    ];
+
+    public static $exactFiltersWithCommas = [
+        'enlisted_location',
+        'enlisted_occupation',
+        'regiment',
     ];
 
     public static $fuzzyFilters = [

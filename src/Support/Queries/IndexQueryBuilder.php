@@ -26,6 +26,11 @@ class IndexQueryBuilder extends QueryBuilder
                     return AllowedFilter::exact($name);
                 }, $model::$exactFilters)
                 : [],
+            !empty($model::$exactFiltersWithCommas)
+                ? array_map(function ($name) {
+                    return AllowedFilter::exact($name, null, true, '--no delimiter--');
+                }, $model::$exactFiltersWithCommas)
+                : [],
             !empty($model::$numericFilters)
                 ? array_reduce($model::$numericFilters, function ($l, $f) {
                     $l[] = AllowedFilter::exact($f);

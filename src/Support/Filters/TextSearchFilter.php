@@ -19,7 +19,7 @@ class TextSearchFilter extends FiltersExact implements Filter
     }
 
     public function __invoke(Builder $query, $value, string $property)
-    // The $property parameter is unused but is q requried part of the function declaration.
+    // The $property parameter is unused but is a required part of the function declaration.
     {
         $currentModelClass = get_class($query->getModel());
         $isNestedClass = $currentModelClass != $this->initialModelClass;

@@ -36,6 +36,10 @@ class ManufacturingCensus extends Model
         'data_id' => 'integer',
     ];
 
+    public static $exactFiltersWithCommas = [
+        'products.type',
+    ];
+
     public static $exactFilters = [
         'business',
         'business_class',
@@ -49,7 +53,6 @@ class ManufacturingCensus extends Model
         'name',
 
         'materials.type',
-        'products.type',
     ];
 
     public static $numericFilters = [

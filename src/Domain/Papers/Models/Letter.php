@@ -64,10 +64,13 @@ class Letter extends Model
     }
 
     public static $exactFilters = [
-        'author',
         'collection',
         'county',
         'valley_id',
+    ];
+
+    public static $exactFiltersWithCommas = [
+        'author',
     ];
 
     public static $fuzzyFilters = [
