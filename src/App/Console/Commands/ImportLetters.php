@@ -73,7 +73,7 @@ class ImportLetters extends BaseImportCommand
             $openerElement = self::getFirstElementByTagName($bodyElement, 'opener');
             $closerElement = self::getFirstElementByTagName($bodyElement, 'closer');
 
-            if (preg_match('/^freedmen/i', $modelData['title'])) {
+            if (preg_match('/^freedm/i', $modelData['title'])) {
                 $modelData['collection'] = 'freedmens-bureau';
             }
 
