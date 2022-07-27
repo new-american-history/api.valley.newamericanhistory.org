@@ -56,8 +56,6 @@ class ExactFilterWithCommas extends FiltersExact implements Filter
                         $value = mb_strtolower($value, 'UTF8');
                         $query->where($unwrappedProperty, $value);
                     }
-
-                    // dd($query->toSql());
                 }
             }
         });
