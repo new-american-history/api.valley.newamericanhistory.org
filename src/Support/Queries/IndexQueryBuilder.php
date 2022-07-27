@@ -7,6 +7,7 @@ use Spatie\QueryBuilder\AllowedSort;
 use Spatie\QueryBuilder\QueryBuilder;
 use Support\Filters\TextSearchFilter;
 use Spatie\QueryBuilder\AllowedFilter;
+use Support\Filters\ExactFilterWithCommas;
 
 class IndexQueryBuilder extends QueryBuilder
 {
@@ -27,9 +28,13 @@ class IndexQueryBuilder extends QueryBuilder
                 }, $model::$exactFilters)
                 : [],
             !empty($model::$exactFiltersWithCommas)
-                ? array_map(function ($name) {
-                    return AllowedFilter::exact($name, null, true, '--no delimiter--');
-                }, $model::$exactFiltersWithCommas)
+                ? array_reduce($model::$exactFiltersWithCommas, function ($l, $f) use ($model) {
+                    $l[] = AllowedFilter::custom($f, new ExactFilterWithCommas(
+                        $model::$exactFiltersWithCommas,
+                        $model
+                    ));
+                    return $l;
+                }, [])
                 : [],
             !empty($model::$numericFilters)
                 ? array_reduce($model::$numericFilters, function ($l, $f) {
