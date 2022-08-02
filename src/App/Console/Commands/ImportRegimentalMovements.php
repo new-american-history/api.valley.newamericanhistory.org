@@ -95,6 +95,10 @@ class ImportRegimentalMovements extends BaseImportCommand
                     }
                 }
 
+                // Make sure the battle ends on the same day it starts if end date is null.
+                $modelData['battle_end_date'] =
+                    $modelData['battle_end_date'] ?? $modelData['battle_start_date'] ?? null;
+
                 if (!empty(array_filter($regimentModelData))) {
                     $regiment = Regiment::firstOrCreate($regimentModelData);
                     $modelData['regiment_id'] = $regiment->id;
