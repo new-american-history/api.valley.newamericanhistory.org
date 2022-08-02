@@ -7,16 +7,23 @@ use Spatie\QueryBuilder\Filters\Filter;
 use Illuminate\Database\Eloquent\Builder;
 use Spatie\QueryBuilder\Filters\FiltersExact;
 
-class ExactFilterWithCommas extends FiltersExact implements Filter
+class DateFilter extends FiltersExact implements Filter
 {
-    protected string $field;
-
     protected string $initialModelClass;
 
-    public function __construct($field, $initialModelClass)
+    protected string $field;
+
+    protected array $conditions;
+
+    protected bool $requireAllConditions;
+
+
+    public function __construct($initialModelClass, $field, $conditions, $requireAllConditions = true)
     {
-        $this->field = $field;
         $this->initialModelClass = $initialModelClass;
+        $this->field = $field;
+        $this->conditions = $conditions;
+        $this->requireAllConditions = $requireAllConditions;
     }
 
     public function __invoke(Builder $query, $value, string $property)
@@ -55,11 +62,49 @@ class ExactFilterWithCommas extends FiltersExact implements Filter
 
                     $unwrappedProperty = str_replace('`', '', $wrappedProperty);
                     $value = mb_strtolower($value, 'UTF8');
-                    $query->where($unwrappedProperty, $value);
+
+                    if ($this->requireAllConditions) {
+                        foreach ($this->conditions as $condition) {
+                            $dateValue = $condition[1] === 'end'
+                                ? $this->getEndOfDate($value)
+                                : $this->getStartOfDate($value);
+                            $query->where($unwrappedProperty, $condition[0], $dateValue);
+                        }
+                    } else {
+                        $query->where(function ($query) use ($unwrappedProperty, $value) {
+                            foreach ($this->conditions as $index => $condition) {
+                                $dateValue = $condition[1] === 'end'
+                                    ? $this->getEndOfDate($value)
+                                    : $this->getStartOfDate($value);
+                                $queryFunction = $index === 0 ? 'where' : 'orWhere';
+                                $query->$queryFunction($unwrappedProperty, $condition[0], $dateValue);
+                            }
+                        });
+                    }
                 }
             }
         });
 
         return;
+    }
+
+    protected function getStartOfDate($value)
+    {
+        if (strlen($value) === 4) {
+            return $value . '-01-01';
+        } elseif (strlen($value) === 7) {
+            return $value . '-01';
+        }
+        return strtotime($value) ? date('Y-m-d', strtotime($value)) : $value;
+    }
+
+    protected function getEndOfDate($value)
+    {
+        if (strlen($value) === 4) {
+            return $value . '-12-31';
+        } elseif (strlen($value) === 7) {
+            return $value . '-31';
+        }
+        return strtotime($value) ? date('Y-m-d', strtotime($value)) : $value;
     }
 }

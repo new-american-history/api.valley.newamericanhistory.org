@@ -3,6 +3,7 @@
 namespace Support\Queries;
 
 use Illuminate\Http\Request;
+use Support\Filters\DateFilter;
 use Spatie\QueryBuilder\AllowedSort;
 use Spatie\QueryBuilder\QueryBuilder;
 use Support\Filters\TextSearchFilter;
@@ -16,28 +17,23 @@ class IndexQueryBuilder extends QueryBuilder
         parent::__construct($query, $request);
     }
 
-    public function mapAllowedFilters($model)
+    public function mapAllowedFilters($modelClass)
     {
         return array_merge(
-            !empty($model::$fuzzyFilters)
-                ? $model::$fuzzyFilters
+            !empty($modelClass::$fuzzyFilters)
+                ? $modelClass::$fuzzyFilters
                 : [],
-            !empty($model::$exactFilters)
+            !empty($modelClass::$exactFilters)
                 ? array_map(function ($name) {
                     return AllowedFilter::exact($name);
-                }, $model::$exactFilters)
-                : [],
-            !empty($model::$exactFiltersWithCommas)
-                ? array_reduce($model::$exactFiltersWithCommas, function ($l, $f) use ($model) {
-                    $l[] = AllowedFilter::custom($f, new ExactFilterWithCommas(
-                        $model::$exactFiltersWithCommas,
-                        $model
-                    ));
+                }, $modelClass::$exactFilters) : [],
+            !empty($modelClass::$exactFiltersWithCommas)
+                ? array_reduce($modelClass::$exactFiltersWithCommas, function ($l, $f) use ($modelClass) {
+                    $l[] = AllowedFilter::custom($f, new ExactFilterWithCommas($f, $modelClass));
                     return $l;
-                }, [])
-                : [],
-            !empty($model::$numericFilters)
-                ? array_reduce($model::$numericFilters, function ($l, $f) {
+                }, []) : [],
+            !empty($modelClass::$numericFilters)
+                ? array_reduce($modelClass::$numericFilters, function ($l, $f) {
                     $l[] = AllowedFilter::exact($f);
 
                     $l[] = AllowedFilter::callback($f . ':gt', function ($query, $value) use ($f) {
@@ -59,90 +55,56 @@ class IndexQueryBuilder extends QueryBuilder
                     });
 
                     return $l;
-                }, [])
-                : [],
-            !empty($model::$dateFilters)
-                ? array_reduce($model::$dateFilters, function ($l, $f) {
-                    $l[] = $this->getDateAllowedFilter($f, '', [
+                }, []) : [],
+
+            !empty($modelClass::$dateFilters)
+                ? array_reduce($modelClass::$dateFilters, function ($l, $f) use ($modelClass) {
+                    $l[] = AllowedFilter::custom($f, new DateFilter($modelClass, $f, [
                         ['>=', 'start'], ['<=', 'end']
-                    ], true);
+                    ]));
 
-                    $l[] = $this->getDateAllowedFilter($f, ':gt', [['>', 'end']]);
-                    $l[] = $this->getDateAllowedFilter($f, ':gte', [['>=', 'start']]);
+                    $l[] = AllowedFilter::custom($f . ':gt', new DateFilter($modelClass, $f, [
+                        ['>', 'end']
+                    ]));
+                    $l[] = AllowedFilter::custom($f . ':gte',  new DateFilter($modelClass, $f, [
+                        ['>=', 'start']
+                    ]));
 
-                    $l[] = $this->getDateAllowedFilter($f, ':ne', [
+                    $l[] = AllowedFilter::custom($f . ':ne',  new DateFilter($modelClass, $f, [
                         ['<', 'start'], ['>', 'end']
-                    ], false);
+                    ], false));
 
-                    $l[] = $this->getDateAllowedFilter($f, ':lte', [['<=', 'end']]);
-                    $l[] = $this->getDateAllowedFilter($f, ':lt', [['<', 'start']]);
+                    $l[] = AllowedFilter::custom($f . ':lte',  new DateFilter($modelClass, $f, [
+                        ['<=', 'end']
+                    ]));
+                    $l[] = AllowedFilter::custom($f . ':lt',  new DateFilter($modelClass, $f, [
+                        ['<', 'start']
+                    ]));
 
                     return $l;
-                }, [])
-                : [],
-            !empty($model::$fuzzyFilters) || !empty($model($exactFilters))
+                }, []) : [],
+            !empty($modelClass::$fuzzyFilters) || !empty($modelClass($exactFilters))
                 ? [
                     AllowedFilter::custom('q', new TextSearchFilter(
                         array_merge(
-                            !empty($model::$fuzzyFilters) ? $model::$fuzzyFilters : [],
-                            !empty($model::$exactFilters) ? $model::$exactFilters : []
+                            !empty($modelClass::$fuzzyFilters) ? $modelClass::$fuzzyFilters : [],
+                            !empty($modelClass::$exactFilters) ? $modelClass::$exactFilters : []
                         ),
-                        $model
+                        $modelClass
                     ))
-                ]
-                : [],
+                ] : [],
         );
     }
 
-    public function mapAllowedSorts($model)
+    public function mapAllowedSorts($modelClass)
     {
-        $fields = \Schema::getColumnListing((new $model)->getTable());
-        $excludedSorts = $model::$excludedSorts ?? [];
+        $fields = \Schema::getColumnListing((new $modelClass)->getTable());
+        $excludedSorts = $modelClass::$excludedSorts ?? [];
 
         return array_map(function ($field) use ($excludedSorts) {
             if (!in_array($field, $excludedSorts)) {
                 return AllowedSort::field($field);
             }
         }, $fields);
-    }
-
-    protected function getDateAllowedFilter($f, $modifier, $conditions, $requireAllConditions = true)
-    {
-        return AllowedFilter::callback($f . $modifier, function ($query, $value) use ($f, $requireAllConditions, $conditions) {
-            if ($requireAllConditions) {
-                foreach ($conditions as $condition) {
-                    $dateValue = $condition[1] === 'end' ? $this->getEndOfDate($value) : $this->getStartOfDate($value);
-                    $query->where($f, $condition[0], $dateValue);
-                }
-            } else {
-                $query->where(function ($query) use ($f, $value, $conditions) {
-                    foreach ($conditions as $index => $condition) {
-                        $dateValue = $condition[1] === 'end' ? $this->getEndOfDate($value) : $this->getStartOfDate($value);
-                        $queryFunction = $index === 0 ? 'where' : 'orWhere';
-                        $query->$queryFunction($f, $condition[0], $dateValue);
-                    }
-                });
-            }
-        });
-    }
-
-    protected function getStartOfDate($value)
-    {
-        if (strlen($value) === 4) {
-            return $value . '-01-01';
-        } elseif (strlen($value) === 7) {
-            return $value . '-01';
-        }
-        return strtotime($value) ? date('Y-m-d', strtotime($value)) : $value;
-    }
-
-    protected function getEndOfDate($value)
-    {
-        if (strlen($value) === 4) {
-            return $value . '-12-31';
-        } elseif (strlen($value) === 7) {
-            return $value . '-31';
-        }
-        return strtotime($value) ? date('Y-m-d', strtotime($value)) : $value;
     }
 }
