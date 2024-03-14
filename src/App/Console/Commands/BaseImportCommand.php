@@ -35,7 +35,7 @@ class BaseImportCommand extends Command
     public function getDomDocumentWithHtml($html)
     {
         $errorsToSkip = ['Unexpected end tag : p'];
-        return self::getDomDocument($html, 'loadHTML', $errorsToSkip);
+        return !empty($html) ? self::getDomDocument($html, 'loadHTML', $errorsToSkip) : null;
     }
 
     public function getDomDocumentWithXml($xml)

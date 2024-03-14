@@ -15,7 +15,7 @@ trait HasManipulatedHtml
 
     public function getDomDocumentWithHtml($html)
     {
-        return self::getDomDocument($html, 'loadHTML');
+        return !empty($html) ? self::getDomDocument($html, 'loadHTML') : null;
     }
 
     public function getDomDocument($data, $function)
@@ -42,7 +42,7 @@ trait HasManipulatedHtml
 
     public function getFirstElementByTagName($document, $tagName)
     {
-        return $document->getElementsByTagName($tagName)->item(0) ?? null;
+        return !empty($document) ? $document->getElementsByTagName($tagName)->item(0) : null;
     }
 
     public function getNormalizedValue($value)
@@ -72,7 +72,14 @@ trait HasManipulatedHtml
             $newTag = self::$hiTagElementMap[$rend] ?? 'i';
 
             $newElement = self::replaceElementTags($document, $emphasizedElement, 'emph', $newTag);
-            $emphasizedElement->parentNode->replaceChild($document->importNode($newElement, true), $emphasizedElement);
+            if (empty($newElement)) {
+                self::removeChildElement($emphasizedElement->parentNode, $emphasizedElement);
+            } else {
+                $emphasizedElement->parentNode->replaceChild(
+                    $document->importNode($newElement, true),
+                    $emphasizedElement
+                );
+            }
         }
         return $element;
     }
@@ -88,7 +95,11 @@ trait HasManipulatedHtml
             $newTag = self::$hiTagElementMap[$rend] ?? 'u';
 
             $newElement = self::replaceElementTags($document, $highlightedElement, 'hi', $newTag);
-            $highlightedElement->parentNode->replaceChild($document->importNode($newElement, true), $highlightedElement);
+            if (empty($newElement)) {
+                self::removeChildElement($highlightedElement->parentNode, $highlightedElement);
+            } else {
+                $highlightedElement->parentNode->replaceChild($document->importNode($newElement, true), $highlightedElement);
+            }
         }
         return $element;
     }
@@ -99,14 +110,20 @@ trait HasManipulatedHtml
 
         while (!empty($segmentElements) && !empty($segmentElements->item(0))) {
             $segmentElement = $segmentElements->item(0);
-
             $type = $segmentElement->getAttribute('type');
 
             if ($type === 'note-symbol') {
                 self::removeChildElement($segmentElement->parentNode, $segmentElement);
             } else {
                 $newElement = self::removeElementTags($document, $segmentElement, 'seg');
-                $segmentElement->parentNode->replaceChild($document->importNode($newElement, true), $segmentElement);
+                if (empty($newElement)) {
+                    self::removeChildElement($segmentElement->parentNode, $segmentElement);
+                } else {
+                    $segmentElement->parentNode->replaceChild(
+                        $document->importNode($newElement, true),
+                        $segmentElement
+                    );
+                }
             }
         }
         return $element;
@@ -123,7 +140,11 @@ trait HasManipulatedHtml
             $newValue = '<i>[unclear' . (!empty($value) ? (': ' . $value) : '') . ']</i>';
 
             $newElement = self::makeElementFromValue($newValue);
-            $unclearElement->parentNode->replaceChild($document->importNode($newElement, true), $unclearElement);
+            if (empty($newElement)) {
+                self::removeChildElement($unclearElement->parentNode, $unclearElement);
+            } else {
+                $unclearElement->parentNode->replaceChild($document->importNode($newElement, true), $unclearElement);
+            }
         }
         return $element;
     }
