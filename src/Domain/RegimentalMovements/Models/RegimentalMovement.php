@@ -3,6 +3,7 @@
 namespace Domain\RegimentalMovements\Models;
 
 use Domain\Shared\Enums\State;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Domain\RegimentalMovements\Models\Regiment;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -13,9 +14,12 @@ class RegimentalMovement extends Model
 
     protected $appends = ['battle_state_label'];
 
-    protected $casts = [
-        'regiment_id' => 'integer',
-    ];
+    protected function casts(): array
+    {
+        return [
+            'regiment_id' => 'integer',
+        ];
+    }
 
     public function regiment(): BelongsTo
     {
@@ -57,9 +61,10 @@ class RegimentalMovement extends Model
         'battle_start_date',
     ];
 
-    protected function getBattleStateLabelAttribute(): ?string
+    protected function battleStateLabel(): Attribute
     {
-        $enum = State::tryFrom($this->battle_state);
-        return $enum->label ?? null;
+        return Attribute::make(
+            get: fn () => State::tryFrom($this->battle_state)?->label,
+        );
     }
 }

@@ -2,6 +2,7 @@
 
 namespace Domain\Shared\Models;
 
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -12,11 +13,14 @@ class Image extends Model
 
     protected $hidden = ['created_at', 'updated_at', 'pivot'];
 
-    protected $casts = [
-        'width' => 'integer',
-        'height' => 'integer',
-        'source_id' => 'integer',
-    ];
+    protected function casts(): array
+    {
+        return [
+            'width' => 'integer',
+            'height' => 'integer',
+            'source_id' => 'integer',
+        ];
+    }
 
     protected $appends = [
         'url'
@@ -24,11 +28,13 @@ class Image extends Model
 
     protected $storageDirectory = 'images/';
 
-    public function getUrlAttribute()
+    protected function url(): Attribute
     {
-        return !empty($this->path)
-            ? url(Storage::url($this->storageDirectory . $this->path))
-            : null;
+        return Attribute::make(
+            get: fn () => !empty($this->path)
+                ? url(Storage::url($this->storageDirectory . $this->path))
+                : null,
+        );
     }
 
     public function source(): BelongsTo

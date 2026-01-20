@@ -6,6 +6,7 @@ use Domain\Shared\Enums\Weekday;
 use Domain\Newspapers\Models\Page;
 use Domain\Newspapers\Enums\Frequency;
 use Domain\Newspapers\Models\Newspaper;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -20,18 +21,25 @@ class Edition extends Model
 
     protected $appends = ['frequency_label', 'weekday_label'];
 
-    protected $casts = [
-        'newspaper_id' => 'integer',
-    ];
-
-    public function getPdfAttribute($value)
+    protected function casts(): array
     {
-        return !empty($value) ? url('/storage/data' . $value) : null;
+        return [
+            'newspaper_id' => 'integer',
+        ];
     }
 
-    public function getSourceFileAttribute($value)
+    protected function pdf(): Attribute
     {
-        return !empty($value) ? url('/storage/data' . $value) : null;
+        return Attribute::make(
+            get: fn ($value) => !empty($value) ? url('/storage/data' . $value) : null,
+        );
+    }
+
+    protected function sourceFile(): Attribute
+    {
+        return Attribute::make(
+            get: fn ($value) => !empty($value) ? url('/storage/data' . $value) : null,
+        );
     }
 
     public function newspaper(): BelongsTo
@@ -87,15 +95,17 @@ class Edition extends Model
         'date',
     ];
 
-    protected function getFrequencyLabelAttribute(): ?string
+    protected function frequencyLabel(): Attribute
     {
-        $enum = Frequency::tryFrom($this->frequency);
-        return $enum->label ?? null;
+        return Attribute::make(
+            get: fn () => Frequency::tryFrom($this->frequency)?->label,
+        );
     }
 
-    protected function getWeekdayLabelAttribute(): ?string
+    protected function weekdayLabel(): Attribute
     {
-        $enum = Weekday::tryFrom($this->weekday);
-        return $enum->label ?? null;
+        return Attribute::make(
+            get: fn () => Weekday::tryFrom($this->weekday)?->label,
+        );
     }
 }

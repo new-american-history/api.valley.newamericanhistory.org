@@ -2,19 +2,18 @@
 
 namespace Domain\Shared\Enums;
 
-use Closure;
-use Spatie\Enum\Laravel\Enum;
-
-/**
- * @method static self augusta()
- * @method static self franklin()
- */
-class County extends Enum
+enum County: string
 {
-    protected static function labels(): Closure
+    case AUGUSTA = 'augusta';
+    case FRANKLIN = 'franklin';
+
+    public function label(): string
     {
-        return function (string $value): string {
-            return ucfirst($value);
-        };
+        return ucfirst($this->value);
+    }
+
+    public static function fromValue(string $value): ?self
+    {
+        return self::tryFrom($value);
     }
 }

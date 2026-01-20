@@ -20,21 +20,24 @@ class ManufacturingCensus extends Model
 
     protected $appends = ['county_label'];
 
-    protected $casts = [
-        'year' => 'integer',
-        'months_active' => 'integer',
-        'capital_invested' => 'integer',
-        'number_of_machines' => 'integer',
-        'female_hands' => 'float',
-        'male_hands' => 'float',
-        'child_hands' => 'float',
-        'female_wages' => 'integer',
-        'male_wages' => 'integer',
-        'total_wages' => 'integer',
-        'page_number' => 'integer',
-        'number_on_page' => 'integer',
-        'data_id' => 'integer',
-    ];
+    protected function casts(): array
+    {
+        return [
+            'year' => 'integer',
+            'months_active' => 'integer',
+            'capital_invested' => 'integer',
+            'number_of_machines' => 'integer',
+            'female_hands' => 'float',
+            'male_hands' => 'float',
+            'child_hands' => 'float',
+            'female_wages' => 'integer',
+            'male_wages' => 'integer',
+            'total_wages' => 'integer',
+            'page_number' => 'integer',
+            'number_on_page' => 'integer',
+            'data_id' => 'integer',
+        ];
+    }
 
     public static $exactFiltersWithCommas = [
         'products.type',

@@ -4,6 +4,7 @@ namespace Domain\Newspapers\Models;
 
 use Domain\Shared\Enums\Chapter;
 use Domain\Newspapers\Models\Story;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -20,9 +21,12 @@ class Topic extends Model
 
     public $timestamps = false;
 
-    protected $casts = [
-        'parent_id' => 'integer',
-    ];
+    protected function casts(): array
+    {
+        return [
+            'parent_id' => 'integer',
+        ];
+    }
 
     public function stories(): BelongsToMany
     {
@@ -49,9 +53,10 @@ class Topic extends Model
         'parent.name',
     ];
 
-    protected function getChapterLabelAttribute(): ?string
+    protected function chapterLabel(): Attribute
     {
-        $enum = Chapter::tryFrom($this->chapter);
-        return $enum->label ?? null;
+        return Attribute::make(
+            get: fn () => Chapter::tryFrom($this->chapter)?->label,
+        );
     }
 }

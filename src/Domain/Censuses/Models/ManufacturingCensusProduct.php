@@ -16,11 +16,14 @@ class ManufacturingCensusProduct extends Model
 
     public $hidden = ['manufacturing_census_id'];
 
-    protected $casts = [
-        'manufacturing_census_id' => 'integer',
-        'value' => 'integer',
-        'census_data_id' => 'integer',
-    ];
+    protected function casts(): array
+    {
+        return [
+            'manufacturing_census_id' => 'integer',
+            'value' => 'integer',
+            'census_data_id' => 'integer',
+        ];
+    }
 
     public function manufacturing_census(): BelongsTo
     {

@@ -17,12 +17,15 @@ class SoldierDossier extends Model
 
     protected $appends = ['county_label'];
 
-    protected $casts = [
-        'enlisted_age' => 'integer',
-        '1860_census_dwelling_number' => 'integer',
-        '1860_census_family_number' => 'integer',
-        '1860_census_page_number' => 'integer',
-    ];
+    protected function casts(): array
+    {
+        return [
+            'enlisted_age' => 'integer',
+            '1860_census_dwelling_number' => 'integer',
+            '1860_census_family_number' => 'integer',
+            '1860_census_page_number' => 'integer',
+        ];
+    }
 
     public function images(): BelongsToMany
     {

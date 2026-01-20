@@ -17,16 +17,19 @@ class AugustaTaxRecord extends Model
 
     protected $appends = ['county_label'];
 
-    protected $casts = [
-        'year' => 'integer',
-        'acres' => 'float',
-        'rods' => 'float',
-        'poles' => 'float',
-        'building_value' => 'integer',
-        'lot_building_value' => 'float',
-        'tax_amount' => 'float',
-        'city_tax_amount' => 'float',
-    ];
+    protected function casts(): array
+    {
+        return [
+            'year' => 'integer',
+            'acres' => 'float',
+            'rods' => 'float',
+            'poles' => 'float',
+            'building_value' => 'integer',
+            'lot_building_value' => 'float',
+            'tax_amount' => 'float',
+            'city_tax_amount' => 'float',
+        ];
+    }
 
     public static $exactFilters = [
         'county',

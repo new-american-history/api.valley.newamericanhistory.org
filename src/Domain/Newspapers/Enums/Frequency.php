@@ -2,21 +2,23 @@
 
 namespace Domain\Newspapers\Enums;
 
-use Spatie\Enum\Laravel\Enum;
-
-/**
- * @method static self biWeekly()
- * @method static self semiWeekly()
- * @method static self weekly()
- */
-class Frequency extends Enum
+enum Frequency: string
 {
-    protected static function labels(): array
+    case BI_WEEKLY = 'biWeekly';
+    case SEMI_WEEKLY = 'semiWeekly';
+    case WEEKLY = 'weekly';
+
+    public function label(): string
     {
-        return [
-            'biWeekly' => 'Bi-weekly',
-            'semiWeekly' => 'Semi-weekly',
-            'weekly' => 'Weekly',
-        ];
+        return match($this) {
+            self::BI_WEEKLY => 'Bi-weekly',
+            self::SEMI_WEEKLY => 'Semi-weekly',
+            self::WEEKLY => 'Weekly',
+        };
+    }
+
+    public function fromValue(string $value): ?self
+    {
+        return self::tryFrom($value);
     }
 }

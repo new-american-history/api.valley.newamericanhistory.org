@@ -2,21 +2,23 @@
 
 namespace Domain\Shared\Enums;
 
-use Spatie\Enum\Laravel\Enum;
-
-/**
- * @method static self aftermath()
- * @method static self eve()
- * @method static self war()
- */
-class Chapter extends Enum
+enum Chapter: string
 {
-    protected static function labels(): array
+    case AFTERMATH = 'aftermath';
+    case EVE = 'eve';
+    case WAR = 'war';
+
+    public function label(): string
     {
-        return [
-            'aftermath' => 'The Aftermath',
-            'eve' => 'The Eve of War',
-            'war' => 'The War Years',
-        ];
+        return match($this) {
+            self::AFTERMATH => 'The Aftermath',
+            self::EVE => 'The Eve of War',
+            self::WAR => 'The War Years',
+        };
+    }
+
+    public static function fromValue(string $value): ?self
+    {
+        return self::tryFrom($value);
     }
 }

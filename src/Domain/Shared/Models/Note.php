@@ -13,9 +13,12 @@ class Note extends Model
 
     protected $hidden = ['created_at', 'updated_at', 'pivot'];
 
-    protected $casts = [
-        'number' => 'integer',
-    ];
+    protected function casts(): array
+    {
+        return [
+            'number' => 'integer',
+        ];
+    }
 
     protected $teiFields = ['body'];
 }

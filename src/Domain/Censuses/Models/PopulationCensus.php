@@ -5,6 +5,7 @@ namespace Domain\Censuses\Models;
 use Domain\Shared\Enums\Sex;
 use Domain\Shared\Enums\Race;
 use Domain\Shared\Traits\HasCountyEnum;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 
 class PopulationCensus extends Model
@@ -19,26 +20,29 @@ class PopulationCensus extends Model
 
     protected $appends = ['county_label', 'race_label', 'sex_label'];
 
-    protected $casts = [
-        'year' => 'integer',
-        'age' => 'float',
-        'dwelling_number' => 'integer',
-        'family_number' => 'integer',
-        'head_number' => 'integer',
-        'attended_school' => 'boolean',
-        'cannot_read' => 'boolean',
-        'cannot_write' => 'boolean',
-        'father_foreign_born' => 'boolean',
-        'mother_foreign_born' => 'boolean',
-        'male_citizen' => 'boolean',
-        'male_citizen_novote' => 'boolean',
-        'married_within_the_year' => 'boolean',
-        'marriage_month' => 'integer',
-        'birth_month' => 'integer',
-        'personal_estate_value' => 'integer',
-        'real_estate_value' => 'integer',
-        'page_number' => 'integer',
-    ];
+    protected function casts(): array
+    {
+        return [
+            'year' => 'integer',
+            'age' => 'float',
+            'dwelling_number' => 'integer',
+            'family_number' => 'integer',
+            'head_number' => 'integer',
+            'attended_school' => 'boolean',
+            'cannot_read' => 'boolean',
+            'cannot_write' => 'boolean',
+            'father_foreign_born' => 'boolean',
+            'mother_foreign_born' => 'boolean',
+            'male_citizen' => 'boolean',
+            'male_citizen_novote' => 'boolean',
+            'married_within_the_year' => 'boolean',
+            'marriage_month' => 'integer',
+            'birth_month' => 'integer',
+            'personal_estate_value' => 'integer',
+            'real_estate_value' => 'integer',
+            'page_number' => 'integer',
+        ];
+    }
 
     public static $exactFilters = [
         'attended_school',
@@ -81,15 +85,17 @@ class PopulationCensus extends Model
         'date_taken'
     ];
 
-    protected function getRaceLabelAttribute(): ?string
+    protected function raceLabel(): Attribute
     {
-        $enum = Race::tryFrom($this->race);
-        return $enum->label ?? null;
+        return Attribute::make(
+            get: fn () => Race::tryFrom($this->race)?->label,
+        );
     }
 
-    protected function getSexLabelAttribute(): ?string
+    protected function sexLabel(): Attribute
     {
-        $enum = Sex::tryFrom($this->sex);
-        return $enum->label ?? null;
+        return Attribute::make(
+            get: fn () => Sex::tryFrom($this->sex)?->label,
+        );
     }
 }

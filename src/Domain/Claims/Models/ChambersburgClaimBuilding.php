@@ -18,11 +18,14 @@ class ChambersburgClaimBuilding extends Model
         'image_id',
     ];
 
-    protected $casts = [
-        'building_number' => 'integer',
-        'possible_claim_id' => 'integer',
-        'image_id' => 'integer',
-    ];
+    protected function casts(): array
+    {
+        return [
+            'building_number' => 'integer',
+            'possible_claim_id' => 'integer',
+            'image_id' => 'integer',
+        ];
+    }
 
     public function possible_claim(): BelongsTo
     {

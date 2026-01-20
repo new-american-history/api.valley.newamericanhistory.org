@@ -16,10 +16,13 @@ class Name extends Model
 
     public $timestamps = false;
 
-    protected $casts = [
-        'newspaper_story_id' => 'integer',
-        'weight' => 'integer',
-    ];
+    protected function casts(): array
+    {
+        return [
+            'newspaper_story_id' => 'integer',
+            'weight' => 'integer',
+        ];
+    }
 
     public function story(): BelongsTo
     {

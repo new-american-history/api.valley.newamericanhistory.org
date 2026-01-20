@@ -18,10 +18,13 @@ class Page extends Model
 
     public $timestamps = false;
 
-    protected $casts = [
-        'newspaper_edition_id' => 'integer',
-        'number' => 'integer',
-    ];
+    protected function casts(): array
+    {
+        return [
+            'newspaper_edition_id' => 'integer',
+            'number' => 'integer',
+        ];
+    }
 
     public function edition(): BelongsTo
     {

@@ -19,12 +19,15 @@ class Family extends Model
 
     protected $appends = ['county_label'];
 
-    protected $casts = [
-        'family_id' => 'integer',
-        'husband_age' => 'integer',
-        'wife_age' => 'integer',
-        'number_of_children' => 'integer',
-    ];
+    protected function casts(): array
+    {
+        return [
+            'family_id' => 'integer',
+            'husband_age' => 'integer',
+            'wife_age' => 'integer',
+            'number_of_children' => 'integer',
+        ];
+    }
 
     public function children(): HasMany
     {
