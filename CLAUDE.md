@@ -14,33 +14,38 @@ This is a Laravel 8 API for "The Valley of the Shadow" project, a digital archiv
 
 ## Project Structure
 
-The codebase uses a custom three-layer architecture defined in composer.json autoloading:
+The codebase uses a custom three-layer architecture with PSR-4 namespaces defined in composer.json:
+- `App\` → `src/App/`
+- `Domain\` → `src/Domain/`
+- `Support\` → `src/Support/`
 
-### `src/App/` - Application Layer
-Contains HTTP-specific logic organized by resource type:
+### `src/App/` - Application Layer (namespace: `App\`)
+Contains HTTP-specific logic organized by resource type within `App\Api\[Concept]\`:
 - **Controllers**: Handle HTTP requests, delegate to queries, return resources
 - **Queries**: Extend `IndexQueryBuilder` to configure allowed filters/sorts per model
 - **Resources**: Transform models into JSON API responses
+- **Console/Commands**: Import commands that extend `BaseImportCommand`
 
-Example flow: `LetterController` → `LetterIndexQuery` → `LetterResource`
+Example flow: `App\Api\Papers\Controllers\LetterController` → `App\Api\Papers\Queries\LetterIndexQuery` → `App\Api\Papers\Resources\LetterResource`
 
-### `src/Domain/` - Domain Layer
-Contains business logic and models organized by domain concept:
-- **Models**: Eloquent models with filtering configuration
+### `src/Domain/` - Domain Layer (namespace: `Domain\`)
+Contains business logic and models organized by domain concept within `Domain\[Concept]\`:
+- **Models**: Eloquent models with static filter configuration arrays
 - **Enums**: Domain-specific enumerations (County, State, Race, Sex, etc.)
 - **Traits**: Shared model behaviors (HasTeiTags, HasCountyEnum, HasManipulatedHtml)
 
-Models define static filter arrays that configure query behavior:
-- `$exactFilters`: Exact match filters
-- `$exactFiltersWithCommas`: Comma-separated exact match filters
-- `$fuzzyFilters`: LIKE search filters
-- `$numericFilters`: Numeric comparison filters (gt, gte, lt, lte, ne)
-- `$dateFilters`: Date range filters with smart parsing
+**Filter Configuration Pattern:**
+Models define static arrays that `IndexQueryBuilder` automatically maps to Spatie query builder filters:
+- `$exactFilters`: Exact match filters (e.g., `['county', 'valley_id']`)
+- `$exactFiltersWithCommas`: Comma-separated values for exact match (e.g., `['author']` allows `?filter[author]=John,Jane`)
+- `$fuzzyFilters`: LIKE search filters (e.g., `['headline', 'keywords']`)
+- `$numericFilters`: Numeric comparison filters automatically get `:gt`, `:gte`, `:lt`, `:lte`, `:ne` operators
+- `$dateFilters`: Date range filters with smart partial date parsing (year-only, year-month)
 - `$excludedSorts`: Fields excluded from sorting
 
-### `src/Support/` - Shared Infrastructure
+### `src/Support/` - Shared Infrastructure (namespace: `Support\`)
 Contains framework utilities:
-- **Queries/IndexQueryBuilder.php**: Base query builder that maps model filter arrays to Spatie query builder filters
+- **Queries/IndexQueryBuilder.php**: Base query builder that reads model filter arrays and configures Spatie query builder
 - **Filters/**: Custom filter implementations (DateFilter, TextSearchFilter, ExactFilterWithCommas)
 - **Middleware/**: Application middleware
 
@@ -59,17 +64,34 @@ php artisan migrate:fresh  # Fresh migration (drops all tables)
 
 **Import historical data:**
 ```bash
-php artisan import:all  # Import all Valley data types
+php artisan import:all  # Import all Valley data types (calls all individual import commands)
 php artisan import:letters  # Import specific data type
 php artisan import:diaries
 php artisan import:population-census
-# See src/App/Console/Commands/ for all import commands
+php artisan import:newspapers
+# See src/App/Console/Commands/ for all 20+ import commands
+```
+
+**Run tests:**
+```bash
+vendor/bin/phpunit  # Run all tests
+vendor/bin/phpunit --testsuite=Unit  # Run unit tests only
+vendor/bin/phpunit --testsuite=Feature  # Run feature tests only
+vendor/bin/phpunit tests/Unit/SpecificTest.php  # Run specific test file
 ```
 
 **Run Laravel development server:**
 ```bash
-php artisan serve
+php artisan serve  # Starts server at http://localhost:8000
 ```
+
+**Docker local development:**
+```bash
+docker-compose up -d  # Start containers (requires external journey-network)
+docker-compose down  # Stop containers
+docker-compose exec valley-api php artisan migrate  # Run commands in container
+```
+The Docker setup uses PHP 8.3-FPM with Nginx and connects to an external MySQL database (journey-db). Access at http://local.api.valley.newamericanhistory.org via Traefik.
 
 **Clear caches:**
 ```bash
@@ -120,4 +142,20 @@ The `DateFilter` class supports partial dates (year-only, year-month) and automa
 
 ## Data Import
 
-Import commands in `src/App/Console/Commands/` handle migrating data from legacy Valley project XML/CSV files. Commands extend `BaseImportCommand` and parse TEI XML or CSV files, transforming them into database records.
+Import commands in `src/App/Console/Commands/` handle migrating data from legacy Valley project XML/CSV files. All commands extend `BaseImportCommand` and parse TEI (Text Encoding Initiative) XML or CSV files, transforming them into database records.
+
+**Import workflow:**
+1. `import:all` orchestrates all individual import commands sequentially
+2. Each import command (e.g., `import:letters`, `import:diaries`) processes specific data types
+3. Commands read from source files in the data directory (4.22 GB of TEI/CSV files)
+4. TEI XML parsing extracts structured data and handles markup transformation
+5. Data is inserted into MySQL database with appropriate relationships
+
+**Available import commands:**
+- Census data: `import:population-census`, `import:agricultural-census`, `import:manufacturing-census`, `import:slaveowning-census`, `import:veteran-census`
+- Papers: `import:letters`, `import:diaries`, `import:battlefield-correspondence`
+- Newspapers: `import:newspapers`
+- Military: `import:soldier-dossiers`, `import:regimental-movements`
+- Tax records: `import:augusta-tax-records`, `import:franklin-tax-records`
+- Claims: `import:chambersburg-claims`, `import:southern-claims-commission`
+- Other: `import:church-records`, `import:civil-war-images`, `import:cohabitation-records`, `import:fire-insurance-policies`, `import:free-black-registry`, `import:memory-articles`
