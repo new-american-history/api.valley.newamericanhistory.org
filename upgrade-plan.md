@@ -1,13 +1,13 @@
-# Laravel 8 → 11 Upgrade Plan: Valley of the Shadow API
+# Laravel 8 → 12 Upgrade Plan: Valley of the Shadow API
 
 ## Overview
 
-**Target**: Upgrade Laravel API from version 8.12 to 11.x (latest LTS)
+**Target**: Upgrade Laravel API from version 8.12 to 12.x (latest stable)
 **Location**: `/api.valley.newamericanhistory.org`
-**Strategy**: Incremental upgrade (8→9→10→11) with comprehensive modernization
-**Timeline**: 3-4 days development + 1-2 days testing/deployment
+**Strategy**: Incremental upgrade (8→9→10→11→12) with comprehensive modernization
+**Timeline**: 4-5 days development + 1-2 days testing/deployment
 
-**Key Note**: Laravel 12 does not exist. Laravel 11 (released March 2024) is the latest LTS version.
+**Key Note**: Laravel 12 (released September 2024) is the latest stable version. Laravel 13 is in development.
 
 ## Critical Architecture Context
 
@@ -43,6 +43,10 @@ The API uses a custom three-layer architecture:
 - `src/Domain/Shared/Traits/HasCountyEnum.php` - Update enum handling
 - `composer.json` - Update to Laravel 11, remove Spatie Enum package
 
+**Laravel 12 Upgrade**:
+- `composer.json` - Update to Laravel 12 dependencies
+- Verify all features remain compatible with Laravel 12
+
 **Testing Throughout**:
 - `src/Support/Queries/IndexQueryBuilder.php` - Verify compatibility with Spatie v5.x
 - `src/Support/Filters/*.php` - Test custom filter implementations
@@ -56,7 +60,7 @@ The API uses a custom three-layer architecture:
 
 ```bash
 # Create upgrade branch
-git checkout -b upgrade/laravel-11
+git checkout -b upgrade/laravel-12
 
 # Backup database
 mysqldump -u root -p valley_db > backup_pre_upgrade_$(date +%Y%m%d).sql
@@ -66,7 +70,7 @@ php artisan --version > version_before.txt
 composer show > packages_before.txt
 
 # Create rollback tag
-git tag pre-upgrade-laravel-11
+git tag pre-upgrade-laravel-12
 ```
 
 ### 1.2 Audit Current State
@@ -719,9 +723,102 @@ curl "http://localhost:8000/api/population-census?filter[age:gt]=18&filter[count
 
 ---
 
-## Phase 5: Integration Testing (2-3 hours)
+## Phase 5: Laravel 11 → 12 (1-2 hours) ✅ COMPLETED
 
-### 5.1 Comprehensive Endpoint Testing
+**Completed on**: 2026-01-23
+**Status**: Successfully upgraded to Laravel 12.48.1
+**Key Changes**:
+- Updated Laravel Framework from 11.48.0 to 12.48.1
+- Updated Spatie Query Builder from 5.8.1 to 6.4.0
+- Updated PHPUnit from 10.5.60 to 11.5.48
+- Fixed PDO::MYSQL_ATTR_SSL_CA deprecation warning (changed to \Pdo\Mysql::ATTR_SSL_CA)
+- All routes and commands load successfully
+- No errors or deprecation warnings in logs
+
+### 5.1 Update Dependencies
+
+**File**: `composer.json`
+
+```json
+{
+  "require": {
+    "php": "^8.3",
+    "laravel/framework": "^12.0",
+    "laravel/tinker": "^2.10",
+    "spatie/laravel-query-builder": "^6.0",
+    "doctrine/dbal": "^4.0",
+    "guzzlehttp/guzzle": "^7.2"
+  },
+  "require-dev": {
+    "fakerphp/faker": "^1.23",
+    "laravel/sail": "^1.37",
+    "mockery/mockery": "^1.6",
+    "nunomaduro/collision": "^8.0",
+    "phpunit/phpunit": "^11.0",
+    "spatie/laravel-ignition": "^2.8"
+  }
+}
+```
+
+**Note**: Laravel 12 maintains most of Laravel 11's architecture, so this should be a relatively smooth upgrade.
+
+Run: `composer update`
+
+### 5.2 Verify Application Structure
+
+Laravel 12 continues the streamlined application structure introduced in Laravel 11. No major structural changes are expected.
+
+**Check for deprecations:**
+```bash
+# Check logs for any deprecation warnings
+grep -i "deprecated" storage/logs/laravel.log
+
+# Verify all routes load
+php artisan route:list
+
+# Check for any breaking changes in dependencies
+composer outdated
+```
+
+### 5.3 Test Core Functionality
+
+```bash
+# Clear all caches
+php artisan config:clear
+php artisan cache:clear
+php artisan route:clear
+php artisan view:clear
+php artisan optimize:clear
+
+# Regenerate config cache
+php artisan config:cache
+
+# Run test script
+./test-api-endpoints.sh
+
+# Test key features
+curl "http://localhost:8000/api/letters?filter[county]=augusta" | jq '.data | length'
+curl "http://localhost:8000/api/letters?filter[date]=1863-07" | jq '.meta'
+```
+
+### 5.4 Update Any Laravel 12-Specific Features (Optional)
+
+Laravel 12 may introduce new features you can adopt:
+- Review Laravel 12 release notes for new features
+- Consider adopting new convenience methods or improvements
+- Update any deprecated method calls if warnings appear
+
+**Success Criteria**:
+- All API endpoints return correct data
+- No deprecation warnings in logs
+- Test script passes all checks
+- Performance remains stable
+
+---
+
+## Phase 6: Integration Testing (2-3 hours)
+
+### 6.1 Comprehensive Endpoint Testing
 
 Test each major resource type:
 
@@ -751,7 +848,7 @@ curl "http://localhost:8000/api/civil-war-images" | jq '.data | length'
 curl "http://localhost:8000/api/southern-claims-commission" | jq '.data | length'
 ```
 
-### 5.2 Test Filter Combinations
+### 6.2 Test Filter Combinations
 
 ```bash
 # Multiple filters
@@ -767,7 +864,7 @@ curl "http://localhost:8000/api/letters?perpage=10&page=2" | jq '.meta'
 curl "http://localhost:8000/api/population-census?filter[age:gte]=21&filter[age:lt]=65&filter[county]=augusta" | jq '.meta.total'
 ```
 
-### 5.3 Test Option Lists (31+ endpoints)
+### 6.3 Test Option Lists (31+ endpoints)
 
 ```bash
 # Sample option list endpoints
@@ -777,7 +874,7 @@ curl "http://localhost:8000/api/option-lists/soldiers-dossier-regiments" | jq 'l
 curl "http://localhost:8000/api/option-lists/states" | jq 'length'
 ```
 
-### 5.4 Test Console Commands
+### 6.4 Test Console Commands
 
 ```bash
 # Test that artisan commands load
@@ -791,7 +888,7 @@ php artisan import:diaries --help
 # DO NOT run full imports on production data
 ```
 
-### 5.5 Frontend Integration Test
+### 6.5 Frontend Integration Test
 
 **From Nuxt.js frontend** at `/valley.newamericanhistory.org`:
 
@@ -808,7 +905,7 @@ npm run dev
 # - Check detail pages load correctly
 ```
 
-### 5.6 Monitor Logs
+### 6.6 Monitor Logs
 
 ```bash
 # Watch for errors during testing
@@ -823,9 +920,9 @@ grep -i "error" storage/logs/laravel.log
 
 ---
 
-## Phase 6: Deployment (2-4 hours)
+## Phase 7: Deployment (2-4 hours)
 
-### 6.1 Pre-Deployment Checklist
+### 7.1 Pre-Deployment Checklist
 
 - [ ] All test script checks pass
 - [ ] No errors in Laravel logs
@@ -837,32 +934,33 @@ grep -i "error" storage/logs/laravel.log
 - [ ] TEI XML processing intact
 - [ ] Database backup created
 
-### 6.2 Staging Deployment
+### 7.2 Staging Deployment
 
 ```bash
 # Commit changes
 git add .
-git commit -m "Upgrade Laravel 8 to 11
+git commit -m "Upgrade Laravel 8 to 12
 
 - Migrate to native PHP enums (County, State, Race, Sex, Chapter)
 - Update to new Attribute accessor/mutator syntax
 - Replace Fideloper proxy with Laravel native TrustProxies
 - Replace Fruitcake CORS with Laravel native CORS
 - Remove namespace property from RouteServiceProvider
-- Update Spatie Query Builder to v5.x
+- Update Spatie Query Builder to v6.x
 - Update all model casts to casts() method
 - Update doctrine/dbal to v4.x
+- Update PHPUnit to v11.x
 
 Co-Authored-By: Claude Sonnet 4.5 <noreply@anthropic.com>"
 
 # Push to remote
-git push origin upgrade/laravel-11
+git push origin upgrade/laravel-12
 
 # Deploy to staging environment
 # (use your standard deployment process)
 ```
 
-### 6.3 Staging Testing
+### 7.3 Staging Testing
 
 Run full test suite on staging:
 
@@ -874,7 +972,7 @@ BASE_URL="https://staging-api.valley.newamericanhistory.org/api" ./test-api-endp
 # Visit staging frontend and verify all functionality
 ```
 
-### 6.4 Production Deployment
+### 7.4 Production Deployment
 
 **Prerequisites**:
 - Staging tests pass
@@ -907,7 +1005,7 @@ php artisan up
 curl -I https://api.valley.newamericanhistory.org/api/letters
 ```
 
-### 6.5 Post-Deployment Monitoring
+### 7.5 Post-Deployment Monitoring
 
 **First 24 Hours**:
 
@@ -950,7 +1048,7 @@ Roll back if:
 php artisan down
 
 # 2. Revert code to pre-upgrade state
-git reset --hard pre-upgrade-laravel-11
+git reset --hard pre-upgrade-laravel-12
 
 # 3. Restore composer dependencies
 composer install
@@ -1060,24 +1158,26 @@ curl -I https://api.valley.newamericanhistory.org/api/letters
 | Laravel 8 → 9 upgrade | 3-4 hours | 4-6 hours |
 | Laravel 9 → 10 upgrade | 2-3 hours | 6-9 hours |
 | Laravel 10 → 11 upgrade | 6-8 hours | 12-17 hours |
-| Integration testing | 2-3 hours | 14-20 hours |
-| Deployment & monitoring | 2-4 hours | 16-24 hours |
-| **Total** | **16-24 hours** | **2-3 days** |
+| Laravel 11 → 12 upgrade | 1-2 hours | 13-19 hours |
+| Integration testing | 2-3 hours | 15-22 hours |
+| Deployment & monitoring | 2-4 hours | 17-26 hours |
+| **Total** | **17-26 hours** | **2-4 days** |
 
 Add 1-2 days for staging deployment and production rollout.
 
-**Total project timeline: 3-5 days**
+**Total project timeline: 3-6 days**
 
 ---
 
 ## Final Notes
 
-1. **Incremental approach is critical** - Test thoroughly after each Laravel version upgrade
+1. **Incremental approach is critical** - Test thoroughly after each Laravel version upgrade (8→9→10→11→12)
 2. **Enum migration is the most complex task** - Allocate sufficient time and test filtering extensively
 3. **Custom query builder must be validated** - This is the heart of the API's filtering system
 4. **TEI XML processing is unique** - Ensure HasTeiTags trait remains functional
 5. **Frontend integration testing is essential** - API is useless if Nuxt.js can't consume it
 6. **Create backups before each phase** - Rollback capability is critical
 7. **Monitor logs continuously** - Catch issues early
+8. **Laravel 11 → 12 upgrade is relatively simple** - Most breaking changes occur in earlier versions
 
 The upgrade path is well-defined and incrementally testable. Each phase has clear success criteria before proceeding to the next.

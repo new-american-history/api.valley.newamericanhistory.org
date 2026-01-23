@@ -1,5 +1,3 @@
-version: "3.8"
-
 services:
   valley-api:
     container_name: valley-api
