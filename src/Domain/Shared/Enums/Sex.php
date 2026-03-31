@@ -2,19 +2,18 @@
 
 namespace Domain\Shared\Enums;
 
-use Closure;
-use Spatie\Enum\Laravel\Enum;
-
-/**
- * @method static self female()
- * @method static self male()
- */
-class Sex extends Enum
+enum Sex: string
 {
-    protected static function labels(): Closure
+    case FEMALE = 'female';
+    case MALE = 'male';
+
+    public function label(): string
     {
-        return function (string $value): string {
-            return ucfirst($value);
-        };
+        return ucfirst($this->value);
+    }
+
+    public static function fromValue(string $value): ?self
+    {
+        return self::tryFrom($value);
     }
 }

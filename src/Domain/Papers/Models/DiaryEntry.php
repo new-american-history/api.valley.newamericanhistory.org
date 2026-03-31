@@ -15,10 +15,13 @@ class DiaryEntry extends Model
 
     protected $hidden = ['created_at', 'updated_at', 'diary_id', 'weight'];
 
-    protected $casts = [
-        'diary_id' => 'integer',
-        'weight' => 'integer',
-    ];
+    protected function casts(): array
+    {
+        return [
+            'diary_id' => 'integer',
+            'weight' => 'integer',
+        ];
+    }
 
     protected $teiFields = [
         'body',

@@ -4,6 +4,7 @@ namespace Domain\Claims\Models;
 
 use Domain\Shared\Traits\HasTeiTags;
 use Domain\Shared\Traits\HasCountyEnum;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Domain\Claims\Models\SouthernClaimsCommissionItem;
@@ -21,15 +22,20 @@ class SouthernClaimsCommissionClaim extends Model
 
     protected $appends = ['county_label'];
 
-    protected $casts = [
-        'keywords' => 'array',
-    ];
+    protected function casts(): array
+    {
+        return [
+            'keywords' => 'array',
+        ];
+    }
 
     protected $teiFields = ['commission_summary'];
 
-    public function getSourceFileAttribute($value)
+    protected function sourceFile(): Attribute
     {
-        return !empty($value) ? url('/storage/data' . $value) : null;
+        return Attribute::make(
+            get: fn ($value) => !empty($value) ? url('/storage/data' . $value) : null,
+        );
     }
 
     public function items(): HasMany

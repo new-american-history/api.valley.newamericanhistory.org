@@ -2,22 +2,21 @@
 
 namespace Domain\ChurchRecords\Enums;
 
-use Closure;
-use Spatie\Enum\Laravel\Enum;
-
-/**
- * @method static self baptism()
- * @method static self communion()
- * @method static self confirmation()
- * @method static self death()
- * @method static self marriage()
- */
-class RecordType extends Enum
+enum RecordType: string
 {
-    protected static function labels(): Closure
+    case BAPTISM = 'baptism';
+    case COMMUNION = 'communion';
+    case CONFIRMATION = 'confirmation';
+    case DEATH = 'death';
+    case MARRIAGE = 'marriage';
+
+    public function label(): string
     {
-        return function (string $value): string {
-            return ucfirst($value);
-        };
+        return ucfirst($this->value);
+    }
+
+    public static function fromValue(string $value): ?self
+    {
+        return self::tryFrom($value);
     }
 }

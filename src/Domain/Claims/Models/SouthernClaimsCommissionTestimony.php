@@ -17,10 +17,13 @@ class SouthernClaimsCommissionTestimony extends Model
 
     public $timestamps = false;
 
-    protected $casts = [
-        'claim_id' => 'integer',
-        'weight' => 'float',
-    ];
+    protected function casts(): array
+    {
+        return [
+            'claim_id' => 'integer',
+            'weight' => 'float',
+        ];
+    }
 
     protected $teiFields = ['body'];
 

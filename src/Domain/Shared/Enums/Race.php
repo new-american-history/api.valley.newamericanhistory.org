@@ -2,21 +2,20 @@
 
 namespace Domain\Shared\Enums;
 
-use Closure;
-use Spatie\Enum\Laravel\Enum;
-
-/**
- * @method static self black()
- * @method static self colored()
- * @method static self mulatto()
- * @method static self white()
- */
-class Race extends Enum
+enum Race: string
 {
-    protected static function labels(): Closure
+    case BLACK = 'black';
+    case COLORED = 'colored';
+    case MULATTO = 'mulatto';
+    case WHITE = 'white';
+
+    public function label(): string
     {
-        return function (string $value): string {
-            return ucfirst($value);
-        };
+        return ucfirst($this->value);
+    }
+
+    public static function fromValue(string $value): ?self
+    {
+        return self::tryFrom($value);
     }
 }

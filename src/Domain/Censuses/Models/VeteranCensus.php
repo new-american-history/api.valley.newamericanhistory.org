@@ -17,13 +17,16 @@ class VeteranCensus extends Model
 
     protected $appends = ['county_label'];
 
-    protected $casts = [
-        'year' => 'integer',
-        'house_number' => 'integer',
-        'superior_district_number' => 'integer',
-        'page_number' => 'integer',
-        'number_on_page' => 'integer',
-    ];
+    protected function casts(): array
+    {
+        return [
+            'year' => 'integer',
+            'house_number' => 'integer',
+            'superior_district_number' => 'integer',
+            'page_number' => 'integer',
+            'number_on_page' => 'integer',
+        ];
+    }
 
     public static $exactFilters = [
         'company',

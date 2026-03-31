@@ -17,9 +17,12 @@ class FireInsurancePolicy extends Model
 
     protected $appends = ['county_label'];
 
-    protected $casts = [
-        'image_id' => 'integer',
-    ];
+    protected function casts(): array
+    {
+        return [
+            'image_id' => 'integer',
+        ];
+    }
 
     public function image(): BelongsTo
     {

@@ -9,13 +9,11 @@ class StateController
 {
     public function index(Request $request)
     {
-        return collect(State::toArray())
-            ->map(function ($label, $key) {
-                return [
-                    'value' => $key,
-                    'label' => $label,
-                ];
-            })
+        return collect(State::cases())
+            ->map(fn (State $state) => [
+                'value' => $state->value,
+                'label' => $state->label(),
+            ])
             ->values()
             ->toArray();
     }

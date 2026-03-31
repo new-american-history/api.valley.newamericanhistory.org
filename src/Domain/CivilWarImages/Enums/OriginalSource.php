@@ -2,25 +2,27 @@
 
 namespace Domain\CivilWarImages\Enums;
 
-use Spatie\Enum\Laravel\Enum;
-
-/**
- * @method static self frankLesliesIllustratedWeekly()
- * @method static self harpersWeekly()
- * @method static self illustratedLondonNews()
- * @method static self originalPhotograph()
- * @method static self southernIllustratedNews()
- */
-class OriginalSource extends Enum
+enum OriginalSource: string
 {
-    protected static function labels(): array
+    case FRANK_LESLIES_ILLUSTRATED_WEEKLY = 'frankLesliesIllustratedWeekly';
+    case HARPERS_WEEKLY = 'harpersWeekly';
+    case ILLUSTRATED_LONDON_NEWS = 'illustratedLondonNews';
+    case ORIGINAL_PHOTOGRAPH = 'originalPhotograph';
+    case SOUTHERN_ILLUSTRATED_NEWS = 'southernIllustratedNews';
+
+    public function label(): string
     {
-        return [
-            'frankLesliesIllustratedWeekly' => 'Frank Leslie’s Illustrated Weekly',
-            'harpersWeekly' => 'Harper’s Weekly',
-            'illustratedLondonNews' => 'Illustrated London News',
-            'originalPhotograph' => 'Original photograph',
-            'southernIllustratedNews' => 'Southern Illustrated News',
-        ];
+        return match($this) {
+            self::FRANK_LESLIES_ILLUSTRATED_WEEKLY => "Frank Leslie's Illustrated Weekly",
+            self::HARPERS_WEEKLY => "Harper's Weekly",
+            self::ILLUSTRATED_LONDON_NEWS => 'Illustrated London News',
+            self::ORIGINAL_PHOTOGRAPH => 'Original photograph',
+            self::SOUTHERN_ILLUSTRATED_NEWS => 'Southern Illustrated News',
+        };
+    }
+
+    public static function fromValue(string $value): ?self
+    {
+        return self::tryFrom($value);
     }
 }

@@ -2,24 +2,23 @@
 
 namespace Domain\Shared\Enums;
 
-use Closure;
-use Spatie\Enum\Laravel\Enum;
-
-/**
- * @method static self sunday()
- * @method static self monday()
- * @method static self tuesday()
- * @method static self wednesday()
- * @method static self thursday()
- * @method static self friday()
- * @method static self saturday()
- */
-class Weekday extends Enum
+enum Weekday: string
 {
-    protected static function labels(): Closure
+    case SUNDAY = 'sunday';
+    case MONDAY = 'monday';
+    case TUESDAY = 'tuesday';
+    case WEDNESDAY = 'wednesday';
+    case THURSDAY = 'thursday';
+    case FRIDAY = 'friday';
+    case SATURDAY = 'saturday';
+
+    public function label(): string
     {
-        return function (string $value): string {
-            return ucfirst($value);
-        };
+        return ucfirst($this->value);
+    }
+
+    public static function fromValue(string $value): ?self
+    {
+        return self::tryFrom($value);
     }
 }

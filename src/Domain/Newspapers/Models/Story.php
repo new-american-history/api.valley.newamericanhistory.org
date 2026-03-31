@@ -7,6 +7,7 @@ use Domain\Newspapers\Models\Page;
 use Domain\Newspapers\Models\Topic;
 use Domain\Shared\Traits\HasTeiTags;
 use Domain\Newspapers\Enums\StoryType;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -26,10 +27,13 @@ class Story extends Model
 
     public $timestamps = false;
 
-    protected $casts = [
-        'newspaper_page_id' => 'integer',
-        'weight' => 'integer',
-    ];
+    protected function casts(): array
+    {
+        return [
+            'newspaper_page_id' => 'integer',
+            'weight' => 'integer',
+        ];
+    }
 
     protected $teiFields = ['body'];
 
@@ -97,9 +101,10 @@ class Story extends Model
         'page.edition.date',
     ];
 
-    protected function getTypeLabelAttribute(): ?string
+    protected function typeLabel(): Attribute
     {
-        $enum = StoryType::tryFrom($this->type);
-        return $enum->label ?? null;
+        return Attribute::make(
+            get: fn () => StoryType::tryFrom($this->type)?->label(),
+        );
     }
 }

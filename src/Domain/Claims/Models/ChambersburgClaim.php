@@ -6,6 +6,7 @@ use Domain\Shared\Enums\Sex;
 use Domain\Shared\Enums\Race;
 use Domain\Shared\Models\Image;
 use Domain\Shared\Traits\HasCountyEnum;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Domain\Claims\Models\ChambersburgClaimBuilding;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -21,14 +22,17 @@ class ChambersburgClaim extends Model
 
     protected $appends = ['county_label', 'race_label', 'sex_label'];
 
-    protected $casts = [
-        'claim_number' => 'integer',
-        'claim_total' => 'float',
-        'personal_property' => 'float',
-        'real_property' => 'float',
-        'amount_awarded' => 'float',
-        'amount_received' => 'float',
-    ];
+    protected function casts(): array
+    {
+        return [
+            'claim_number' => 'integer',
+            'claim_total' => 'float',
+            'personal_property' => 'float',
+            'real_property' => 'float',
+            'amount_awarded' => 'float',
+            'amount_received' => 'float',
+        ];
+    }
 
     public function buildings(): HasMany
     {
@@ -65,15 +69,17 @@ class ChambersburgClaim extends Model
         'claim_date',
     ];
 
-    protected function getRaceLabelAttribute(): ?string
+    protected function raceLabel(): Attribute
     {
-        $enum = Race::tryFrom($this->race);
-        return $enum->label ?? null;
+        return Attribute::make(
+            get: fn () => Race::tryFrom($this->race)?->label(),
+        );
     }
 
-    protected function getSexLabelAttribute(): ?string
+    protected function sexLabel(): Attribute
     {
-        $enum = Sex::tryFrom($this->sex);
-        return $enum->label ?? null;
+        return Attribute::make(
+            get: fn () => Sex::tryFrom($this->sex)?->label(),
+        );
     }
 }

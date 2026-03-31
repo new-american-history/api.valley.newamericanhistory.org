@@ -1,0 +1,45 @@
+# Git files
+.git
+.gitignore
+.gitattributes
+
+# Dependencies
+node_modules
+vendor
+
+# Tests
+tests
+phpunit.xml
+phpunit.xml.dist
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# Logs
+*.log
+storage/logs/*
+
+# Framework cache
+storage/framework/cache/*
+storage/framework/sessions/*
+storage/framework/views/*
+bootstrap/cache/*
+
+# IDE files
+.idea
+.vscode
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Build files
+.deploy
+docker-plan.md
+README.md
+CLAUDE.md

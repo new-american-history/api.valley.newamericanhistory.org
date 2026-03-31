@@ -2,6 +2,7 @@
 
 namespace Domain\CivilWarImages\Models;
 
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Domain\CivilWarImages\Models\Subject;
 use Domain\CivilWarImages\Enums\ImageType;
@@ -19,10 +20,13 @@ class Image extends Model
 
     protected $appends = ['image_type_label', 'original_source_label'];
 
-    protected $casts = [
-        'image_id' => 'integer',
-        'subject_id' => 'integer',
-    ];
+    protected function casts(): array
+    {
+        return [
+            'image_id' => 'integer',
+            'subject_id' => 'integer',
+        ];
+    }
 
     public function image(): BelongsTo
     {
@@ -55,15 +59,17 @@ class Image extends Model
         'title',
     ];
 
-    protected function getImageTypeLabelAttribute(): ?string
+    protected function imageTypeLabel(): Attribute
     {
-        $enum = ImageType::tryFrom($this->image_type);
-        return $enum->label ?? null;
+        return Attribute::make(
+            get: fn () => ImageType::tryFrom($this->image_type)?->label(),
+        );
     }
 
-    protected function getOriginalSourceLabelAttribute(): ?string
+    protected function originalSourceLabel(): Attribute
     {
-        $enum = OriginalSource::tryFrom($this->original_source);
-        return $enum->label ?? null;
+        return Attribute::make(
+            get: fn () => OriginalSource::tryFrom($this->original_source)?->label(),
+        );
     }
 }

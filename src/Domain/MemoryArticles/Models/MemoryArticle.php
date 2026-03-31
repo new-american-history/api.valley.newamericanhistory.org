@@ -4,6 +4,7 @@ namespace Domain\MemoryArticles\Models;
 
 use Domain\Shared\Traits\HasTeiTags;
 use Domain\Shared\Traits\HasCountyEnum;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 
 class MemoryArticle extends Model
@@ -16,16 +17,21 @@ class MemoryArticle extends Model
 
     protected $appends = ['county_label', 'clean_title', 'byline'];
 
-    protected $casts = [
-        'year' => 'integer',
-        'keywords' => 'array',
-    ];
+    protected function casts(): array
+    {
+        return [
+            'year' => 'integer',
+            'keywords' => 'array',
+        ];
+    }
 
     protected $teiFields = ['body'];
 
-    public function getSourceFileAttribute($value)
+    protected function sourceFile(): Attribute
     {
-        return !empty($value) ? url('/storage/data' . $value) : null;
+        return Attribute::make(
+            get: fn ($value) => !empty($value) ? url('/storage/data' . $value) : null,
+        );
     }
 
     public static $exactFilters = [
@@ -45,7 +51,21 @@ class MemoryArticle extends Model
         'date',
     ];
 
-    protected function getCleanTitleAttribute(): ?string
+    protected function cleanTitle(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => $this->computeCleanTitle(),
+        );
+    }
+
+    protected function byline(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => $this->computeByline(),
+        );
+    }
+
+    private function computeCleanTitle(): ?string
     {
         $title = $this->title;
         $matches = [];
@@ -53,7 +73,7 @@ class MemoryArticle extends Model
         return $matches[3] ?? $title;
     }
 
-    protected function getBylineAttribute(): ?string
+    private function computeByline(): ?string
     {
         $title = $this->title;
         $author = $this->author;

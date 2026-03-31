@@ -14,13 +14,16 @@ class SouthernClaimsCommissionItem extends Model
 
     public $timestamps = false;
 
-    protected $casts = [
-        'claim_id' => 'integer',
-        'amount_claimed' => 'float',
-        'amount_allowed' => 'float',
-        'amount_disallowed' => 'float',
-        'weight' => 'float',
-    ];
+    protected function casts(): array
+    {
+        return [
+            'claim_id' => 'integer',
+            'amount_claimed' => 'float',
+            'amount_allowed' => 'float',
+            'amount_disallowed' => 'float',
+            'weight' => 'float',
+        ];
+    }
 
     public function claim(): BelongsTo
     {

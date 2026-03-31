@@ -6,6 +6,7 @@ use Domain\Shared\Models\Note;
 use Domain\Shared\Models\Image;
 use Domain\Shared\Traits\HasTeiTags;
 use Domain\Shared\Traits\HasCountyEnum;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
@@ -19,9 +20,12 @@ class Letter extends Model
 
     protected $appends = ['county_label', 'clean_title', 'date_from_title'];
 
-    protected $casts = [
-        'keywords' => 'array',
-    ];
+    protected function casts(): array
+    {
+        return [
+            'keywords' => 'array',
+        ];
+    }
 
     protected $teiFields = [
         'body',
@@ -47,9 +51,11 @@ class Letter extends Model
         'dateYear' => '/, ([0-9X?]{4})$/i',
     ];
 
-    public function getSourceFileAttribute($value)
+    protected function sourceFile(): Attribute
     {
-        return !empty($value) ? url('/storage/data' . $value) : null;
+        return Attribute::make(
+            get: fn ($value) => !empty($value) ? url('/storage/data' . $value) : null,
+        );
     }
 
     public function images(): BelongsToMany
@@ -86,7 +92,21 @@ class Letter extends Model
         'date',
     ];
 
-    protected function getCleanTitleAttribute(): ?string
+    protected function cleanTitle(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => $this->computeCleanTitle(),
+        );
+    }
+
+    protected function dateFromTitle(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => $this->computeDateFromTitle(),
+        );
+    }
+
+    private function computeCleanTitle(): ?string
     {
         $title = $this->title;
         $title = preg_replace('/^\w+ County: /', '', $title);
@@ -102,7 +122,7 @@ class Letter extends Model
         return $title;
     }
 
-    protected function getDateFromTitleAttribute(): ?string
+    private function computeDateFromTitle(): ?string
     {
         $title = $this->title;
         if (preg_match($this->cleanRegExpList['dateMonthDayYearWithQuotemark'], $title, $matches)) {

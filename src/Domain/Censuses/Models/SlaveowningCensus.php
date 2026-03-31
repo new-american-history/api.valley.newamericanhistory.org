@@ -17,14 +17,17 @@ class SlaveowningCensus extends Model
 
     protected $appends = ['county_label'];
 
-    protected $casts = [
-        'year' => 'integer',
-        'total_slaves' => 'integer',
-        'black_slaves' => 'integer',
-        'mulatto_slaves' => 'integer',
-        'female_slaves' => 'integer',
-        'male_slaves' => 'integer',
-    ];
+    protected function casts(): array
+    {
+        return [
+            'year' => 'integer',
+            'total_slaves' => 'integer',
+            'black_slaves' => 'integer',
+            'mulatto_slaves' => 'integer',
+            'female_slaves' => 'integer',
+            'male_slaves' => 'integer',
+        ];
+    }
 
     public static $exactFilters = [
         'employer_location',
