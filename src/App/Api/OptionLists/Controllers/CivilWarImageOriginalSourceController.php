@@ -9,13 +9,11 @@ class CivilWarImageOriginalSourceController
 {
     public function index(Request $request)
     {
-        return collect(OriginalSource::toArray())
-            ->map(function ($label, $key) {
-                return [
-                    'value' => $key,
-                    'label' => $label,
-                ];
-            })
+        return collect(OriginalSource::cases())
+            ->map(fn (OriginalSource $source) => [
+                'value' => $source->value,
+                'label' => $source->label(),
+            ])
             ->values()
             ->toArray();
     }
