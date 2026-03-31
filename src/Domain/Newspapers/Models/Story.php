@@ -104,7 +104,7 @@ class Story extends Model
     protected function typeLabel(): Attribute
     {
         return Attribute::make(
-            get: fn () => StoryType::tryFrom($this->type)?->label,
+            get: fn () => StoryType::tryFrom($this->type)?->label(),
         );
     }
 }

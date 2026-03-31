@@ -62,14 +62,14 @@ class Image extends Model
     protected function imageTypeLabel(): Attribute
     {
         return Attribute::make(
-            get: fn () => ImageType::tryFrom($this->image_type)?->label,
+            get: fn () => ImageType::tryFrom($this->image_type)?->label(),
         );
     }
 
     protected function originalSourceLabel(): Attribute
     {
         return Attribute::make(
-            get: fn () => OriginalSource::tryFrom($this->original_source)?->label,
+            get: fn () => OriginalSource::tryFrom($this->original_source)?->label(),
         );
     }
 }

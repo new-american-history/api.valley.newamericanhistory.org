@@ -72,14 +72,14 @@ class ChambersburgClaim extends Model
     protected function raceLabel(): Attribute
     {
         return Attribute::make(
-            get: fn () => Race::tryFrom($this->race)?->label,
+            get: fn () => Race::tryFrom($this->race)?->label(),
         );
     }
 
     protected function sexLabel(): Attribute
     {
         return Attribute::make(
-            get: fn () => Sex::tryFrom($this->sex)?->label,
+            get: fn () => Sex::tryFrom($this->sex)?->label(),
         );
     }
 }

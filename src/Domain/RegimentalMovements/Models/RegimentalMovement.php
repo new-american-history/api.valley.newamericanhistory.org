@@ -64,7 +64,7 @@ class RegimentalMovement extends Model
     protected function battleStateLabel(): Attribute
     {
         return Attribute::make(
-            get: fn () => State::tryFrom($this->battle_state)?->label,
+            get: fn () => State::tryFrom($this->battle_state)?->label(),
         );
     }
 }

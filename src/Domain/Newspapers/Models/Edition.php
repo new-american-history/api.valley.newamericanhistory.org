@@ -98,14 +98,14 @@ class Edition extends Model
     protected function frequencyLabel(): Attribute
     {
         return Attribute::make(
-            get: fn () => Frequency::tryFrom($this->frequency)?->label,
+            get: fn () => Frequency::tryFrom($this->frequency)?->label(),
         );
     }
 
     protected function weekdayLabel(): Attribute
     {
         return Attribute::make(
-            get: fn () => Weekday::tryFrom($this->weekday)?->label,
+            get: fn () => Weekday::tryFrom($this->weekday)?->label(),
         );
     }
 }

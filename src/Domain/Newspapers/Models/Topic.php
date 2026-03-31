@@ -56,7 +56,7 @@ class Topic extends Model
     protected function chapterLabel(): Attribute
     {
         return Attribute::make(
-            get: fn () => Chapter::tryFrom($this->chapter)?->label,
+            get: fn () => Chapter::tryFrom($this->chapter)?->label(),
         );
     }
 }
