@@ -2,7 +2,6 @@
 
 namespace Support\Filters;
 
-use Illuminate\Support\Collection;
 use Spatie\QueryBuilder\Filters\Filter;
 use Illuminate\Database\Eloquent\Builder;
 use Spatie\QueryBuilder\Filters\FiltersExact;
@@ -26,7 +25,7 @@ class DateFilter extends FiltersExact implements Filter
         $this->requireAllConditions = $requireAllConditions;
     }
 
-    public function __invoke(Builder $query, $value, string $property)
+    public function __invoke(Builder $query, mixed $value, string $property)
     // The $property parameter is unused but is a required part of the function declaration.
     {
         $currentModelClass = get_class($query->getModel());

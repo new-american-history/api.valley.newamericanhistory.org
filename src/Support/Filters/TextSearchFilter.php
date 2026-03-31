@@ -65,7 +65,7 @@ class TextSearchFilter extends FiltersExact implements Filter
         return;
     }
 
-    protected function withRelationConstraint(Builder $query, $value, string $property)
+    protected function withRelationConstraint(Builder $query, mixed $value, string $property): void
     // This function is pulled from FiltersExact, and adjusted to use orWhereHas() instead of whereHas().
     {
         [$relation, $property] = collect(explode('.', $property))
