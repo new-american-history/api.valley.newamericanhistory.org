@@ -12,15 +12,16 @@ class StoryResource extends JsonResource
     {
         $res = $this->resource->toArrayWithModernSpelling();
 
+        $res['page'] = !empty($this->page)
+            ? [
+                'number' => $this->page->number,
+                'edition' => !empty($this->page->edition)
+                    ? new EditionResource($this->page->edition)
+                    : null,
+            ]
+            : null;
+
         $res += [
-            'page' => !empty($this->page)
-                ? [
-                    'number' => $this->page->number,
-                    'edition' => !empty($this->page->edition)
-                        ? new EditionResource($this->page->edition)
-                        : null,
-                ]
-                : null,
             'names' => !empty($this->names)
                 ? $this->names->map(function ($name) {
                     return new NameResource($name);

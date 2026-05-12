@@ -10,7 +10,7 @@ class StoryController
 {
     public function index(Request $request, StoryIndexQuery $query)
     {
-        $query->with(['page:number', 'page', 'page.edition', 'page.edition.newspaper', 'names', 'topics'])
+        $query->with(['page', 'page.edition', 'page.edition.newspaper', 'names', 'topics'])
             ->whereNotNull('headline')
             ->whereNotNull('summary');
 
